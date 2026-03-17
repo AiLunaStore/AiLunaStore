@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedSurg Checklist v5 - Complete 3 Patient</title>
+<style>
+@page { size: 11in 8.5in landscape; margin: 0.25in; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Segoe UI", system-ui, sans-serif; font-size: 7pt; line-height: 1.15; color: #1a1a1a; background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.sheet { width: 10.5in; height: 8in; margin: 0 auto; display: flex; flex-direction: row; gap: 0.15in; padding: 0.1in; }
+.patient-column { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.room-header { text-align: right; font-size: 8pt; font-weight: 600; padding: 2px 4px; border-bottom: 1.5px solid #2c3e50; }
+.room-header input { width: 0.8in; border: none; border-bottom: 1px solid #7f8c8d; font-size: 8pt; font-weight: 600; text-align: center; background: transparent; }
+.patient-top-row { display: flex; gap: 4px; margin-bottom: 3px; }
+.human-outline { flex: 0 0 1.8in; height: 1.8in; border: 1.5px solid #bdc3c7; border-radius: 3px; background: #fafbfc; padding: 2px; }
+.human-outline img { width: 100%; height: 100%; object-fit: contain; }
+.top-sections { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.section { border: 1.5px solid; border-radius: 3px; padding: 2px 3px; page-break-inside: avoid; background: white; }
+.section h4 { font-size: 6.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; color: white; padding: 2px 4px; border-radius: 1px; }
+.section-mental { border-color: #3498db; } .section-mental h4 { background: #3498db; }
+.section-oxygen { border-color: #2980b9; } .section-oxygen h4 { background: #2980b9; }
+.section-iv { border-color: #e74c3c; } .section-iv h4 { background: #e74c3c; }
+.section-mobility { border-color: #27ae60; } .section-mobility h4 { background: #27ae60; }
+.section-pain { border-color: #c0392b; } .section-pain h4 { background: #c0392b; }
+.section-meds { border-color: #8e44ad; } .section-meds h4 { background: #8e44ad; }
+.section-assess { border-color: #d35400; } .section-assess h4 { background: #d35400; }
+.section-notes { border-color: #7f8c8d; flex: 1; } .section-notes h4 { background: #7f8c8d; }
+.section-wound { border-color: #16a085; } .section-wound h4 { background: #16a085; }
+.section-sbar { border-color: #9b59b6; } .section-sbar h4 { background: #9b59b6; }
+.checklist { display: flex; flex-wrap: wrap; gap: 2px 6px; }
+.checklist.compact { gap: 1px 4px; }
+.check-item { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+.slash-options { display: inline; }
+.slash-options span { cursor: pointer; padding: 0 1px; }
+.slash-options span:hover { background: #ecf0f1; border-radius: 2px; }
+.slash-options .selected { background: #2c3e50; color: white; border-radius: 2px; padding: 0 3px; }
+.text-input { border: none; border-bottom: 1px solid #95a5a6; background: transparent; font-size: 7pt; padding: 0 2px; font-family: inherit; min-width: 0.3in; }
+.text-input.wide { width: 1in; }
+.text-input.narrow { width: 0.4in; }
+.text-input.tiny { width: 0.3in; }
+.pain-scale { display: flex; align-items: center; gap: 1px; margin: 2px 0; }
+.pain-number { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #c0392b; display: flex; align-items: center; justify-content: center; font-size: 5.5pt; font-weight: 600; cursor: pointer; }
+.pain-number.selected { background: #c0392b; color: white; }
+.pain-labels { display: flex; justify-content: space-between; font-size: 5.5pt; color: #7f8c8d; margin-top: 1px; }
+.notes-area { width: 100%; height: 100%; min-height: 0.8in; border: none; background: transparent; font-size: 7pt; padding: 2px; resize: none; font-family: inherit; }
+.section-notes { display: flex; flex-direction: column; flex: 1; }
+.med-timing { display: flex; flex-direction: column; gap: 1px; margin-top: 2px; }
+.med-timing .time { font-size: 6.5pt; padding: 0 4px; }
+@media print { body { margin: 0; } .sheet { page-break-after: always; } input, textarea { border-bottom: 1px solid #bdc3c7 !important; } }
+@media screen { body { background: #e8e8e8; padding: 20px; } .sheet { background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.15); } }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<!-- Patient 1 -->
+<div class="patient-column">
+<div class="room-header">Room: <input type="text"></div>
+<div class="patient-top-row">
+<div class="human-outline">
+<img src="IMG_2863.jpg" alt="Human Outline">
+</div>
+<div class="top-sections">
+<div class="section section-mental">
+<h4>Mental Status</h4>
+<div class="checklist">
+<span class="check-item">A&O <span class="slash-options"><span>1</span>/<span>2</span>/<span>3</span>/<span>4</span></span></span>
+<span class="check-item"><span class="slash-options"><span>Alert</span>/<span>Confused</span>/<span>Sedated</span>/<span>Unresponsive</span></span></span>
+</div>
+</div>
+<div class="section section-oxygen">
+<h4>Oxygen Status</h4>
+<div class="checklist">
+<span class="check-item">O2: <span class="slash-options"><span>RA</span>/<span>NC</span>/<span>Mask</span>/<span>HFNC</span></span></span>
+<span class="check-item">L/min: <input type="text" class="text-input tiny"></span>
+<span class="check-item">Sat: <input type="text" class="text-input tiny">%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="section section-iv">
+<h4>IV Fluids</h4>
+<div class="checklist compact">
+<span class="check-item">Type: <span class="slash-options"><span>LR</span>/<span>NS</span>/<span>D5W</span>/<span>None</span></span></span>
+<span class="check-item">Rate: <span class="slash-options"><span>KVO</span>/<span>100</span>/<span>125</span>/<span>150</span></span> <input type="text" class="text-input tiny"> mL/hr</span>
+<span class="check-item">Site: <span class="slash-options"><span>L AC</span>/<span>R AC</span>/<span>Hand</span>/<span>Central</span></span> Gauge: <input type="text" class="text-input tiny"></span>
+<span class="check-item">Status: <span class="slash-options"><span>✓ Patent</span>/<span>✗ Infiltrated</span>/<span>DC'd</span></span></span>
+</div>
+</div>
+<div class="section section-mobility">
+<h4>Mobility</h4>
+<div class="checklist">
+<span class="check-item">Activity: <span class="slash-options"><span>Ambulate</span>/<span>Bedrest</span>/<span>BRP</span>/<span>Up ad lib</span></span></span>
+<span class="check-item">Assist: <span class="slash-options"><span>Independent</span>/<span>1 Assist</span>/<span>2 Assist</span>/<span>Lift</span></span></span>
+<span class="check-item">Turning: <span class="slash-options"><span>Q2h</span>/<span>Q4h</span>/<span>Independent</span></span></span>
+<span class="check-item">Fall Prec: <span class="slash-options"><span>Bed alarm</span>/<span>Chair alarm</span>/<span>Sitter</span>/<span>Low bed</span>/<span>None</span></span></span>
+</div>
+</div>
+<div class="section section-pain">
+<h4>Pain Scale (0-10)</h4>
+<div class="pain-scale">
+<span class="pain-number">0</span><span class="pain-number">1</span><span class="pain-number">2</span><span class="pain-number">3</span><span class="pain-number">4</span><span class="pain-number">5</span><span class="pain-number">6</span><span class="pain-number">7</span><span class="pain-number">8</span><span class="pain-number">9</span><span class="pain-number">10</span>
+</div>
+<div class="pain-labels"><span>No pain</span><span>Mild</span><span>Mod</span><span>Severe</span><span>Worst</span></div>
+</div>
+<div class="section section-meds">
+<h4>Common Medications</h4>
+<div class="checklist">
+<span class="check-item">Analgesics: <span class="slash-options"><span>Acetaminophen</span>/<span>Tramadol</span>/<span>Oxycodone</span>/<span>Morphine</span></span></span>
+<span class="check-item">Anticoag: <span class="slash-options"><span>Heparin</span>/<span>Lovenox</span>/<span>Eliquis</span>/<span>Xarelto</span>/<span>ASA</span></span></span>
+<span class="check-item">GI: <span class="slash-options"><span>PPI</span>/<span>H2 blocker</span>/<span>Zofran</span>/<span>Senna</span>/<span>Colace</span></span></span>
+<span class="check-item">Antibiotics: <input type="text" class="text-input wide"></span>
+</div>
+<div class="med-timing">
+<div class="time">0800</div>
+<div class="time">1200</div>
+<div class="time">1600</div>
+<div class="time">2000</div>
+<div class="time">0000</div>
+</div>
+</div>
+<div class="section section-wound">
+<h4>Wound Care</h4>
+<div class="checklist">
+<span class="check-item">Location: <input type="text" class="text-input wide"></span>
+<span class="check-item">Type: <span class="slash-options"><span>Pressure</span>/<span>Surgical</span>/<span>Traumatic</span>/<span>Other</span></span></span>
+<span class="check-item">Dressing: <span class="slash-options"><span>Gauze</span>/<span>Foam</span>/<span>Vac</span>/<span>Other</span></span> Change: <input type="text" class="text-input tiny">h</span>
+</div>
+</div>
+<div class="section section-assess">
+<h4>Assessments & Interventions</h4>
+<div class="checklist">
+<span class="check-item"><span class="slash-options"><span>Neuro checks</span>/<span>PERRLA</span>/<span>GCS</span></span> q<input type="text" class="text-input narrow">h</span>
+<span class="check-item"><span class="slash-options"><span>Dressing change</span>/<span>Wound vac</span>/<span>JP drain</span>/<span>Staples</span></span></span>
+<span class="check-item">Diet: <span class="slash-options"><span>NPO</span>/<span>Clear</span>/<span>Full</span>/<span>Diabetic</span>/<span>Renal</span></span></span>
+</div>
+</div>
+<div class="section section-sbar">
+<h4>SBAR Handoff</h4>
+<div class="checklist" style="flex-direction: column; gap: 2px;">
+<span class="check-item">Situation: <input type="text" class="text-input wide"></span>
+<span class="check-item">Background: <input type="text" class="text-input wide"></span>
+<span class="check-item">Assessment: <input type="text" class="text-input wide"></span>
+<span class="check-item">Recommendation: <input type="text" class="text-input wide"></span>
+</div>
+</div>
+<div class="section section-notes">
+<h4>Notes</h4>
+<textarea class="notes-area"></textarea>
+</div>
+</div>
+
+<!-- Patient 2 -->
+<div class="patient-column">
+<div class="room-header">Room: <input type="text"></div>
+<div class="patient-top-row">
+<div class="human-outline">
+<img src="IMG_2863.jpg" alt="Human Outline">
+</div>
+<div class="top-sections">
+<div class="section section-mental">
+<h4>Mental Status</h4>
+<div class="checklist">
+<span class="check-item">A&O <span class="slash-options"><span>1</span>/<span>2</span>/<span>3</span>/<span>4</span></span></span>
+<span class="check-item"><span class="slash-options"><span>Alert</span>/<span>Confused</span>/<span>Sedated</span>/<span>Unresponsive</span></span></span>
+</div>
+</div>
+<div class="section section-oxygen">
+<h4>Oxygen Status</h4>
+<div class="checklist">
+<span class="check-item">O2: <span class="slash-options"><span>RA</span>/<span>NC</span>/<span>Mask</span>/<span>HFNC</span></span></span>
+<span class="check-item">L/min: <input type="text" class="text-input tiny"></span>
+<span class="check-item">Sat: <input type="text" class="text-input tiny">%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="section section-iv">
+<h4>IV Fluids</h4>
+<div class="checklist compact">
+<span class="check-item">Type: <span class="slash-options"><span>LR</span>/<span>NS</span>/<span>D5W</span>/<span>None</span></span></span>
+<span class="check-item">Rate: <span class="slash-options"><span>KVO</span>/<span>100</span>/<span>125</span>/<span>150</span></span> <input type="text" class="text-input tiny"> mL/hr</span>
+<span class="check-item">Site: <span class="slash-options"><span>L AC</span>/<span>R AC</span>/<span>Hand</span>/<span>Central</span></span> Gauge: <input type="text" class="text-input tiny"></span>
+<span class="check-item">Status: <span class="slash-options"><span>✓ Patent</span>/<span>✗ Infiltrated</span>/<span>DC'd</span></span></span>
+</div>
+</div>
+<div class="section section-mobility">
+<h4>Mobility</h4>
+<div class="checklist">
+<span class="check-item">Activity: <span class="slash-options"><span>Ambulate</span>/<span>Bedrest</span>/<span>BRP</span>/<span>Up ad lib</span></span></span>
+<span class="check-item">Assist: <span class="slash-options"><span>Independent</span>/<span>1 Assist</span>/<span>2 Assist</span>/<span>Lift</span></span></span>
+<span class="check-item">Turning: <span class="slash-options"><span>Q2h</span>/<span>Q4h</span>/<span>Independent</span></span></span>
+<span class="check-item">Fall Prec: <span class="slash-options"><span>Bed alarm</span>/<span>Chair alarm</span>/<span>Sitter</span>/<span>Low bed</span>/<span>None</span></span></span>
+</div>
+</div>
+<div class="section section-pain">
+<h4>Pain Scale (0-10)</h4>
+<div class="pain-scale">
+<span class="pain-number">0</span><span class="pain-number">1</span><span class="pain-number">2</span><span class="pain-number">3</span><span class="pain-number">4</span><span class="pain-number">5</span><span class="pain-number">6</span><span class="pain-number">7</span><span class="pain-number">8</span><span class="pain-number">9</span><span class="pain-number">10</span>
+</div>
+<div class="pain-labels"><span>No pain</span><span>Mild</span><span>Mod</span><span>Severe</span><span>Worst</span></div>
+</div>
+<div class="section section-meds">
+<h4>Common Medications</h4>
+<div class="checklist">
+<span class="check-item">Analgesics: <span class="slash-options"><span>Acetaminophen</span>/<span>Tramadol</span>/<span>Oxycodone</span>/<span>Morphine</span></span></span>
+<span class="check-item">Anticoag: <span class="slash-options"><span>Heparin</span>/<span>Lovenox</span>/<span>Eliquis</span>/<span>Xarelto</span>/<span>ASA</span></span></span>
+<span class="check-item">GI: <span class="slash-options"><span>PPI</span>/<span>H2 blocker</span>/<span>Zofran</span>/<span>Senna</span>/<span>Colace</span></span></span>
+<span class="check-item">Antibiotics: <input type="text" class="text-input wide"></span>
+</div>
+<div class="med-timing">
+<div class="time">0800</div>
+<div class="time">1200</div>
+<div class="time">1600</div>
+<div class="time">2000</div>
+<div class="time">0000</div>
+</div>
+</div>
+<div class="section section-wound">
+<h4>Wound Care</h4>
+<div class="checklist">
+<span class="check-item">Location: <input type="text" class="text-input wide"></span>
+<span class="check-item">Type: <span class="slash-options"><span>Pressure</span>/<span>Surgical</span>/<span>Traumatic</span>/<span>Other</span></span></span>
+<span class="check-item">Dressing: <span class="slash-options"><span>Gauze</span>/<span>Foam</span>/<span>Vac</span>/<span>Other</span></span> Change: <input type="text" class="text-input tiny">h</span>
+</div>
+</div>
+<div class="section section-assess">
+<h4>Assessments & Interventions</h4>
+<div class="checklist">
+<span class="check-item"><span class="slash-options"><span>Neuro checks</span>/<span>PERRLA</span>/<span>GCS</span></span> q<input type="text" class="text-input narrow">h</span>
+<span class="check-item"><span class="slash-options"><span>Dressing change</span>/<span>Wound vac</span>/<span>JP drain</span>/<span>Staples</span></span></span>
+<span class="check-item">Diet: <span class="slash-options"><span>NPO</span>/<span>Clear</span>/<span>Full</span>/<span>Diabetic</span>/<span>Renal</span></span></span>
+</div>
+</div>
+<div class="section section-sbar">
+<h4>SBAR Handoff</h4>
+<div class="checklist" style="flex-direction: column; gap: 2px;">
+<span class="check-item">Situation: <input type="text" class="text-input wide"></span>
+<span class="check-item">Background: <input type="text" class="text-input wide"></span>
+<span class="check-item">Assessment: <input type="text" class="text-input wide"></span>
+<span class="check-item">Recommendation: <input type="text" class="text-input wide"></span>
+</div>
+</div>
+<div class="section section-notes">
+<h4>Notes</h4>
+<textarea class="notes-area"></textarea>
+</div>
+</div>
+
+<!-- Patient 3 -->
+<div class="patient-column">
+<div class="room-header">Room: <input type="text"></div>
+<div class="patient-top-row">
+<div class="human-outline">
+<img src="IMG_2863.jpg" alt="Human Outline">
+</div>
+<div class="top-sections">
+<div class="section section-mental">
+<h4>Mental Status</h4>
+<div class="checklist">
+<span class="check-item">A&O <span class="slash-options"><span>1</span>/<span>2</span>/<span>3</span>/<span>4</span></span></span>
+<span class="check-item"><span class="slash-options"><span>Alert</span>/<span>Confused</span>/<span>Sedated</span>/<span>Unresponsive</span></span></span>
+</div>
+</div>
+<div class="section section-oxygen">
+<h4>Oxygen Status</h4>
+<div class="checklist">
+<span class="check-item">O2: <span class="slash-options"><span>RA</span>/<span>NC</span>/<span>Mask</span>/<span>HFNC</span></span></span>
+<span class="check-item">L/min: <input type="text" class="text-input tiny"></span>
+<span class="check-item">Sat: <input type="text" class="text-input tiny">%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="section section-iv">
+<h4>IV Fluids</h4>
+<div class="checklist compact">
+<span class="check-item">Type: <span class="slash-options"><span>LR</span>/<span>NS</span>/<span>D5W</span>/<span>None</span></span></span>
+<span class="check-item">Rate: <span class="slash-options"><span>KVO</span>/<span>100</span>/<span>125</span>/<span>150</span></span> <input type="text" class="text-input tiny"> mL/hr</span>
+<span class="check-item">Site: <span class="slash-options"><span>L AC</span>/<span>R AC</span>/<span>Hand</span>/<span>Central</span></span> Gauge: <input type="text" class="text-input tiny"></span>
+<span class="check-item">Status: <span class="slash-options"><span>✓ Patent</span>/<span>✗ Infiltrated</span>/<span>DC'd</span></span></span>
+</div>
+</div>
+<div class="section section-mobility">
+<h4>Mobility</h4>
+<div class="checklist">
+<span class="check-item">Activity: <span class="slash-options"><span>Ambulate</span>/<span>Bedrest</span>/<span>BRP</span>/<span>Up ad lib</span></span></span>
+<span class="check-item">Assist: <span class="slash-options"><span>Independent</span>/<span>1 Assist</span>/<span>2 Assist</span>/<span>Lift</span></span></span>
+<span class="check-item">Turning: <span class="slash-options"><span>Q2h</span>/<span>Q4h</span>/<span>Independent</span></span></span>
+<span class="check-item">Fall Prec: <span class="slash-options"><span>Bed alarm</span>/<span>Chair alarm</span>/<span>Sitter</span>/<span>Low bed</span>/<span>None</span></span></span>
+</div>
+</div>
+<div class="section section-pain">
+<h4>Pain Scale (0-10)</h4>
+<div class="pain-scale">
+<span class="pain-number">0</span><span class="pain-number">1</span><span class="pain-number">2</span><span class="pain-number">3</span><span class="pain-number">4</span><span class="pain-number">5</span><span class="pain-number">6</span><span class="pain-number">7</span><span class="pain-number">8</span><span class="pain-number">9</span><span class="pain-number">10</span>
+</div>
+<div class="pain-labels"><span>No pain</span><span>Mild</span><span>Mod</span><span>Severe</span><span>Worst</span></div>
+</div>
+<div class="section section-meds">
+<h4>Common Medications</h4>
+<div class="checklist">
+<span class="check-item">Analgesics: <span class="slash-options"><span>Acetaminophen</span>/<span>Tramadol</span>/<span>Oxycodone</span>/<span>Morphine</span></span></span>
+<span class="check-item">Anticoag: <span class="slash-options"><span>Heparin</span>/<span>Lovenox</span>/<span>Eliquis</span>/<span>Xarelto</span>/<span>ASA</span></span></span>
+<span class="check-item">GI: <span class="slash-options"><span>PPI</span>/<span>H2 blocker</span>/<span>Zofran</span>/<span>Senna</span>/<span>Colace</span></span></span>
+<span class="check-item">Antibiotics: <input type="text" class="text-input wide"></span>
+</div>
+<div class="med-timing">
+<div class="time">0800</div>
+<div class="time">1200</div>
+<div class="time">1600</div>
+<div class="time">2000</div>
+<div class="time">0000</div>
+</div>
+</div>
+<div class="section section-wound">
+<h4>Wound Care</h4>
+<div class="checklist">
+<span class="check-item">Location: <input type="text" class="text-input wide"></span>
+<span class="check-item">Type: <span class="slash-options"><span>Pressure</span>/<span>Surgical</span>/<span>Traumatic</span>/<span>Other</span></span></span>
+<span class="check-item">Dressing: <span class="slash-options"><span>Gauze</span>/<span>Foam</span>/<span>Vac</span>/<span>Other</span></span> Change: <input type="text" class="text-input tiny">h</span>
+</div>
+</div>
+<div class="section section-assess">
+<h4>Assessments & Interventions</h4>
+<div class="checklist">
+<span class="check-item"><span class="slash-options"><span>Neuro checks</span>/<span>PERRLA</span>/<span>GCS</span></span> q<input type="text" class="text-input narrow">h</span>
+<span class="check-item"><span class="slash-options"><span>Dressing change</span>/<span>Wound vac</span>/<span>JP drain</span>/<span>Staples</span></span></span>
+<span class="check-item">Diet: <span class="slash-options"><span>NPO</span>/<span>Clear</span>/<span>Full</span>/<span>Diabetic</span>/<span>Renal</span></span></span>
+</div>
+</div>
+<div class="section section-sbar">
+<h4>SBAR Handoff</h4>
+<div class="checklist" style="flex-direction: column; gap: 2px;">
+<span class="check-item">Situation: <input type="text" class="text-input wide"></span>
+<span class="check-item">Background: <input type="text" class="text-input wide"></span>
+<span class="check-item">Assessment: <input type="text" class="text-input wide"></span>
+<span class="check-item">Recommendation: <input type="text" class="text-input wide"></span>
+</div>
+</div>
+<div class="section section-notes">
+<h4>Notes</h4>
+<textarea class="notes-area"></textarea>
+</div>
+</div>
+
+</div>
+</body>
+</html>
