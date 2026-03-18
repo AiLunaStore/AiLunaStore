@@ -1,0 +1,169 @@
+# Agent Configuration
+
+# Agent Definitions
+agents:
+  # Layer 2: Triage
+  triage:
+    name: "Triage Agent"
+    model: "gpt-4o-mini"
+    fallback_model: "gpt-5-nano"
+    purpose: "Classify incoming requests and route to appropriate agents"
+    timeout_seconds: 10
+    max_tokens: 1000
+    temperature: 0.1
+    
+  # Layer 3: Orchestrator
+  orchestrator:
+    name: "Orchestrator Agent"
+    model: "deepseek-chat"
+    fallback_model: "gpt-4o"
+    purpose: "Coordinate system and delegate tasks"
+    timeout_seconds: 15
+    max_tokens: 2000
+    temperature: 0.2
+    critical_rules:
+      - "Must NOT perform heavy reasoning"
+      - "Must NOT execute tasks directly"
+      - "Must delegate to appropriate agents"
+    
+  # Layer 4: Planner
+  planner:
+    name: "Planner Agent"
+    model: "deepseek-reasoner"
+    fallback_model: "claude-3.5-sonnet"
+    purpose: "Generate structured task plans with parallel execution"
+    timeout_seconds: 20
+    max_tokens: 4000
+    temperature: 0.3
+    output_format: "task_graph"
+    
+  # Layer 5: Parallel Implementers
+  research:
+    name: "Research Agent"
+    model: "deepseek-chat"
+    fallback_model: "mixtral"
+    final_fallback: "llama3"
+    purpose: "Research, analysis, and information gathering"
+    timeout_seconds: 30
+    max_tokens: 4000
+    temperature: 0.4
+    capabilities:
+      - web_search
+      - web_fetch
+      - data_analysis
+      - fact_checking
+      
+  coding:
+    name: "Coding Agent"
+    model: "kimi-k2.5"
+    fallback_model: "deepseek-coder"
+    final_fallback: "gpt-4o-mini"
+    purpose: "Code implementation, debugging, and refactoring"
+    timeout_seconds: 30
+    max_tokens: 8000
+    temperature: 0.2
+    capabilities:
+      - code_writing
+      - code_review
+      - debugging
+      - refactoring
+      
+  automation:
+    name: "Automation Agent"
+    model: "gpt-4o-mini"
+    fallback_model: "gpt-4o"
+    purpose: "Automation, scripting, and routine tasks"
+    timeout_seconds: 20
+    max_tokens: 2000
+    temperature: 0.1
+    capabilities:
+      - shell_scripting
+      - file_operations
+      - system_tasks
+      
+  # Layer 6: Self-Critique
+  critique:
+    name: "Self-Critique Agent"
+    model: "gpt-4o-mini"
+    fallback_model: "deepseek-chat"
+    purpose: "Check for errors, hallucinations, and inconsistencies"
+    timeout_seconds: 15
+    max_tokens: 2000
+    temperature: 0.2
+    checks:
+      - logical_errors
+      - hallucinated_information
+      - incomplete_tasks
+      - inconsistencies
+      
+  # Layer 8: Final Reviewer
+  reviewer:
+    name: "Final Reviewer Agent"
+    model: "gpt-5.1-codex"
+    fallback_model: "claude-3.5-sonnet"
+    purpose: "High-level verification for high-risk outputs"
+    timeout_seconds: 30
+    max_tokens: 4000
+    temperature: 0.1
+    verifies:
+      - correctness
+      - reasoning_validity
+      - code_quality
+      - task_completeness
+    conditional: true  # Only runs if decision gate says high_risk
+
+# Agent Selection Rules
+routing_rules:
+  coding_tasks:
+    patterns:
+      - "write.*code"
+      - "create.*script"
+      - "implement.*function"
+      - "debug.*error"
+      - "refactor.*code"
+    agent: coding
+    
+  research_tasks:
+    patterns:
+      - "search.*for"
+      - "find.*information"
+      - "research.*topic"
+      - "analyze.*data"
+      - "compare.*options"
+    agent: research
+    
+  automation_tasks:
+    patterns:
+      - "organize.*files"
+      - "automate.*task"
+      - "create.*backup"
+      - "schedule.*job"
+      - "monitor.*system"
+    agent: automation
+    
+  complex_tasks:
+    requires_planning: true
+    indicators:
+      - multiple_subtasks
+      - dependencies
+      - parallelizable_components
+    agent: planner
+
+# Parallel Execution Configuration
+parallel_execution:
+  enabled: true
+  max_concurrent_agents: 3
+  synchronization_timeout: 60
+  
+  # Task types that can run in parallel
+  parallelizable_types:
+    - research
+    - data_collection
+    - independent_coding_tasks
+    - analysis
+    
+  # Task types that must run sequentially
+  sequential_types:
+    - code_review_after_coding
+    - deployment_after_testing
+    - analysis_after_data_collection

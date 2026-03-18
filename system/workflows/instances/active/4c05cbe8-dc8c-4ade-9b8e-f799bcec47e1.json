@@ -1,0 +1,25 @@
+{
+  "id": "4c05cbe8-dc8c-4ade-9b8e-f799bcec47e1",
+  "definition_id": "test_workflow",
+  "state": "COMPLETE",
+  "parameters": {
+    "test": true
+  },
+  "context": {
+    "start_time": "2026-03-15T23:55:49.916614",
+    "step_1": {
+      "component": "test",
+      "operation": "test_op",
+      "parameters": {},
+      "status": "completed",
+      "timestamp": "2026-03-15T23:55:49.916771"
+    }
+  },
+  "current_phase": "test_phase",
+  "current_step": "step_1",
+  "steps_completed": [
+    "step_1"
+  ],
+  "created_at": "2026-03-15T23:55:49.916418",
+  "updated_at": "2026-03-15T23:55:49.916781"
+}

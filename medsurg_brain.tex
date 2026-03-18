@@ -1,0 +1,134 @@
+\documentclass[landscape]{article}
+\usepackage[letterpaper,margin=0.5in]{geometry}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fontspec}
+\setmainfont{Arial}
+
+\definecolor{primary}{HTML}{2E5A88}
+\definecolor{secondary}{HTML}{4CAF50}
+\definecolor{accent}{HTML}{26A69A}
+\definecolor{bg}{HTML}{F8F9FA}
+
+\newcommand{\medicon}{\includegraphics[width=0.2cm]{medicon.png}}
+\newcommand{\vitalicon}{\includegraphics[width=0.2cm]{heart.png}}
+\newcommand{\woundicon}{\includegraphics[width=0.2cm]{bandage.png}}
+
+\begin{document}
+\pagecolor{bg}
+\pagestyle{empty}
+
+\begin{center}
+\textcolor{primary}{\Large\bfseries MedSurg Nurse Brain Sheet}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+\multicolumn{3}{|c|}{\textcolor{primary}{\bfseries PATIENT INFORMATION}} \\
+\hline
+Name: \underline{\hspace{6cm}} & Room: \underline{\hspace{3cm}} & Allergies: \underline{\hspace{6cm}} \\
+\hline
+Code Status: \underline{\hspace{6cm}} & Shift: \square Day \square Night & \\
+\hline
+\end{tabularx}
+
+\vspace{0.5cm}
+
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+\multicolumn{3}{|c|}{\textcolor{secondary}{\bfseries MEDICATIONS}} \\
+\hline
+\medicon Antibiotics: & \medicon Pain Meds: & \medicon PRN: \\
+\square \underline{\hspace{4cm}} & \square \underline{\hspace{4cm}} & \square \underline{\hspace{4cm}} \\
+\square \underline{\hspace{4cm}} & \square \underline{\hspace{4cm}} & \square \underline{\hspace{4cm}} \\
+\square \underline{\hspace{4cm}} & \square \underline{\hspace{4cm}} & \square \underline{\hspace{4cm}} \\
+\hline
+\end{tabularx}
+
+\vspace{0.5cm}
+
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+\multicolumn{3}{|c|}{\textcolor{accent}{\bfseries VITALS \& ASSESSMENTS}} \\
+\hline
+\vitalicon Time: & \vitalicon Time: & \vitalicon Time: \\
+BP: \underline{\hspace{2cm}} & BP: \underline{\hspace{2cm}} & BP: \underline{\hspace{2cm}} \\
+HR: \underline{\hspace{2cm}} & HR: \underline{\hspace{2cm}} & HR: \underline{\hspace{2cm}} \\
+RR: \underline{\hspace{2cm}} & RR: \underline{\hspace{2cm}} & RR: \underline{\hspace{2cm}} \\
+Temp: \underline{\hspace{2cm}} & Temp: \underline{\hspace{2cm}} & Temp: \underline{\hspace{2cm}} \\
+\hline
+\end{tabularx}
+
+\vspace{0.5cm}
+
+\begin{tabularx}{\textwidth}{|X|}
+\hline
+\textcolor{primary}{\bfseries I\&O TRACKING} \\
+\hline
+Intake: \underline{\hspace{4cm}} Output: \underline{\hspace{4cm}} \\
+\hline
+\end{tabularx}
+
+\vspace{0.5cm}
+
+\begin{tabularx}{\textwidth}{|X|}
+\hline
+\textcolor{secondary}{\bfseries WOUND CARE} \\
+\hline
+\woundicon Location: \underline{\hspace{4cm}} Type: \underline{\hspace{4cm}} \\
+\woundicon Dressing: \underline{\hspace{4cm}} Last Changed: \underline{\hspace{4cm}} \\
+\hline
+\end{tabularx}
+
+\vspace{0.5cm}
+
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\multicolumn{2}{|c|}{\textcolor{accent}{\bfseries PAIN MANAGEMENT}} \\
+\hline
+Location: & Intensity (1-10): \\
+\underline{\hspace{6cm}} & \underline{\hspace{6cm}} \\
+Intervention: & Response: \\
+\underline{\hspace{6cm}} & \underline{\hspace{6cm}} \\
+\hline
+\end{tabularx}
+
+\vspace{0.5cm}
+
+\begin{tabularx}{\textwidth}{|X|}
+\hline
+\textcolor{primary}{\bfseries MOBILITY/ADL TRACKING} \\
+\hline
+\square Ambulated \square Toilet \square Bed Bath \square Oral Care \\
+\hline
+\end{tabularx}
+
+\vspace{0.5cm}
+
+\begin{tabularx}{\textwidth}{|X|}
+\hline
+\textcolor{secondary}{\bfseries QUICK REFERENCE} \\
+\hline
+\underline{\hspace{16cm}} \\
+\underline{\hspace{16cm}} \\
+\hline
+\end{tabularx}
+
+\vspace{0.5cm}
+
+\begin{tabularx}{\textwidth}{|X|}
+\hline
+\textcolor{accent}{\bfseries NOTES} \\
+\hline
+\underline{\hspace{16cm}} \\
+\underline{\hspace{16cm}} \\
+\underline{\hspace{16cm}} \\
+\hline
+\end{tabularx}
+
+\end{document}

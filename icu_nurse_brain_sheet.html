@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICU Nurse Brain Sheet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F5F5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        .header {
+            grid-column: span 2;
+            background-color: #1A237E;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .footer {
+            grid-column: span 2;
+            background-color: #1A237E;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .section {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 1rem;
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #1A237E;
+        }
+        .critical {
+            border-left: 4px solid #D32F2F;
+        }
+        .vitals-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .vitals-table th, .vitals-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .vitals-table th {
+            background-color: #00695C;
+            color: white;
+        }
+        @media print {
+            body {
+                background-color: white;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ICU Nurse Brain Sheet</h1>
+        <div>Nurse: ____________________</div>
+        <div>Date: ____________________ Shift: ____________________</div>
+        <div>Patient: ____________________ Room: ____________________</div>
+        <div>Code Status: ____________________ Primary MD: ____________________</div>
+    </div>
+
+    <div class="container">
+        <div class="section critical">
+            <h2>Critical Vitals (q1h)</h2>
+            <table class="vitals-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>BP</th>
+                        <th>HR</th>
+                        <th>RR</th>
+                        <th>SpO₂</th>
+                        <th>Temp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 12 rows for 12-hour shift -->
+                    <tr><td>0000</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>0100</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>0200</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>0300</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>0400</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>0500</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>0600</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>0700</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>0800</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>0900</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>1000</td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>1100</td><td></td><td></td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section critical">
+            <h2>Ventilator Settings</h2>
+            <table class="vitals-table">
+                <tr><td>Mode</td><td>____________________</td></tr>
+                <tr><td>FiO₂</td><td>____________________</td></tr>
+                <tr><td>PEEP</td><td>____________________</td></tr>
+                <tr><td>Rate</td><td>____________________</td></tr>
+                <tr><td>PIP</td><td>____________________</td></tr>
+                <tr><td>TV</td><td>____________________</td></tr>
+                <tr><td>PS</td><td>____________________</td></tr>
+                <tr><td>Plateau</td><td>____________________</td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Drip Rates</h2>
+            <table class="vitals-table">
+                <thead>
+                    <tr>
+                        <th>Medication</th>
+                        <th>Dose</th>
+                        <th>Rate</th>
+                        <th>Line</th>
+                        <th>Last Increased</th>
+                        <th>Titration Parameters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Neuro Checks</h2>
+            <table class="vitals-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>GCS</th>
+                        <th>Pupils</th>
+                        <th>ICP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>0000</td><td></td><td></td><td></td></tr>
+                    <tr><td>0100</td><td></td><td></td><td></td></tr>
+                    <tr><td>0200</td><td></td><td></td><td></td></tr>
+                    <tr><td>0300</td><td></td><td></td><td></td></tr>
+                    <tr><td>0400</td><td></td><td></td><td></td></tr>
+                    <tr><td>0500</td><td></td><td></td><td></td></tr>
+                    <tr><td>0600</td><td></td><td></td><td></td></tr>
+                    <tr><td>0700</td><td></td><td></td><td></td></tr>
+                    <tr><td>0800</td><td></td><td></td><td></td></tr>
+                    <tr><td>0900</td><td></td><td></td><td></td></tr>
+                    <tr><td>1000</td><td></td><td></td><td></td></tr>
+                    <tr><td>1100</td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Lines/Drains/Devices</h2>
+            <table class="vitals-table">
+                <tr><td>A-line</td><td>____________________</td></tr>
+                <tr><td>CVC</td><td>____________________</td></tr>
+                <tr><td>Chest tube</td><td>____________________</td></tr>
+                <tr><td>EVD</td><td>____________________</td></tr>
+                <tr><td>Foley</td><td>____________________</td></tr>
+                <tr><td>NG/OG</td><td>____________________</td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Labs & Key Values</h2>
+            <table class="vitals-table">
+                <tr><td>WBC</td><td>____________________</td></tr>
+                <tr><td>Hgb</td><td>____________________</td></tr>
+                <tr><td>Platelets</td><td>____________________</td></tr>
+                <tr><td>Na</td><td>____________________</td></tr>
+                <tr><td>K</td><td>____________________</td></tr>
+                <tr><td>Cr</td><td>____________________</td></tr>
+                <tr><td>Lactate</td><td>____________________</td></tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Shift Priorities & Notes</h2>
+            <div style="height: 150px; border: 1px solid #ddd; padding: 8px;"></div>
+        </div>
+
+        <div class="section">
+            <h2>End-of-Shift Handoff</h2>
+            <div style="height: 150px; border: 1px solid #ddd; padding: 8px;"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <h3>Emergency Contacts</h3>
+        <div>Code Blue: ____________________</div>
+        <div>Rapid Response: ____________________</div>
+        <div>Charge Nurse: ____________________</div>
+        <div>MD On Call: ____________________</div>
+    </div>
+</body>
+</html>

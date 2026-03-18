@@ -1,0 +1,39 @@
+{
+  "request_id": "metrics-final-001",
+  "start_time": 1773651954.330317,
+  "end_time": 1773651954.330552,
+  "total_latency_ms": 0,
+  "tokens_total": {
+    "in": 1000,
+    "out": 2000
+  },
+  "parallel_speedup": 1.875,
+  "fallback_count": 0,
+  "retry_count": 0,
+  "risk_level": "high_risk",
+  "reviewed": true,
+  "agent_calls": [
+    {
+      "agent": "research",
+      "model": "deepseek-chat",
+      "latency_ms": 110,
+      "tokens_in": 400,
+      "tokens_out": 800,
+      "status": "success",
+      "fallback_used": false,
+      "retry_count": 0,
+      "timestamp": "2026-03-16T09:05:54.330373"
+    },
+    {
+      "agent": "coding",
+      "model": "kimi-k2.5",
+      "latency_ms": 150,
+      "tokens_in": 600,
+      "tokens_out": 1200,
+      "status": "success",
+      "fallback_used": false,
+      "retry_count": 0,
+      "timestamp": "2026-03-16T09:05:54.330469"
+    }
+  ]
+}

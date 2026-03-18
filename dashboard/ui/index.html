@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hired AI - System Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 12px;
+            border: 1px solid #475569;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #334155;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .status-healthy {
+            background: #065f46;
+            color: #34d399;
+        }
+        
+        .status-warning {
+            background: #92400e;
+            color: #fbbf24;
+        }
+        
+        .status-critical {
+            background: #991b1b;
+            color: #f87171;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .metric:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-label {
+            color: #94a3b8;
+        }
+        
+        .metric-value {
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #334155;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-healthy {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        
+        .progress-warning {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+        
+        .progress-critical {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+        
+        .phase3-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .phase3-item {
+            text-align: center;
+            padding: 1rem;
+            background: #0f172a;
+            border-radius: 8px;
+        }
+        
+        .phase3-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .phase3-label {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        
+        .phase3-status {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .trust-ladder {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        
+        .trust-level {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem 0.5rem;
+            border-radius: 8px;
+            margin: 0 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .trust-inactive {
+            background: #334155;
+            color: #64748b;
+        }
+        
+        .trust-active {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        
+        .btn-secondary {
+            background: #475569;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #334155;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            .phase3-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .trust-ladder {
+                flex-wrap: wrap;
+            }
+            
+            .trust-level {
+                flex: 0 0 calc(50% - 0.5rem);
+                margin: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Hired AI System Dashboard</h1>
+            <p class="subtitle">Phase 4 Integration with NEW Phase 3 Components</p>
+        </header>
+        
+        <!-- System Overview -->
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #065f46;">💚</div>
+                    <div>
+                        <div class="card-title">System Health</div>
+                        <span class="status-badge status-healthy" id="system-status">Healthy</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Overall Status</span>
+                    <span class="metric-value" id="overall-status">Operational</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Active Workflows</span>
+                    <span class="metric-value" id="active-workflows">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Last Check</span>
+                    <span class="metric-value" id="last-check">Just now</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #1e40af;">🎯</div>
+                    <div>
+                        <div class="card-title">Trust Level</div>
+                        <span class="status-badge status-healthy" id="trust-badge">L2 Standard</span>
+                    </div>
+                </div>
+                <div class="trust-ladder">
+                    <div class="trust-level trust-inactive">L0</div>
+                    <div class="trust-level trust-inactive">L1</div>
+                    <div class="trust-level trust-active">L2</div>
+                    <div class="trust-level trust-inactive">L3</div>
+                    <div class="trust-level trust-inactive">L4</div>
+                </div>
+                <div class="metric" style="margin-top: 1rem;">
+                    <span class="metric-label">Trust Score</span>
+                    <span class="metric-value" id="trust-score">45/100</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Days at Level</span>
+                    <span class="metric-value" id="days-at-level">1</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #7c3aed;">💰</div>
+                    <div>
+                        <div class="card-title">Daily Budget</div>
+                        <span class="status-badge status-healthy" id="budget-badge">On Track</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Used</span>
+                    <span class="metric-value" id="budget-used">$0.00 / $10.00</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill progress-healthy" id="budget-progress" style="width: 0%"></div>
+                </div>
+                <div class="metric" style="margin-top: 1rem;">
+                    <span class="metric-label">API Calls Today</span>
+                    <span class="metric-value" id="api-calls">0</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #991b1b;">🚨</div>
+                    <div>
+                        <div class="card-title">Emergency Status</div>
+                        <span class="status-badge status-healthy" id="emergency-badge">Normal</span>
+                    </div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Emergency Stop</span>
+                    <span class="metric-value" id="emergency-status">Inactive</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Last Activated</span>
+                    <span class="metric-value" id="last-emergency">Never</span>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-danger" onclick="activateEmergency()">Activate</button>
+                    <button class="btn btn-secondary" onclick="checkEmergency()">Check</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Phase 3 Components -->
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="card-header">
+                <div class="card-icon" style="background: #059669;">⚙️</div>
+                <div class="card-title">Phase 3 Components Status</div>
+            </div>
+            <div class="phase3-grid">
+                <div class="phase3-item">
+                    <div class="phase3-icon">❤️</div>
+                    <div class="phase3-label">Heartbeat</div>
+                    <div class="phase3-status status-healthy" id="p3-heartbeat">Healthy</div>
+                </div>
+                <div class="phase3-item">
+                    <div class="phase3-icon">📋</div>
+                    <div class="phase3-label">Autonomy</div>
+                    <div class="phase3-status status-healthy" id="p3-autonomy">Healthy</div>
+                </div>
+                <div class="phase3-item">
+                    <div class="phase3-icon">📏</div>
+                    <div class="phase3-label">Scope</div>
+                    <div class="phase3-status status-healthy" id="p3-scope">Healthy</div>
+                </div>
+                <div class="phase3-item">
+                    <div class="phase3-icon">🛡️</div>
+                    <div class="phase3-label">Safety</div>
+                    <div class="phase3-status status-healthy" id="p3-safety">Healthy</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Performance Metrics -->
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #0ea5e9;">⚡</div>
+                    <div class="card-title">Performance</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Cache Hit Rate</span>
+                    <span class="metric-value" id="cache-hit">0%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Avg Response Time</span>
+                    <span class="metric-value" id="avg-response">--</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Token Savings</span>
+                    <span class="metric-value" id="token-savings">0</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #f59e0b;">📊</div>
+                    <div class="card-title">Recent Activity</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Workflows Run</span>
+                    <span class="metric-value" id="workflows-run">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Validations</span>
+                    <span class="metric-value" id="validations">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Errors</span>
+                    <span class="metric-value" id="errors">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon" style="background: #6366f1;">🎮</div>
+                <div class="card-title">Quick Actions</div>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="runHealthCheck()">Run Health Check</button>
+                <button class="btn btn-secondary" onclick="runHeartbeat()">Run Heartbeat</button>
+                <button class="btn btn-secondary" onclick="checkScope()">Check Scope</button>
+                <button class="btn btn-secondary" onclick="viewLogs()">View Logs</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Hired AI System v4.0 | Phase 4 Integration with NEW Phase 3 Structure</p>
+            <p>Last Updated: <span id="footer-timestamp">2026-03-16</span></p>
+        </div>
+    </div>
+    
+    <script>
+        // Simulated data - in production, this would fetch from the API
+        const systemData = {
+            health: {
+                overall: 'healthy',
+                activeWorkflows: 0,
+                lastCheck: new Date().toLocaleTimeString()
+            },
+            trust: {
+                level: 'L2',
+                score: 45,
+                daysAtLevel: 1,
+                label: 'Standard'
+            },
+            budget: {
+                used: 0.00,
+                total: 10.00,
+                apiCalls: 0
+            },
+            emergency: {
+                active: false,
+                lastActivated: null
+            },
+            phase3: {
+                heartbeat: 'healthy',
+                autonomy: 'healthy',
+                scope: 'healthy',
+                safety: 'healthy'
+            },
+            performance: {
+                cacheHitRate: 0,
+                avgResponseTime: '--',
+                tokenSavings: 0
+            },
+            activity: {
+                workflowsRun: 0,
+                validations: 0,
+                errors: 0
+            }
+        };
+        
+        function updateDashboard() {
+            // System Health
+            document.getElementById('system-status').textContent = 
+                systemData.health.overall === 'healthy' ? 'Healthy' : 
+                systemData.health.overall === 'warning' ? 'Warning' : 'Critical';
+            document.getElementById('system-status').className = 
+                'status-badge status-' + systemData.health.overall;
+            document.getElementById('active-workflows').textContent = systemData.health.activeWorkflows;
+            document.getElementById('last-check').textContent = systemData.health.lastCheck;
+            
+            // Trust Level
+            document.getElementById('trust-badge').textContent = 
+                systemData.trust.level + ' ' + systemData.trust.label;
+            document.getElementById('trust-score').textContent = 
+                systemData.trust.score + '/100';
+            document.getElementById('days-at-level').textContent = systemData.trust.daysAtLevel;
+            
+            // Budget
+            const budgetPct = (systemData.budget.used / systemData.budget.total) * 100;
+            document.getElementById('budget-used').textContent = 
+                '$' + systemData.budget.used.toFixed(2) + ' / $' + systemData.budget.total.toFixed(2);
+            document.getElementById('budget-progress').style.width = budgetPct + '%';
+            document.getElementById('budget-progress').className = 
+                'progress-fill ' + (budgetPct < 80 ? 'progress-healthy' : budgetPct < 95 ? 'progress-warning' : 'progress-critical');
+            document.getElementById('api-calls').textContent = systemData.budget.apiCalls;
+            
+            // Emergency
+            document.getElementById('emergency-status').textContent = 
+                systemData.emergency.active ? 'ACTIVE' : 'Inactive';
+            document.getElementById('emergency-badge').textContent = 
+                systemData.emergency.active ? 'ACTIVE' : 'Normal';
+            document.getElementById('emergency-badge').className = 
+                'status-badge ' + (systemData.emergency.active ? 'status-critical' : 'status-healthy');
+            
+            // Phase 3
+            document.getElementById('p3-heartbeat').textContent = systemData.phase3.heartbeat;
+            document.getElementById('p3-autonomy').textContent = systemData.phase3.autonomy;
+            document.getElementById('p3-scope').textContent = systemData.phase3.scope;
+            document.getElementById('p3-safety').textContent = systemData.phase3.safety;
+            
+            // Performance
+            document.getElementById('cache-hit').textContent = systemData.performance.cacheHitRate + '%';
+            document.getElementById('avg-response').textContent = systemData.performance.avgResponseTime;
+            document.getElementById('token-savings').textContent = systemData.performance.tokenSavings;
+            
+            // Activity
+            document.getElementById('workflows-run').textContent = systemData.activity.workflowsRun;
+            document.getElementById('validations').textContent = systemData.activity.validations;
+            document.getElementById('errors').textContent = systemData.activity.errors;
+        }
+        
+        // Action handlers
+        function activateEmergency() {
+            if (confirm('Are you sure you want to activate emergency stop?')) {
+                alert('Emergency stop activated! (This is a demo)');
+                systemData.emergency.active = true;
+                systemData.emergency.lastActivated = new Date().toLocaleString();
+                updateDashboard();
+            }
+        }
+        
+        function checkEmergency() {
+            alert('Emergency status checked. System is normal.');
+        }
+        
+        function runHealthCheck() {
+            alert('Health check initiated! (This is a demo)');
+            systemData.health.lastCheck = new Date().toLocaleTimeString();
+            updateDashboard();
+        }
+        
+        function runHeartbeat() {
+            alert('Heartbeat check initiated! (This is a demo)');
+        }
+        
+        function checkScope() {
+            alert('Scope check: All systems within bounds. (This is a demo)');
+        }
+        
+        function viewLogs() {
+            alert('Opening logs... (This is a demo)');
+        }
+        
+        // Initialize
+        updateDashboard();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(updateDashboard, 30000);
+    </script>
+</body>
+</html>

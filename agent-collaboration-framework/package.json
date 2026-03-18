@@ -1,0 +1,17 @@
+{
+  "name": "agent-collaboration-framework",
+  "version": "1.0.0",
+  "description": "Framework for enabling agents to delegate subtasks to specialized subagents for parallel collaboration",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/**/*.test.js",
+    "example": "node examples/debugging-workflow.js"
+  },
+  "keywords": ["agent", "collaboration", "delegation", "parallel", "subagent"],
+  "author": "Luna",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

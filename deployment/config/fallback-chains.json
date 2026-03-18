@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "fallbackChains": {
+    "coding": {
+      "taskType": "coding",
+      "steps": [
+        { "model": "minimax-m2.5", "agent": "coding-specialist", "maxRetries": 2 },
+        { "model": "deepseek-v3.2", "agent": "coding-specialist", "maxRetries": 2 },
+        { "model": "gemini-3.1-pro", "agent": "coding-specialist", "maxRetries": 1 },
+        { "model": "claude-sonnet", "agent": "coding-specialist", "maxRetries": 1 }
+      ]
+    },
+    "research": {
+      "taskType": "research",
+      "steps": [
+        { "model": "gemini-2.5-flash-lite", "agent": "research-specialist", "maxRetries": 2 },
+        { "model": "deepseek-v3.2", "agent": "research-specialist", "maxRetries": 2 },
+        { "model": "gemini-3.1-pro", "agent": "research-specialist", "maxRetries": 1 },
+        { "model": "claude-sonnet", "agent": "research-specialist", "maxRetries": 1 }
+      ]
+    },
+    "planning": {
+      "taskType": "planning",
+      "steps": [
+        { "model": "deepseek-reasoner", "agent": "planning-specialist", "maxRetries": 2 },
+        { "model": "deepseek-v3.2", "agent": "planning-specialist", "maxRetries": 2 },
+        { "model": "claude-sonnet", "agent": "planning-specialist", "maxRetries": 1 },
+        { "model": "gemini-3.1-pro", "agent": "planning-specialist", "maxRetries": 1 }
+      ]
+    },
+    "ui": {
+      "taskType": "ui",
+      "steps": [
+        { "model": "minimax-m2.5", "agent": "ui-specialist", "maxRetries": 2 },
+        { "model": "deepseek-v3.2", "agent": "ui-specialist", "maxRetries": 2 },
+        { "model": "gemini-3.1-pro", "agent": "ui-specialist", "maxRetries": 1 },
+        { "model": "claude-sonnet", "agent": "ui-specialist", "maxRetries": 1 }
+      ]
+    },
+    "backend": {
+      "taskType": "backend",
+      "steps": [
+        { "model": "minimax-m2.5", "agent": "backend-specialist", "maxRetries": 2 },
+        { "model": "deepseek-v3.2", "agent": "backend-specialist", "maxRetries": 2 },
+        { "model": "gemini-3.1-pro", "agent": "backend-specialist", "maxRetries": 1 },
+        { "model": "claude-sonnet", "agent": "backend-specialist", "maxRetries": 1 }
+      ]
+    },
+    "integration": {
+      "taskType": "integration",
+      "steps": [
+        { "model": "deepseek-v3.2", "agent": "integration-specialist", "maxRetries": 2 },
+        { "model": "minimax-m2.5", "agent": "integration-specialist", "maxRetries": 2 },
+        { "model": "gemini-3.1-pro", "agent": "integration-specialist", "maxRetries": 1 },
+        { "model": "claude-sonnet", "agent": "integration-specialist", "maxRetries": 1 }
+      ]
+    },
+    "general": {
+      "taskType": "general",
+      "steps": [
+        { "model": "deepseek-v3.2", "agent": "orchestrator", "maxRetries": 2 },
+        { "model": "minimax-m2.5", "agent": "coding-specialist", "maxRetries": 2 },
+        { "model": "gemini-3.1-pro", "agent": "coding-specialist", "maxRetries": 1 },
+        { "model": "claude-sonnet", "agent": "coding-specialist", "maxRetries": 1 }
+      ]
+    }
+  },
+  "globalSettings": {
+    "qualityThreshold": 0.7,
+    "maxTotalRetries": 5,
+    "timeoutPerAttempt": 120000,
+    "enableProgressiveRefinement": true,
+    "confidenceThresholds": {
+      "cheap": 0.75,
+      "standard": 0.85,
+      "critical": 0.90
+    }
+  }
+}

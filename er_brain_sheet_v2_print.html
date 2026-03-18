@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER Nurse Brain Sheet v2 - Minimalist</title>
+    <style>
+        @page {
+            size: landscape;
+            margin: 0.25in;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 9pt;
+            line-height: 1.2;
+            color: #000;
+            background: #fff;
+            padding: 0.25in;
+        }
+        .page {
+            width: 10.5in;
+            height: 8in;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 0.1in;
+            border-bottom: 2px solid #000;
+            padding-bottom: 0.05in;
+        }
+        .header h1 {
+            font-size: 14pt;
+            font-weight: bold;
+        }
+        .header-info {
+            display: flex;
+            justify-content: space-around;
+            font-size: 10pt;
+            margin-top: 0.05in;
+        }
+        .header-info span {
+            display: inline-block;
+        }
+        .header-info input {
+            border: none;
+            border-bottom: 1px solid #000;
+            width: 1.2in;
+            text-align: center;
+            font-size: 10pt;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 0.15in;
+            margin-top: 0.15in;
+            flex: 1;
+        }
+        .patient {
+            border: 1px solid #000;
+            padding: 0.1in;
+            page-break-inside: avoid;
+        }
+        .patient-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.05in;
+            font-weight: bold;
+            font-size: 10pt;
+        }
+        .patient-header .esi {
+            display: flex;
+            gap: 0.05in;
+        }
+        .patient-header .esi span {
+            display: inline-block;
+            width: 0.2in;
+            height: 0.2in;
+            border: 1px solid #000;
+            text-align: center;
+            line-height: 0.2in;
+            font-size: 7pt;
+        }
+        .field {
+            margin-bottom: 0.04in;
+        }
+        .field label {
+            font-weight: bold;
+            display: inline-block;
+            width: 1.2in;
+        }
+        .field input[type="text"] {
+            border: none;
+            border-bottom: 1px solid #ccc;
+            width: calc(100% - 1.2in);
+            font-size: 9pt;
+            padding: 0.01in 0.02in;
+        }
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.05in;
+            margin-top: 0.03in;
+        }
+        .vitals-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .vitals-item label {
+            font-size: 7pt;
+            font-weight: bold;
+        }
+        .vitals-item input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+            font-size: 9pt;
+        }
+        .notes-field {
+            margin-top: 0.05in;
+        }
+        .notes-field label {
+            display: block;
+            font-weight: bold;
+        }
+        .notes-field textarea {
+            width: 100%;
+            height: 0.4in;
+            border: 1px solid #ccc;
+            font-size: 9pt;
+            padding: 0.02in;
+            resize: none;
+        }
+        @media print {
+            body {
+                padding: 0;
+            }
+            .patient {
+                border: 1px solid #000;
+            }
+            input, textarea {
+                border: 1px solid #ccc !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <h1>ER NURSE BRAIN SHEET v2 - MINIMALIST (8 patients)</h1>
+            <div class="header-info">
+                <span>Unit: <input type="text" placeholder="________"></span>
+                <span>Date: <input type="text" placeholder="___/___/___"></span>
+                <span>Shift: <input type="text" placeholder="Day/Night"></span>
+                <span>Nurse: <input type="text" placeholder="________"></span>
+            </div>
+        </div>
+        <div class="grid">
+            <!-- Patient 1 -->
+            <div class="patient">
+                <div class="patient-header">
+                    <span>Patient 1</span>
+                    <div class="esi">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Last, First">
+                </div>
+                <div class="field">
+                    <label>MRN:</label>
+                    <input type="text" placeholder="________">
+                </div>
+                <div class="field">
+                    <label>Room:</label>
+                    <input type="text" placeholder="___">
+                </div>
+                <div class="field">
+                    <label>Chief Complaint:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Allergies:</label>
+                    <input type="text" placeholder="NKDA">
+                </div>
+                <div class="field">
+                    <label>Vitals (current):</label>
+                    <div class="vitals-grid">
+                        <div class="vitals-item">
+                            <label>BP</label>
+                            <input type="text" placeholder="___/___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>HR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>RR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>SpO₂</label>
+                            <input type="text" placeholder="___%">
+                        </div>
+                        <div class="vitals-item">
+                            <label>Temp</label>
+                            <input type="text" placeholder="___°C">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Pending Tasks/Labs:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Meds Due:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="notes-field">
+                    <label>Notes:</label>
+                    <textarea placeholder=""></textarea>
+                </div>
+            </div>
+            <!-- Patient 2 -->
+            <div class="patient">
+                <div class="patient-header">
+                    <span>Patient 2</span>
+                    <div class="esi">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Last, First">
+                </div>
+                <div class="field">
+                    <label>MRN:</label>
+                    <input type="text" placeholder="________">
+                </div>
+                <div class="field">
+                    <label>Room:</label>
+                    <input type="text" placeholder="___">
+                </div>
+                <div class="field">
+                    <label>Chief Complaint:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Allergies:</label>
+                    <input type="text" placeholder="NKDA">
+                </div>
+                <div class="field">
+                    <label>Vitals (current):</label>
+                    <div class="vitals-grid">
+                        <div class="vitals-item">
+                            <label>BP</label>
+                            <input type="text" placeholder="___/___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>HR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>RR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>SpO₂</label>
+                            <input type="text" placeholder="___%">
+                        </div>
+                        <div class="vitals-item">
+                            <label>Temp</label>
+                            <input type="text" placeholder="___°C">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Pending Tasks/Labs:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Meds Due:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="notes-field">
+                    <label>Notes:</label>
+                    <textarea placeholder=""></textarea>
+                </div>
+            </div>
+            <!-- Patient 3 -->
+            <div class="patient">
+                <div class="patient-header">
+                    <span>Patient 3</span>
+                    <div class="esi">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Last, First">
+                </div>
+                <div class="field">
+                    <label>MRN:</label>
+                    <input type="text" placeholder="________">
+                </div>
+                <div class="field">
+                    <label>Room:</label>
+                    <input type="text" placeholder="___">
+                </div>
+                <div class="field">
+                    <label>Chief Complaint:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Allergies:</label>
+                    <input type="text" placeholder="NKDA">
+                </div>
+                <div class="field">
+                    <label>Vitals (current):</label>
+                    <div class="vitals-grid">
+                        <div class="vitals-item">
+                            <label>BP</label>
+                            <input type="text" placeholder="___/___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>HR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>RR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>SpO₂</label>
+                            <input type="text" placeholder="___%">
+                        </div>
+                        <div class="vitals-item">
+                            <label>Temp</label>
+                            <input type="text" placeholder="___°C">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Pending Tasks/Labs:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Meds Due:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="notes-field">
+                    <label>Notes:</label>
+                    <textarea placeholder=""></textarea>
+                </div>
+            </div>
+            <!-- Patient 4 -->
+            <div class="patient">
+                <div class="patient-header">
+                    <span>Patient 4</span>
+                    <div class="esi">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Last, First">
+                </div>
+                <div class="field">
+                    <label>MRN:</label>
+                    <input type="text" placeholder="________">
+                </div>
+                <div class="field">
+                    <label>Room:</label>
+                    <input type="text" placeholder="___">
+                </div>
+                <div class="field">
+                    <label>Chief Complaint:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Allergies:</label>
+                    <input type="text" placeholder="NKDA">
+                </div>
+                <div class="field">
+                    <label>Vitals (current):</label>
+                    <div class="vitals-grid">
+                        <div class="vitals-item">
+                            <label>BP</label>
+                            <input type="text" placeholder="___/___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>HR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>RR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>SpO₂</label>
+                            <input type="text" placeholder="___%">
+                        </div>
+                        <div class="vitals-item">
+                            <label>Temp</label>
+                            <input type="text" placeholder="___°C">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Pending Tasks/Labs:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Meds Due:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="notes-field">
+                    <label>Notes:</label>
+                    <textarea placeholder=""></textarea>
+                </div>
+            </div>
+            <!-- Patient 5 -->
+            <div class="patient">
+                <div class="patient-header">
+                    <span>Patient 5</span>
+                    <div class="esi">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Last, First">
+                </div>
+                <div class="field">
+                    <label>MRN:</label>
+                    <input type="text" placeholder="________">
+                </div>
+                <div class="field">
+                    <label>Room:</label>
+                    <input type="text" placeholder="___">
+                </div>
+                <div class="field">
+                    <label>Chief Complaint:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Allergies:</label>
+                    <input type="text" placeholder="NKDA">
+                </div>
+                <div class="field">
+                    <label>Vitals (current):</label>
+                    <div class="vitals-grid">
+                        <div class="vitals-item">
+                            <label>BP</label>
+                            <input type="text" placeholder="___/___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>HR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>RR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>SpO₂</label>
+                            <input type="text" placeholder="___%">
+                        </div>
+                        <div class="vitals-item">
+                            <label>Temp</label>
+                            <input type="text" placeholder="___°C">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Pending Tasks/Labs:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Meds Due:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="notes-field">
+                    <label>Notes:</label>
+                    <textarea placeholder=""></textarea>
+                </div>
+            </div>
+            <!-- Patient 6 -->
+            <div class="patient">
+                <div class="patient-header">
+                    <span>Patient 6</span>
+                    <div class="esi">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Last, First">
+                </div>
+                <div class="field">
+                    <label>MRN:</label>
+                    <input type="text" placeholder="________">
+                </div>
+                <div class="field">
+                    <label>Room:</label>
+                    <input type="text" placeholder="___">
+                </div>
+                <div class="field">
+                    <label>Chief Complaint:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Allergies:</label>
+                    <input type="text" placeholder="NKDA">
+                </div>
+                <div class="field">
+                    <label>Vitals (current):</label>
+                    <div class="vitals-grid">
+                        <div class="vitals-item">
+                            <label>BP</label>
+                            <input type="text" placeholder="___/___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>HR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>RR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>SpO₂</label>
+                            <input type="text" placeholder="___%">
+                        </div>
+                        <div class="vitals-item">
+                            <label>Temp</label>
+                            <input type="text" placeholder="___°C">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Pending Tasks/Labs:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Meds Due:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="notes-field">
+                    <label>Notes:</label>
+                    <textarea placeholder=""></textarea>
+                </div>
+            </div>
+            <!-- Patient 7 -->
+            <div class="patient">
+                <div class="patient-header">
+                    <span>Patient 7</span>
+                    <div class="esi">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Last, First">
+                </div>
+                <div class="field">
+                    <label>MRN:</label>
+                    <input type="text" placeholder="________">
+                </div>
+                <div class="field">
+                    <label>Room:</label>
+                    <input type="text" placeholder="___">
+                </div>
+                <div class="field">
+                    <label>Chief Complaint:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Allergies:</label>
+                    <input type="text" placeholder="NKDA">
+                </div>
+                <div class="field">
+                    <label>Vitals (current):</label>
+                    <div class="vitals-grid">
+                        <div class="vitals-item">
+                            <label>BP</label>
+                            <input type="text" placeholder="___/___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>HR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>RR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>SpO₂</label>
+                            <input type="text" placeholder="___%">
+                        </div>
+                        <div class="vitals-item">
+                            <label>Temp</label>
+                            <input type="text" placeholder="___°C">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Pending Tasks/Labs:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Meds Due:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="notes-field">
+                    <label>Notes:</label>
+                    <textarea placeholder=""></textarea>
+                </div>
+            </div>
+            <!-- Patient 8 -->
+            <div class="patient">
+                <div class="patient-header">
+                    <span>Patient 8</span>
+                    <div class="esi">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Last, First">
+                </div>
+                <div class="field">
+                    <label>MRN:</label>
+                    <input type="text" placeholder="________">
+                </div>
+                <div class="field">
+                    <label>Room:</label>
+                    <input type="text" placeholder="___">
+                </div>
+                <div class="field">
+                    <label>Chief Complaint:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Allergies:</label>
+                    <input type="text" placeholder="NKDA">
+                </div>
+                <div class="field">
+                    <label>Vitals (current):</label>
+                    <div class="vitals-grid">
+                        <div class="vitals-item">
+                            <label>BP</label>
+                            <input type="text" placeholder="___/___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>HR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>RR</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>SpO₂</label>
+                            <input type="text" placeholder="___%">
+                        </div>
+                        <div class="vitals-item">
+                            <label>Temp</label>
+                            <input type="text" placeholder="___°C">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Pending Tasks/Labs:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Meds Due:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="notes-field">
+                    <label>Notes:</label>
+                    <textarea placeholder=""></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

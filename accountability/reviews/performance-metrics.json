@@ -1,0 +1,50 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-03-16T00:00:00Z",
+  "reporting_period": "daily",
+  "metrics": {
+    "operational": {
+      "uptime_percent": 99.8,
+      "response_time_ms": {
+        "p50": 120,
+        "p95": 850,
+        "p99": 1200
+      },
+      "error_rate_percent": 0.2,
+      "tasks_completed": 47,
+      "tasks_failed": 1
+    },
+    "quality": {
+      "success_rate_percent": 97.9,
+      "accuracy_score": 94.5,
+      "user_satisfaction": 4.2,
+      "documentation_completeness": 88.0
+    },
+    "efficiency": {
+      "avg_task_duration_min": 12.5,
+      "automation_rate_percent": 78.0,
+      "resource_utilization_percent": 65.0,
+      "cost_per_task": 0.05
+    },
+    "safety": {
+      "boundary_violations": 0,
+      "security_incidents": 0,
+      "emergency_stops": 0,
+      "trust_level": "L2"
+    }
+  },
+  "targets": {
+    "success_rate_percent": 98.0,
+    "response_time_ms": {
+      "p95": 1000
+    },
+    "error_rate_percent": 1.0,
+    "automation_rate_percent": 80.0
+  },
+  "trends": {
+    "success_rate": "stable",
+    "response_time": "improving",
+    "error_rate": "stable",
+    "automation": "improving"
+  }
+}

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER Nurse Brain Sheet v3</title>
+    <style>
+        @page {
+            margin: 0.5in;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+            font-size: 9pt;
+            background: #f8f9fa;
+            color: #000;
+            padding: 0.25in;
+        }
+        .page {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 0.2in;
+            border-bottom: 2px solid #005b96;
+            padding-bottom: 0.1in;
+        }
+        .header h1 {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #005b96;
+        }
+        .header-info {
+            display: flex;
+            justify-content: space-around;
+            font-size: 10pt;
+            margin-top: 0.1in;
+        }
+        .header-info span {
+            display: inline-block;
+        }
+        .header-info input {
+            border: none;
+            border-bottom: 1px solid #005b96;
+            width: 1.5in;
+            text-align: center;
+            font-size: 10pt;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 0.15in;
+            margin-top: 0.15in;
+            flex: 1;
+        }
+        .patient {
+            border: 1px solid #b0bec5;
+            padding: 0.1in;
+            page-break-inside: avoid;
+            background: #fff;
+        }
+        .patient-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.05in;
+            font-weight: bold;
+            font-size: 10pt;
+        }
+        .patient-header .esi {
+            display: flex;
+            gap: 0.1in;
+        }
+        .patient-header .esi span {
+            display: inline-block;
+            width: 0.3in;
+            height: 0.3in;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 0.3in;
+            font-size: 7pt;
+            border: 1px solid #b0bec5;
+            background-color: lightgray;
+        }
+        .field {
+            margin-bottom: 0.04in;
+        }
+        .field label {
+            font-weight: bold;
+            display: inline-block;
+            width: 1.2in;
+        }
+        .field input[type="text"], .field textarea {
+            border: none;
+            border-bottom: 1px solid #ccc;
+            width: calc(100% - 1.2in);
+            font-size: 9pt;
+            padding: 0.01in 0.02in;
+        }
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.05in;
+            margin-top: 0.03in;
+        }
+        .vitals-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .vitals-item label {
+            font-size: 7pt;
+            font-weight: bold;
+        }
+        .notes-field {
+            margin-top: 0.05in;
+        }
+        .notes-field label {
+            display: block;
+            font-weight: bold;
+        }
+        .notes-field textarea {
+            width: 100%;
+            height: 1in;
+            border: 1px solid #ccc;
+            font-size: 9pt;
+            padding: 0.02in;
+            resize: none;
+        }
+        .tasks-labs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1in;
+        }
+        .task, .lab {
+            display: flex;
+            align-items: center;
+        }
+        .task input, .lab input {
+            margin-right: 0.2in;
+        }
+        @media print {
+            body {
+                padding: 0;
+            }
+            .patient {
+                border: none;
+            }
+            input, textarea {
+                border: 1px solid #ccc !important;
+                background: #fff !important;
+            }
+            .esi span {
+                display: inline-block;
+                height: 0.3in;
+                width: 0.3in;
+                border: none;
+                background: #000 !important;
+                color: #fff !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <h1>ER NURSE BRAIN SHEET v3</h1>
+            <div class="header-info">
+                <span>Unit: <input type="text" placeholder="________"></span>
+                <span>Date: <input type="text" placeholder="___/___/___"></span>
+                <span>Shift: <input type="text" placeholder="Day/Night"></span>
+                <span>Nurse: <input type="text" placeholder="________"></span>
+            </div>
+        </div>
+        <div class="grid">
+            <!-- Repeat for each patient -->
+            <div class="patient">
+                <div class="patient-header">
+                    <span>Patient 1</span>
+                    <div class="esi">
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Name:</label>
+                    <input type="text" placeholder="Last, First">
+                </div>
+                <div class="field">
+                    <label>MRN:</label>
+                    <input type="text" placeholder="________">
+                </div>
+                <div class="field">
+                    <label>Room:</label>
+                    <input type="text" placeholder="___">
+                </div>
+                <div class="field">
+                    <label>Chief Complaint:</label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="field">
+                    <label>Allergies:</label>
+                    <input type="text" placeholder="NKDA">
+                </div>
+                <div class="field">
+                    <label>Demographics:</label>
+                    <input type="text" placeholder="Age, Sex (M/F/Other), Weight, Attending Physician">
+                </div>
+                <div class="field">
+                    <label>Vitals:</label>
+                    <div class="vitals-grid">
+                        <div class="vitals-item">
+                            <label>Pain 0-10</label>
+                            <input type="text" placeholder="0-10">
+                        </div>
+                        <div class="vitals-item">
+                            <label>Glucose</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>GCS (E/V/M)</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>Rhythm</label>
+                            <input type="text" placeholder="___">
+                        </div>
+                        <div class="vitals-item">
+                            <label>IV Access</label>
+                            <input type="text" placeholder="Yes/No">
+                        </div>
+                    </div>
+                </div>
+                <div class="tasks-labs">
+                    <label>Tasks & Labs:</label>
+                    <div class="task"><input type="checkbox"> Pending Task 1</div>
+                    <div class="task"><input type="checkbox"> Pending Task 2</div>
+                    <div class="lab"><input type="checkbox"> Pending Lab 1</div>
+                    <div class="lab"><input type="checkbox"> Pending Lab 2</div>
+                    <div class="field"><label>Results Awaiting:</label><input type="text" placeholder=""></div>
+                </div>
+                <div class="field">
+                    <label>Medications:</label>
+                    <div class="vitals-grid">
+                        <div class="vitals-item">
+                            <label>Scheduled Meds</label>
+                            <input type="text" placeholder="">
+                        </div>
+                        <div class="vitals-item">
+                            <label>PRN Meds</label>
+                            <input type="text" placeholder="">
+                        </div>
+                        <div class="vitals-item">
+                            <label>IV Fluids</label>
+                            <input type="text" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="notes-field">
+                    <label>Notes:</label>
+                    <textarea placeholder="Separate Nursing Notes, Provider Notes, Disposition"></textarea>
+                </div>
+            </div>
+            <!-- Repeat for patients 2-8 -->
+        </div>
+    </div>
+</body>
+</html>

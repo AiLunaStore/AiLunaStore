@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Mission Control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            color: #e2e8f0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .settings-container {
+            max-width: 100%;
+        }
+        
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #63b3ed;
+            border-bottom: 1px solid #2d3748;
+            padding-bottom: 10px;
+        }
+        
+        .settings-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #1a202c;
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-label {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .setting-name {
+            font-weight: 500;
+            color: #e2e8f0;
+        }
+        
+        .setting-description {
+            font-size: 0.85em;
+            color: #718096;
+            margin-top: 2px;
+        }
+        
+        /* Toggle Switch */
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #2d3748;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle.active {
+            background: #48bb78;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        
+        .toggle.active .toggle-slider {
+            transform: translateX(24px);
+        }
+        
+        /* Select Dropdown */
+        select {
+            background: #1a202c;
+            color: #e2e8f0;
+            border: 1px solid #2d3748;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            cursor: pointer;
+            min-width: 150px;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #63b3ed;
+        }
+        
+        /* Number Input */
+        input[type="number"] {
+            background: #1a202c;
+            color: #e2e8f0;
+            border: 1px solid #2d3748;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            width: 100px;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #63b3ed;
+        }
+        
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #2d3748;
+        }
+        
+        button {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #4299e1;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #3182ce;
+        }
+        
+        .btn-secondary {
+            background: #2d3748;
+            color: #e2e8f0;
+        }
+        
+        .btn-secondary:hover {
+            background: #4a5568;
+        }
+        
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+        
+        /* Info text */
+        .info-text {
+            font-size: 0.85em;
+            color: #718096;
+            margin-top: 15px;
+            padding: 10px;
+            background: #1a202c;
+            border-radius: 6px;
+        }
+        
+        .version-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: #718096;
+        }
+        
+        /* Status indicator */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85em;
+            color: #48bb78;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #48bb78;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <h1>⚙️ Settings</h1>
+        
+        <div class="settings-section">
+            <div class="section-title">General</div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-name">Launch on Login</span>
+                    <span class="setting-description">Start Mission Control automatically</span>
+                </div>
+                <div class="toggle" id="toggle-startup">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-name">Show in Dock</span>
+                    <span class="setting-description">Display app icon in dock/taskbar</span>
+                </div>
+                <div class="toggle" id="toggle-dock">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-name">Minimize to Tray</span>
+                    <span class="setting-description">Hide to tray when minimized</span>
+                </div>
+                <div class="toggle" id="toggle-minimize">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <div class="section-title">Dashboard</div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-name">Refresh Rate</span>
+                    <span class="setting-description">How often to update agent data (ms)</span>
+                </div>
+                <input type="number" id="refresh-rate" min="500" max="10000" step="500" value="2000">
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-name">Theme</span>
+                    <span class="setting-description">Dashboard color scheme</span>
+                </div>
+                <select id="theme-select">
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                    <option value="auto">Auto (System)</option>
+                </select>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-name">Always on Top</span>
+                    <span class="setting-description">Keep window above other apps</span>
+                </div>
+                <div class="toggle" id="toggle-always-top">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <div class="section-title">Notifications</div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-name">Enable Notifications</span>
+                    <span class="setting-description">Show alerts for agent status changes</span>
+                </div>
+                <div class="toggle" id="toggle-notifications">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <div class="section-title">Updates</div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-name">Auto-update</span>
+                    <span class="setting-description">Automatically download and install updates</span>
+                </div>
+                <div class="toggle" id="toggle-auto-update" class="active">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-name">Current Version</span>
+                </div>
+                <span id="version-display">Loading...</span>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-name">Check for Updates</span>
+                </div>
+                <button class="btn-secondary" onclick="checkForUpdates()" style="flex: 0 0 auto; min-width: 120px;">Check Now</button>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn-primary" onclick="saveSettings()">Save Changes</button>
+            <button class="btn-secondary" onclick="resetSettings()">Reset to Default</button>
+        </div>
+        
+        <div class="info-text">
+            <strong>Tip:</strong> Press <kbd>Cmd/Ctrl</kbd> + <kbd>,</kbd> to quickly open settings from the main window.
+        </div>
+        
+        <div class="version-info">
+            Mission Control Desktop v<span id="version-footer">1.0.0</span>
+        </div>
+    </div>
+    
+    <script>
+        let settings = {};
+        
+        // Initialize
+        async function init() {
+            settings = await window.electronAPI.getSettings();
+            loadSettings();
+            
+            const version = await window.electronAPI.getAppVersion();
+            document.getElementById('version-display').textContent = version;
+            document.getElementById('version-footer').textContent = version;
+            
+            setupEventListeners();
+        }
+        
+        function loadSettings() {
+            // Toggles
+            setToggle('toggle-startup', settings.startup);
+            setToggle('toggle-dock', settings.showInDock);
+            setToggle('toggle-minimize', settings.minimizeToTray);
+            setToggle('toggle-always-top', settings.alwaysOnTop);
+            setToggle('toggle-notifications', settings.notifications);
+            setToggle('toggle-auto-update', settings.autoUpdate !== false);
+            
+            // Inputs
+            document.getElementById('refresh-rate').value = settings.refreshRate || 2000;
+            document.getElementById('theme-select').value = settings.theme || 'dark';
+        }
+        
+        function setToggle(id, value) {
+            const toggle = document.getElementById(id);
+            if (value) {
+                toggle.classList.add('active');
+            } else {
+                toggle.classList.remove('active');
+            }
+        }
+        
+        function setupEventListeners() {
+            // Toggle clicks
+            document.querySelectorAll('.toggle').forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    toggle.classList.toggle('active');
+                });
+            });
+        }
+        
+        async function saveSettings() {
+            const newSettings = {
+                startup: document.getElementById('toggle-startup').classList.contains('active'),
+                showInDock: document.getElementById('toggle-dock').classList.contains('active'),
+                minimizeToTray: document.getElementById('toggle-minimize').classList.contains('active'),
+                alwaysOnTop: document.getElementById('toggle-always-top').classList.contains('active'),
+                notifications: document.getElementById('toggle-notifications').classList.contains('active'),
+                autoUpdate: document.getElementById('toggle-auto-update').classList.contains('active'),
+                refreshRate: parseInt(document.getElementById('refresh-rate').value),
+                theme: document.getElementById('theme-select').value
+            };
+            
+            // Save each setting
+            for (const [key, value] of Object.entries(newSettings)) {
+                await window.electronAPI.setSetting(key, value);
+            }
+            
+            // Show success feedback
+            const btn = document.querySelector('.btn-primary');
+            const originalText = btn.textContent;
+            btn.textContent = 'Saved!';
+            btn.style.background = '#48bb78';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 1500);
+        }
+        
+        async function resetSettings() {
+            if (confirm('Reset all settings to default values?')) {
+                settings = await window.electronAPI.resetSettings();
+                loadSettings();
+                
+                // Show feedback
+                const btn = document.querySelector('.btn-danger, .btn-secondary:last-child');
+                const originalText = btn.textContent;
+                btn.textContent = 'Reset!';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 1500);
+            }
+        }
+        
+        async function checkForUpdates() {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Checking...';
+            btn.disabled = true;
+            
+            await window.electronAPI.checkForUpdates();
+            
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

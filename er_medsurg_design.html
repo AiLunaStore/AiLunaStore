@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ER Brain Sheet</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --secondary: #117a65;
+            --accent: #e74c3c;
+            --warning: #f39c12;
+            --info: #3498db;
+            --success: #27ae60;
+            --muted: #5d6d7e;
+            --line: #bdc3c7;
+            --ink: #1c2833;
+            --bg-light: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        @page {
+            size: 11in 8.5in landscape;
+            margin: 0.2in;
+        }
+
+        body {
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            font-size: 7.5pt;
+            line-height: 1.15;
+            color: var(--ink);
+            background: white;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sheet {
+            width: 10.6in;
+            height: 8.1in;
+            margin: 0 auto;
+            padding: 2px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            background: linear-gradient(135deg, var(--primary), #2980b9);
+            border-radius: 6px;
+            color: white;
+        }
+
+        .title-block h1 {
+            font-size: 14pt;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .title-block p {
+            font-size: 7pt;
+            margin: 2px 0 0;
+            opacity: 0.9;
+        }
+
+        .shift-info {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .shift-chip {
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 7pt;
+        }
+
+        .shift-chip label {
+            display: block;
+            font-size: 6pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+            margin-bottom: 1px;
+        }
+
+        .shift-chip .value {
+            font-weight: 600;
+        }
+
+        .patient-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            flex: 1;
+        }
+
+        .patient-card {
+            border: 1.5px solid var(--line);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: white;
+        }
+
+        .patient-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 8px;
+            background: var(--bg-light);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .patient-num {
+            font-weight: 700;
+            font-size: 9pt;
+            color: var(--primary);
+        }
+
+        .room-input {
+            font-size: 7pt;
+            border: 1px solid var(--line);
+            border-radius: 3px;
+            padding: 2px 6px;
+            width: 60px;
+            text-align: center;
+        }
+
+        .card-content {
+            padding: 5px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .section {
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 4px 5px;
+            min-height: 0;
+        }
+
+        .section-title {
+            font-size: 6.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.4fr 1.4fr;
+            gap: 4px;
+        }
+
+        .demo-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .demo-field label {
+            font-size: 5.5pt;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 1px;
+        }
+
+        .demo-field input {
+            border: 1px solid var(--line);
+            border-radius: 3px;
+            padding: 2px 4px;
+            font-size: 7pt;
+        }
+
+        .notes-section {
+            background: #fef9e7;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            border: 1px solid #f9e79f;
+            border-radius: 3px;
+            padding: 3px;
+            font-size: 6.5pt;
+            min-height: 60px;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .vitals-section {
+            background: #e8f8f5;
+            padding: 3px 2px;
+        }
+
+        .vitals-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 5.5pt;
+            table-layout: fixed;
+        }
+
+        .vitals-table th,
+        .vitals-table td {
+            border: 1px solid #a9dfbf;
+            padding: 1px 1px;
+            text-align: center;
+        }
+
+        .vitals-table th {
+            background: #d5f5e3;
+            font-weight: 600;
+            font-size: 4.5pt;
+            width: 16px;
+            overflow: hidden;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3px;
+        }
+
+        .status-box {
+            border: 1px dashed var(--line);
+            border-radius: 3px;
+            padding: 3px;
+            font-size: 6pt;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 6pt;
+            color: var(--muted);
+            padding: 4px;
+            border-top: 1px solid var(--line);
+        }
+
+        @media print {
+            body {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                margin: 0;
+                padding: 0;
+            }
+            .sheet {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="sheet">
+    <header>
+        <div class="title-block">
+            <h1>ER Brain Sheet</h1>
+            <p>2 Patients • ER Coverage</p>
+        </div>
+        <div class="shift-info">
+            <div class="shift-chip">
+                <label>Date</label>
+                <div class="value">__________</div>
+            </div>
+            <div class="shift-chip">
+                <label>Shift</label>
+                <div class="value">__________</div>
+            </div>
+            <div class="shift-chip">
+                <label>Nurse</label>
+                <div class="value">__________</div>
+            </div>
+        </div>
+    </header>
+
+    <section class="patient-grid">
+        <!-- Patient 1 -->
+        <article class="patient-card">
+            <div class="patient-header">
+                <span class="patient-num">Patient 1</span>
+                <input type="text" class="room-input" placeholder="Room #">
+            </div>
+            <div class="card-content">
+                <div class="section">
+                    <div class="section-title"><span class="icon">👤</span>Demographics</div>
+                    <div class="demo-grid">
+                        <div class="demo-field">
+                            <label>Name</label>
+                            <input type="text">
+                        </div>
+                        <div class="demo-field">
+                            <label>MRN</label>
+                            <input type="text">
+                        </div>
+                        <div class="demo-field">
+                            <label>Age/Sex</label>
+                            <input type="text">
+                        </div>
+                        <div class="demo-field">
+                            <label>Weight</label>
+                            <input type="text">
+                        </div>
+                        <div class="demo-field">
+                            <label>Attending</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title"><span class="icon">💊</span>Allergies</div>
+                    <div class="demo-grid">
+                        <div class="demo-field">
+                            <label>NKDA</label>
+                            <input type="checkbox">
+                        </div>
+                        <div class="demo-field">
+                            <label>Other:</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section vitals-section">
+                    <div class="section-title"><span class="icon">🩺</span>Vitals</div>
+                    <table class="vitals-table">
+                        <thead>
+                            <tr>
+                                <th>BP</th>
+                                <th>HR</th>
+                                <th>RR</th>
+                                <th>SpO₂</th>
+                                <th>Temp</th>
+                                <th>Pain</th>
+                                <th>Glucose</th>
+                                <th>GCS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <div class="section-title"><span class="icon">🔄</span>IV Access & Rhythm</div>
+                    <div class="demo-grid">
+                        <div class="demo-field">
+                            <label>IV Access</label>
+                            <input type="text">
+                        </div>
+                        <div class="demo-field">
+                            <label>Rhythm</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title"><span class="icon">📝</span>Notes</div>
+                    <textarea class="notes-textarea"></textarea>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Patient 2 -->
+        <article class="patient-card">
+            <div class="patient-header">
+                <span class="patient-num">Patient 2</span>
+                <input type="text" class="room-input" placeholder="Room #">
+            </div>
+            <div class="card-content">
+                <div class="section">
+                    <div class="section-title"><span class="icon">👤</span>Demographics</div>
+                    <div class="demo-grid">
+                        <div class="demo-field">
+                            <label>Name</label>
+                            <input type="text">
+                        </div>
+                        <div class="demo-field">
+                            <label>MRN</label>
+                            <input type="text">
+                        </div>
+                        <div class="demo-field">
+                            <label>Age/Sex</label>
+                            <input type="text">
+                        </div>
+                        <div class="demo-field">
+                            <label>Weight</label>
+                            <input type="text">
+                        </div>
+                        <div class="demo-field">
+                            <label>Attending</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title"><span class="icon">💊</span>Allergies</div>
+                    <div class="demo-grid">
+                        <div class="demo-field">
+                            <label>NKDA</label>
+                            <input type="checkbox">
+                        </div>
+                        <div class="demo-field">
+                            <label>Other:</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section vitals-section">
+                    <div class="section-title"><span class="icon">🩺</span>Vitals</div>
+                    <table class="vitals-table">
+                        <thead>
+                            <tr>
+                                <th>BP</th>
+                                <th>HR</th>
+                                <th>RR</th>
+                                <th>SpO₂</th>
+                                <th>Temp</th>
+                                <th>Pain</th>
+                                <th>Glucose</th>
+                                <th>GCS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <div class="section-title"><span class="icon">🔄</span>IV Access & Rhythm</div>
+                    <div class="demo-grid">
+                        <div class="demo-field">
+                            <label>IV Access</label>
+                            <input type="text">
+                        </div>
+                        <div class="demo-field">
+                            <label>Rhythm</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title"><span class="icon">📝</span>Notes</div>
+                    <textarea class="notes-textarea"></textarea>
+                </div>
+            </div>
+        </article>
+    </section>
+    
+    <footer>
+        Print in Landscape (11" x 8.5") for best results • 2026 ER Brain Sheet
+    </footer>
+</div>
+</body>
+</html>

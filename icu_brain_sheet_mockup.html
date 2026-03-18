@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ICU Brain Sheet - Single Patient 24-Hour</title>
+    <style>
+        :root {
+            /* Core palette from MedSurg/ER */
+            --primary: #1a5276;
+            --secondary: #117a65;
+            --accent: #e74c3c;
+            --warning: #f39c12;
+            --info: #3498db;
+            --success: #27ae60;
+            --muted: #5d6d7e;
+            --line: #bdc3c7;
+            --ink: #1c2833;
+            --bg-light: #f8f9fa;
+            
+            /* ICU section colors */
+            --hemo-bg: #ffeaea;
+            --hemo-border: #c0392b;
+            --resp-bg: #eaf2f8;
+            --resp-border: #2980b9;
+            --neuro-bg: #eaf7ea;
+            --neuro-border: #27ae60;
+            --io-bg: #fff9e6;
+            --io-border: #f39c12;
+            --labs-bg: #f4e6f7;
+            --labs-border: #8e44ad;
+            --notes-bg: #f8f9fa;
+            --notes-border: #95a5a6;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        @page {
+            size: 8.5in 11in portrait;
+            margin: 0.25in;
+        }
+        
+        body {
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            font-size: 7.5pt;
+            line-height: 1.15;
+            color: var(--ink);
+            background: white;
+            padding: 0;
+            margin: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        
+        .sheet {
+            width: 8in;
+            height: 10.5in;
+            margin: 0 auto;
+            padding: 4px 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            box-sizing: border-box;
+        }
+        
+        /* Header */
+        .header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 4px;
+            margin-bottom: 2px;
+        }
+        
+        .patient-info, .shift-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .field-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .field-label {
+            font-weight: bold;
+            min-width: 60px;
+        }
+        
+        .field-value {
+            flex: 1;
+            border-bottom: 1px dotted var(--line);
+            min-height: 1.2em;
+        }
+        
+        /* Section common */
+        .section {
+            border: 1px solid;
+            border-radius: 3px;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            font-size: 8pt;
+            padding: 2px 4px;
+            border-radius: 2px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .section-title .icon {
+            font-size: 9pt;
+        }
+        
+        /* Hourly grid table */
+        .hourly-grid {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        
+        .hourly-grid th {
+            font-weight: bold;
+            text-align: center;
+            padding: 1px 2px;
+            border: 1px solid var(--line);
+            background-color: var(--bg-light);
+            font-size: 7pt;
+        }
+        
+        .hourly-grid td {
+            border: 1px solid var(--line);
+            text-align: center;
+            padding: 1px 2px;
+            height: 1.4em;
+            vertical-align: middle;
+            font-size: 7pt;
+        }
+        
+        .hourly-grid .param-label {
+            text-align: left;
+            padding-left: 4px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Alternating hour shading */
+        .hour-odd {
+            background-color: #f2f2f2;
+        }
+        
+        /* Section-specific colors */
+        .hemodynamics {
+            border-color: var(--hemo-border);
+            background-color: var(--hemo-bg);
+        }
+        
+        .hemodynamics .section-title {
+            background-color: var(--hemo-border);
+            color: white;
+        }
+        
+        .respiratory {
+            border-color: var(--resp-border);
+            background-color: var(--resp-bg);
+        }
+        
+        .respiratory .section-title {
+            background-color: var(--resp-border);
+            color: white;
+        }
+        
+        .neurological {
+            border-color: var(--neuro-border);
+            background-color: var(--neuro-bg);
+        }
+        
+        .neurological .section-title {
+            background-color: var(--neuro-border);
+            color: white;
+        }
+        
+        .io {
+            border-color: var(--io-border);
+            background-color: var(--io-bg);
+        }
+        
+        .io .section-title {
+            background-color: var(--io-border);
+            color: white;
+        }
+        
+        .labs {
+            border-color: var(--labs-border);
+            background-color: var(--labs-bg);
+        }
+        
+        .labs .section-title {
+            background-color: var(--labs-border);
+            color: white;
+        }
+        
+        .notes {
+            border-color: var(--notes-border);
+            background-color: var(--notes-bg);
+        }
+        
+        .notes .section-title {
+            background-color: var(--notes-border);
+            color: white;
+        }
+        
+        /* Drip flow sheet */
+        .drip-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2px;
+        }
+        
+        .drip-table th, .drip-table td {
+            border: 1px solid var(--line);
+            padding: 2px 4px;
+            text-align: left;
+            font-size: 7pt;
+        }
+        
+        .drip-table th {
+            background-color: rgba(0,0,0,0.05);
+            font-weight: bold;
+        }
+        
+        /* Vent settings table */
+        .vent-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2px;
+        }
+        
+        .vent-table th, .vent-table td {
+            border: 1px solid var(--line);
+            padding: 2px 4px;
+            text-align: center;
+            font-size: 7pt;
+        }
+        
+        .vent-table th {
+            background-color: rgba(0,0,0,0.05);
+            font-weight: bold;
+        }
+        
+        /* Checklist */
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 3px;
+            margin-top: 2px;
+        }
+        
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .check-item input[type="checkbox"] {
+            transform: scale(0.8);
+        }
+        
+        /* Footer legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 6.5pt;
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px dashed var(--line);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+        
+        /* Print-specific */
+        @media print {
+            body {
+                font-size: 7.5pt;
+            }
+            
+            .sheet {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0.25in;
+                gap: 0.1in;
+            }
+            
+            .section {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sheet">
+        <!-- Header -->
+        <div class="header">
+            <div class="patient-info">
+                <div class="field-row">
+                    <span class="field-label">Patient:</span>
+                    <span class="field-value">LAST, First MRN</span>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Room:</span>
+                    <span class="field-value">ICU-12</span>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Allergies:</span>
+                    <span class="field-value">NKDA</span>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Code Status:</span>
+                    <span class="field-value">Full Code</span>
+                </div>
+            </div>
+            <div class="shift-info">
+                <div class="field-row">
+                    <span class="field-label">Nurse:</span>
+                    <span class="field-value">Nurse Name</span>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Shift:</span>
+                    <span class="field-value">Day (07:00-19:00)</span>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">Date:</span>
+                    <span class="field-value">2026-03-16</span>
+                </div>
+                <div class="field-row">
+                    <span class="field-label">ICU Team:</span>
+                    <span class="field-value">Attending, Resident</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hemodynamics Section -->
+        <div class="section hemodynamics">
+            <div class="section-title"><span class="icon">❤️</span> Hemodynamics</div>
+            <table class="hourly-grid">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="param-label">Parameter</th>
+                        <!-- 24 hour columns -->
+                        <th colspan="24">Hour (00-23)</th>
+                    </tr>
+                    <tr>
+                        <!-- Generate 24 hour headers -->
+                        <th>00</th><th>01</th><th>02</th><th>03</th><th>04</th><th>05</th>
+                        <th>06</th><th>07</th><th>08</th><th>09</th><th>10</th><th>11</th>
+                        <th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th>
+                        <th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="param-label">BP (mmHg)</td>
+                        <!-- Sample data for 24 hours -->
+                        <td class="hour-odd">120/80</td><td>118/78</td><td class="hour-odd">122/82</td><td>119/79</td>
+                        <td class="hour-odd">121/81</td><td>117/77</td><td class="hour-odd">123/83</td><td>120/80</td>
+                        <td class="hour-odd">119/79</td><td>118/78</td><td class="hour-odd">124/84</td><td>122/82</td>
+                        <td class="hour-odd">121/81</td><td>120/80</td><td class="hour-odd">119/79</td><td>118/78</td>
+                        <td class="hour-odd">117/77</td><td>116/76</td><td class="hour-odd">115/75</td><td>114/74</td>
+                        <td class="hour-odd">113/73</td><td>112/72</td><td class="hour-odd">111/71</td><td>110/70</td>
+                    </tr>
+                    <tr>
+                        <td class="param-label">HR (bpm)</td>
+                        <td class="hour-odd">78</td><td>80</td><td class="hour-odd">82</td><td>79</td>
+                        <td class="hour-odd">81</td><td>77</td><td class="hour-odd">83</td><td>80</td>
+                        <td class="hour-odd">79</td><td>78</td><td class="hour-odd">84</td><td>82</td>
+                        <td class="hour-odd">81</td><td>80</td><td class="hour-odd">79</td><td>78</td>
+                        <td class="hour-odd">77</td><td>76</td><td class="hour-odd">75</td><td>74</td>
+                        <td class="hour-odd">73</td><td>72</td><td class="hour-odd">71</td><td>70</td>
+                    </tr>
+                    <tr>
+                        <td class="param-label">MAP (mmHg)</td>
+                        <td class="hour-odd">85</td><td>84</td><td class="hour-odd">86</td><td>83</td>
+                        <td class="hour-odd">85</td><td>82</td><td class="hour-odd">87</td><td>84</td>
+                        <td class="hour-odd">83</td><td>82</td><td class="hour-odd">88</td><td>86</td>
+                        <td class="hour-odd">85</td><td>84</td><td class="hour-odd">83</td><td>82</td>
+                        <td class="hour-odd">81</td><td>80</td><td class="hour-odd">79</td><td>78</td>
+                        <td class="hour-odd">77</td><td>76</td><td class="hour-odd">75</td><td>74</td>
+                    </tr>
+                    <tr>
+                        <td class="param-label">CVP (mmHg)</td>
+                        <td class="hour-odd">8</td><td>9</td><td class="hour-odd">8</td><td>9</td>
+                        <td class="hour-odd">8</td><td>9</td><td class="hour-odd">8</td><td>9</td>
+                        <td class="hour-odd">8</td><td>9</td><td class="hour-odd">8</td><td>9</td>
+                        <td class="hour-odd">8</td><td>9</td><td class="hour-odd">8</td><td>9</td>
+                        <td class="hour-odd">8</td><td>9</td><td class="hour-odd">8</td><td>9</td>
+                        <td class="hour-odd">8</td><td>9</td><td class="hour-odd">8</td><td>9</td>
+                    </tr>
+                    <tr>
+                        <td class="param-label">SpO₂ (%)</td>
+                        <td class="hour-odd">98</td><td>97</td><td class="hour-odd">99</td><td>96</td>
+                        <td class="hour-odd">98</td><td>97</td><td class="hour-odd">99</td><td>96</td>
+                        <td class="hour-odd">98</td><td>97</td><td class="hour-odd">99</td><td>96</td>
+                        <td class="hour-odd">98</td><td>97</td><td class="hour-odd">99</td><td>96</td>
+                        <td class="hour-odd">98</td><td>97</td><td class="hour-odd">99</td><td>96</td>
+                        <td class="hour-odd">98</td><td>97</td><td class="hour-odd">99</td><td>96</td>
+                    </tr>
+                    <tr>
+                        <td class="param-label">Temp (°C)</td>
+                        <td class="hour-odd">37.0</td><td>37.1</td><td class="hour-odd">37.2</td><td>37.0</td>
+                        <td class="hour-odd">37.1</td><td>37.2</td><td class="hour-odd">37.0</td><td>37.1</td>
+                        <td class="hour-odd">37.2</td><td>37.0</td><td class="hour-odd">37.1</td><td>37.2</td>
+                        <td class="hour-odd">37.0</td><td>37.1</td><td class="hour-odd">37.2</td><td>37.0</td>
+                        <td class="hour-odd">37.1</td><td>37.2</td><td class="hour-odd">37.0</td><td>37.1</td>
+                        <td class="hour-odd">37.2</td><td>37.0</td><td class="hour-odd">37.1</td><td>37.2</td>
+                    </tr>
+                    <tr>
+                        <td class="param-label">RR (breaths/min)</td>
+                        <td class="hour-odd">16</td><td>17</td><td class="hour-odd">16</td><td>17</td>
+                        <td class="hour-odd">16</td><td>17</td><td class="hour-odd">16</td><td>17</td>
+                        <td class="hour-odd">16</td><td>17</td><td class="hour-odd">16</td><td>17</td>
+                        <td class="hour-odd">16</td><td>17</td><td class="hour-odd">16</td><td>17</td>
+                        <td class="hour-odd">16</td><td>17</td><td class="hour-odd">16</td><td>17</td>
+                        <td class="hour-odd">16</td><td>17</td><td class="hour-odd">16</td><td>17</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Drip flow sheet integrated -->
+            <div style="margin-top: 4px;">
+                <div style="font-weight: bold; font-size: 7.5pt; margin-bottom: 2px;">Continuous Drips</div>
+                <table class="drip-table">
+                    <thead>
+                        <tr>
+                            <th>Medication</th>
+                            <th>Rate</th>
+                            <th>Titration</th>
+                            <th>Dose/hr</th>
+                            <th>Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Norepinephrine</td>
+                            <td>0.1 mcg/kg/min</td>
+                            <td>↑ 0.05 @ 10:00</td>
+                            <td>0.15</td>
+                            <td>MAP target >65</td>
+                        </tr>
+                        <tr>
+                            <td>Propofol</td>
+                            <td>50 mcg/kg/min</td>
+                            <td>↓ 10 @ 11:00</td>
+                            <td>40</td>
+                            <td>RASS -2</td>
+                        </tr>
+                        <tr>
+                            <td>Fentanyl</td>
+                            <td>25 mcg/hr</td>
+                            <td>—</td>
+                            <td>25</td>
+                            <td>Pain 2/10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Respiratory/Ventilator Section -->
+        <div class="section respiratory">
+            <div class="section-title"><span class="icon">🫁</span> Respiratory / Ventilator</div>
+            <table class="vent-table">
+                <thead>
+                    <tr>
+                        <th>Setting</th>
+                        <th>Current</th>
+                        <th>Changes</th>
+                        <th>Alarms</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mode</td>
+                        <td>AC/VC</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>FiO₂ (%)</td>
+                        <td>40%</td>
+                        <td>↑ 50% @ 09:00</td>
+                        <td>SpO₂ < 88%</td>
+                    </tr>
+                    <tr>
+                        <td>PEEP (cmH₂O)</td>
+                        <td>5</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>Tidal Volume (mL)</td>
+                        <td>450</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>Resp Rate (bpm)</td>
+                        <td>12</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>PIP (cmH₂O)</td>
+                        <td>18</td>
+                        <td>—</td>
+                        <td> > 30</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Hourly tracking for selected vent parameters -->
+            <div style="margin-top: 4px;">
+                <table class="hourly-grid">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="param-label">Parameter</th>
+                            <th colspan="24">Hour (00-23)</th>
+                        </tr>
+                        <tr>
+                            <th>00</th><th>01</th><th>02</th><th>03</th><th>04</th><th>05</th>
+                            <th>06</th><th>07</th><th>08</th><th>09</th><th>10</th><th>11</th>
+                            <th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th>
+                            <th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="param-label">FiO₂ (%)</td>
+                            <td class="hour-odd">40</td><td>40</td><td class="hour-odd">40</td><td>40</td>
+                            <td class="hour-odd">40</td><td>40</td><td class="hour-odd">40</td><td>40</td>
+                            <td class="hour-odd">40</td><td>50</td><td class="hour-odd">50</td><td>50</td>
+                            <td class="hour-odd">50</td><td>45</td><td class="hour-odd">45</td><td>45</td>
+                            <td class="hour-odd">45</td><td>40</td><td class="hour-odd">40</td><td>40</td>
+                            <td class="hour-odd">40</td><td>40</td><td class="hour-odd">40</td><td>40</td>
+                        </tr>
+                        <tr>
+                            <td class="param-label">PEEP</td>
+                            <td class="hour-odd">5</td><td>5</td><td class="hour-odd">5</td><td>5</td>
+                            <td class="hour-odd">5</td><td>5</td><td class="hour-odd">5</td><td>5</td>
+                            <td class="hour-odd">5</td><td>5</td><td class="hour-odd">5</td><td>5</td>
+                            <td class="hour-odd">5</td><td>5</td><td class="hour-odd">5</td><td>5</td>
+                            <td class="hour-odd">5</td><td>5</td><td class="hour-odd">5</td><td>5</td>
+                            <td class="hour-odd">5</td><td>5</td><td class="hour-odd">5</td><td>5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Neurological Section -->
+        <div class="section neurological">
+            <div class="section-title"><span class="icon">🧠</span> Neurological</div>
+            <div class="checklist">
+                <div class="check-item"><input type="checkbox"> GCS 15</div>
+                <div class="check-item"><input type="checkbox"> Pupils equal & reactive</div>
+                <div class="check-item"><input type="checkbox"> RASS -2</div>
+                <div class="check-item"><input type="checkbox"> Pain 2/10</div>
+                <div class="check-item"><input type="checkbox"> Sedation hold @ 08:00</div>
+                <div class="check-item"><input type="checkbox"> Neuro checks q2h</div>
+            </div>
+            <table class="hourly-grid">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="param-label">Parameter</th>
+                        <th colspan="24">Hour (00-23)</th>
+                    </tr>
+                    <tr>
+                        <th>00</th><th>01</th><th>02</th><th>03</th><th>04</th><th>05</th>
+                        <th>06</th><th>07</th><th>08</th><th>09</th><th>10</th><th>11</th>
+                        <th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th>
+                        <th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="param-label">GCS</td>
+                        <td class="hour-odd">15</td><td>15</td><td class="hour-odd">15</td><td>15</td>
+                        <td class="hour-odd">15</td><td>15</td><td class="hour-odd">15</td><td>15</td>
+                        <td class="hour-odd">15</td><td>15</td><td class="hour-odd">15</td><td>15</td>
+                        <td class="hour-odd">15</td><td>15</td><td class="hour-odd">15</td><td>15</td>
+                        <td class="hour-odd">15</td><td>15</td><td class="hour-odd">15</td><td>15</td>
+                        <td class="hour-odd">15</td><td>15</td><td class="hour-odd">15</td><td>15</td>
+                    </tr>
+                    <tr>
+                        <td class="param-label">Pupils</td>
+                        <td class="hour-odd">3+</td><td>3+</td><td class="hour-odd">3+</td><td>3+</td>
+                        <td class="hour-odd">3+</td><td>3+</td><td class="hour-odd">3+</td><td>3+</td>
+                        <td class="hour-odd">3+</td><td>3+</td><td class="hour-odd">3+</td><td>3+</td>
+                        <td class="hour-odd">3+</td><td>3+</td><td class="hour-odd">3+</td><td>3+</td>
+                        <td class="hour-odd">3+</td><td>3+</td><td class="hour-odd">3+</td><td>3+</td>
+                        <td class="hour-odd">3+</td><td>3+</td><td class="hour-odd">3+</td><td>3+</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- I&O/Fluids Section -->
+        <div class="section io">
+            <div class="section-title"><span class="icon">💧</span> Intake & Output</div>
+            <table class="hourly-grid">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="param-label">Parameter</th>
+                        <th colspan="24">Hour (00-23)</th>
+                    </tr>
+                    <tr>
+                        <th>00</th><th>01</th><th>02</th><th>03</th><th>04</th><th>05</th>
+                        <th>06</th><th>07</th><th>08</th><th>09</th><th>10</th><th>11</th>
+                        <th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th>
+                        <th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="param-label">IV Fluids (mL)</td>
+                        <td class="hour-odd">100</td><td>100</td><td class="hour-odd">100</td><td>100</td>
+                        <td class="hour-odd">100</td><td>100</td><td class="hour-odd">100</td><td>100</td>
+                        <td class="hour-odd">100</td><td>100</td><td class="hour-odd">100</td><td>100</td>
+                        <td class="hour-odd">100</td><td>100</td><td class="hour-odd">100</td><td>100</td>
+                        <td class="hour-odd">100</td><td>100</td><td class="hour-odd">100</td><td>100</td>
+                        <td class="hour-odd">100</td><td>100</td><td class="hour-odd">100</td><td>100</td>
+                    </tr>
+                    <tr>
+                        <td class="param-label">Urine Output (mL)</td>
+                        <td class="hour-odd">50</td><td>60</td><td class="hour-odd">55</td><td>65</td>
+                        <td class="hour-odd">50</td><td>60</td><td class="hour-odd">55</td><td>65</td>
+                        <td class="hour-odd">50</td><td>60</td><td class="hour-odd">55</td><td>65</td>
+                        <td class="hour-odd">50</td><td>60</td><td class="hour-odd">55</td><td>65</td>
+                        <td class="hour-odd">50</td><td>60</td><td class="hour-odd">55</td><td>65</td>
+                        <td class="hour-odd">50</td><td>60</td><td class="hour-odd">55</td><td>65</td>
+                    </tr>
+                    <tr>
+                        <td class="param-label">Cumulative Balance (mL)</td>
+                        <td class="hour-odd">+50</td><td>+40</td><td class="hour-odd">+35</td><td>+30</td>
+                        <td class="hour-odd">+25</td><td>+20</td><td class="hour-odd">+15</td><td>+10</td>
+                        <td class="hour-odd">+5</td><td>0</td><td class="hour-odd">-5</td><td>-10</td>
+                        <td class="hour-odd">-15</td><td>-20</td><td class="hour-odd">-25</td><td>-30</td>
+                        <td class="hour-odd">-35</td><td>-40</td><td class="hour-odd">-45</td><td>-50</td>
+                        <td class="hour-odd">-55</td><td>-60</td><td class="hour-odd">-65</td><td>-70</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Labs Section -->
+        <div class="section labs">
+            <div class="section-title"><span class="icon">🧪</span> Labs</div>
+            <table class="hourly-grid">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="param-label">Parameter</th>
+                        <th colspan="24">Hour (00-23) - Lab draw times</th>
+                    </tr>
+                    <tr>
+                        <th>00</th><th>01</th><th>02</th><th>03</th><th>04</th><th>05</th>
+                        <th>06</th><th>07</th><th>08</th><th>09</th><th>10</th><th>11</th>
+                        <th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th>
+                        <th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="param-label">pH</td>
+                        <td class="hour-odd">7.40</td><td></td><td class="hour-odd"></td><td></td>
+                        <td class="hour-odd"></td><td></td><td class="hour-odd"></td><td></td>
+                        <td class="hour-odd"></td><td>7.38</td><td class="hour-odd"></td><td></td>
+                        <td class="hour-odd"></td><td></td><td class="hour-odd"></td><td></td>
+                        <td class="hour-odd"></td><td></td><td class="hour-odd"></td><td></td>
+                        <td class="hour-odd"></td><td></td><td class="hour-odd"></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="param-label">Lactate (mmol/L)</td>
+                        <td class="hour-odd">1.2</td><td></td><td class="hour-odd"></td><td></td>
+                        <td class="hour-odd"></td><td></td><td class="hour-odd"></td><td></td>
+                        <td class="hour-odd"></td><td>1.5</td><td class="hour-odd"></td><td></td>
+                        <td class="hour-odd"></td><td></td><td class="hour-odd"></td><td></td>
+                        <td class="hour-odd"></td><td></td><td class="hour-odd"></td><td></td>
+                        <td class="hour-odd"></td><td></td><td class="hour-odd"></td><td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Notes & Assessments -->
+        <div class="section notes">
+            <div class="section-title"><span class="icon">📝</span> Notes & Assessments</div>
+            <div class="checklist">
+                <div class="check-item"><input type="checkbox"> Morning rounds done</div>
+                <div class="check-item"><input type="checkbox"> Family updated</div>
+                <div class="check-item"><input type="checkbox"> Lines dressed</div>
+                <div class="check-item"><input type="checkbox"> Oral care completed</div>
+                <div class="check-item"><input type="checkbox"> Turned & positioned</div>
+                <div class="check-item"><input type="checkbox"> VAP bundle compliance</div>
+            </div>
+            <div style="margin-top: 4px;">
+                <div style="font-weight: bold; font-size: 7.5pt;">Plan / To-Do:</div>
+                <textarea style="width: 100%; height: 40px; font-size: 7pt; border: 1px solid var(--line); padding: 2px;">- Wean FiO₂ as tolerated
+- Follow-up lactate
+- Consult nutrition</textarea>
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--hemo-border);"></div>
+                <span>Hemodynamics</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--resp-border);"></div>
+                <span>Respiratory</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--neuro-border);"></div>
+                <span>Neurological</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--io-border);"></div>
+                <span>I&O/Fluids</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--labs-border);"></div>
+                <span>Labs</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: var(--notes-border);"></div>
+                <span>Notes</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simple script to toggle hour shading for demonstration
+        document.addEventListener('DOMContentLoaded', function() {
+            const cells = document.querySelectorAll('.hourly-grid td');
+            cells.forEach(cell => {
+                if (!cell.classList.contains('param-label')) {
+                    // Add click to simulate data entry
+                    cell.addEventListener('click', function() {
+                        if (this.textContent === '') {
+                            this.textContent = '--';
+                        } else {
+                            this.textContent = '';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

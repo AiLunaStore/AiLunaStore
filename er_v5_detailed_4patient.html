@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER v5 Detailed Patient Tracking Sheet (4-Patient)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // ESI Level Subtle Tints
+                        'esi-1-bg': '#FFEBEE',    // Very Light Red
+                        'esi-2-bg': '#FFF3E0',    // Very Light Orange
+                        'esi-3-bg': '#FFFDE7',    // Very Light Yellow
+                        'esi-4-bg': '#E8F5E9',    // Very Light Green
+                        'esi-5-bg': '#E3F2FD',    // Very Light Blue
+                        
+                        // Functional Color Coding
+                        'critical-alert': '#FFCDD2',  // Light Red
+                        'medication-bg': '#E1F5FE',  // Light Cyan
+                        'tasks-bg': '#F3E5F5',       // Light Purple
+                        'notes-bg': '#F1F8E9',       // Light Green
+                        'rapid-changes-bg': '#FFF8E1' // Light Amber
+                    },
+                    fontFamily: {
+                        'sans': ['Arial', 'Helvetica', 'sans-serif'],
+                        'mono': ['Consolas', 'Courier', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            @page {
+                size: letter portrait;
+                margin: 0.5in;
+            }
+            body {
+                font-size: 9pt;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans p-4 print:p-0">
+    <div class="grid grid-cols-2 gap-4 text-xs print:text-[8pt]">
+        <!-- Patient 1 -->
+        <div class="border border-gray-400 p-2 grid grid-rows-6 gap-1">
+            <!-- Patient Header -->
+            <div class="row-span-1 border-b border-dashed border-gray-300 flex justify-between items-center">
+                <div>
+                    <span class="font-bold">Name:</span>
+                    <input type="text" class="border-b w-24 mr-2">
+                    <span class="font-bold">MRN:</span>
+                    <input type="text" class="border-b w-16 mr-2">
+                </div>
+                <div>
+                    <span class="font-bold">Age:</span>
+                    <input type="text" class="border-b w-8 mr-2">
+                    <span class="font-bold">Sex:</span>
+                    <select class="border-b">
+                        <option>M</option>
+                        <option>F</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Acuity & Safety -->
+            <div class="row-span-1 bg-esi-3-bg p-1 text-[7pt]">
+                <div class="grid grid-cols-2 gap-1">
+                    <div>
+                        <strong>Allergies:</strong>
+                        <input type="text" class="border-b w-full bg-critical-alert">
+                    </div>
+                    <div>
+                        <strong>Code Status:</strong>
+                        <div class="flex space-x-2">
+                            <label><input type="checkbox"> Full Code</label>
+                            <label><input type="checkbox"> DNR/DNI</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-1 mt-1">
+                    <div>
+                        <strong>Isolation:</strong>
+                        <div class="flex space-x-2">
+                            <label><input type="checkbox"> Contact</label>
+                            <label><input type="checkbox"> Droplet</label>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>Fall Risk:</strong>
+                        <label><input type="checkbox"> Yes (Bed Alarm)</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vitals Grid -->
+            <div class="row-span-1">
+                <table class="w-full border-collapse text-[7pt]">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300">Time</th>
+                            <th class="border border-gray-300">BP</th>
+                            <th class="border border-gray-300">HR</th>
+                            <th class="border border-gray-300">RR</th>
+                            <th class="border border-gray-300">SpO₂</th>
+                            <th class="border border-gray-300">Temp</th>
+                            <th class="border border-gray-300">Pain</th>
+                            <th class="border border-gray-300">Neuro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-300 text-center">08:00</td>
+                            <td class="border border-gray-300"><input type="text" class="w-full"></td>
+                            <td class="border border-gray-300"><input type="text" class="w-full"></td>
+                            <td class="border border-gray-300"><input type="text" class="w-full"></td>
+                            <td class="border border-gray-300"><input type="text" class="w-full"></td>
+                            <td class="border border-gray-300"><input type="text" class="w-full"></td>
+                            <td class="border border-gray-300"><input type="text" class="w-full"></td>
+                            <td class="border border-gray-300"><input type="text" class="w-full"></td>
+                        </tr>
+                        <!-- Additional rows can be added similarly -->
+                    </tbody>
+                </table>
+                <div class="text-center text-[7pt] mt-1">
+                    <label>Trend: <input type="radio" name="trend1"> ↗</label>
+                    <label><input type="radio" name="trend1"> →</label>
+                    <label><input type="radio" name="trend1"> ↘</label>
+                </div>
+            </div>
+
+            <!-- Medications & Tasks -->
+            <div class="row-span-1 bg-medication-bg p-1">
+                <div>
+                    <strong>Active Medications:</strong>
+                    <div class="flex items-center mb-1">
+                        <input type="checkbox">
+                        <input type="text" class="ml-1 flex-grow" placeholder="Medication Name">
+                        <input type="text" class="w-12 ml-1" placeholder="Dose">
+                        <input type="text" class="w-12 ml-1" placeholder="Route">
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox">
+                        <input type="text" class="ml-1 flex-grow" placeholder="Medication Name">
+                        <input type="text" class="w-12 ml-1" placeholder="Dose">
+                        <input type="text" class="w-12 ml-1" placeholder="Route">
+                    </div>
+                </div>
+                <div class="mt-1 bg-tasks-bg p-1">
+                    <strong>Urgent Tasks:</strong>
+                    <div class="grid grid-cols-2 gap-1 text-[7pt]">
+                        <div>
+                            <strong>Labs:</strong>
+                            <div>
+                                <label><input type="checkbox"> CBC</label>
+                                <label><input type="checkbox"> CMP</label>
+                                <label><input type="checkbox"> Trop</label>
+                            </div>
+                        </div>
+                        <div>
+                            <strong>Imaging:</strong>
+                            <div>
+                                <label><input type="checkbox"> XR</label>
+                                <label><input type="checkbox"> CT</label>
+                                <label><input type="checkbox"> US</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clinical Notes & Problem List -->
+            <div class="row-span-1 bg-notes-bg p-1">
+                <div>
+                    <strong>Problem List:</strong>
+                    <input type="text" class="w-full mb-1">
+                    <input type="text" class="w-full mb-1">
+                </div>
+                <div>
+                    <strong>Assessment & Plan:</strong>
+                    <input type="text" class="w-full mb-1">
+                    <input type="text" class="w-full">
+                </div>
+            </div>
+
+            <!-- Rapid Changes & SBAR -->
+            <div class="row-span-1 bg-rapid-changes-bg p-1">
+                <div>
+                    <strong>Rapid Changes:</strong>
+                    <div class="flex">
+                        <input type="text" class="w-12" placeholder="Time">
+                        <input type="text" class="flex-grow ml-1" placeholder="Change Description">
+                    </div>
+                    <div class="flex mt-1">
+                        <input type="text" class="w-12" placeholder="Time">
+                        <input type="text" class="flex-grow ml-1" placeholder="Change Description">
+                    </div>
+                </div>
+                <div class="mt-1">
+                    <strong>SBAR Handoff:</strong>
+                    <div>
+                        <strong>S:</strong> <input type="text" class="w-full">
+                        <strong>B:</strong> <input type="text" class="w-full">
+                        <strong>A:</strong> <input type="text" class="w-full">
+                        <strong>R:</strong> <input type="text" class="w-full">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Patient Quadrants would be similar -->
+        <!-- For brevity, only showing Patient 1 in this demo -->
+    </div>
+
+    <!-- Glossary Footer -->
+    <footer class="mt-4 text-[6pt] text-gray-600 print:text-[5pt]">
+        <strong>Glossary:</strong>
+        ESI = Emergency Severity Index (1=Resuscitation, 2=Emergent, 3=Urgent, 4=Less Urgent, 5=Non-Urgent) 
+        | NKDA = No Known Drug Allergies 
+        | DNR/DNI = Do Not Resuscitate/Do Not Intubate 
+        | SBAR = Situation-Background-Assessment-Recommendation 
+        | SOAP = Subjective-Objective-Assessment-Plan
+    </footer>
+</body>
+</html>

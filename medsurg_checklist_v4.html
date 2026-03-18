@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSurg Checklist Brain Sheet - Version 4 (Landscape)</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        @page { size: 11in 8.5in landscape; margin: 0.25in; }
+        body {
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            font-size: 7pt;
+            line-height: 1.15;
+            color: #1a1a1a;
+            background: white;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .sheet {
+            width: 10.5in;
+            height: 8in;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            gap: 0.18in;
+        }
+        .patient-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+        .room-header {
+            text-align: right;
+            font-size: 8pt;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-bottom: 2px solid #2c3e50;
+        }
+        .room-header input {
+            width: 60px;
+            border: none;
+            border-bottom: 1px solid #95a5a6;
+            font-size: 8pt;
+            font-weight: 600;
+            text-align: center;
+        }
+        .human-outline {
+            border: 1.5px solid #34495e;
+            border-radius: 3px;
+            padding: 3px;
+            background: white;
+            page-break-inside: avoid;
+        }
+        .human-outline svg {
+            width: 100%;
+            height: 0.85in;
+            stroke: #34495e;
+            fill: none;
+        }
+        .section {
+            border: 1.5px solid;
+            border-radius: 3px;
+            padding: 3px;
+            page-break-inside: avoid;
+            background: white;
+        }
+        .section h4 {
+            font-size: 7pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 2px;
+            color: white;
+            padding: 2px 4px;
+            border-radius: 1px;
+        }
+        .mental-status { border-color: #27ae60; }
+        .mental-status h4 { background: #27ae60; }
+        .iv-fluids { border-color: #2980b9; }
+        .iv-fluids h4 { background: #2980b9; }
+        .mobility { border-color: #e67e22; }
+        .mobility h4 { background: #e67e22; }
+        .pain-scale { border-color: #c0392b; }
+        .pain-scale h4 { background: #c0392b; }
+        .common-meds { border-color: #8e44ad; }
+        .common-meds h4 { background: #8e44ad; }
+        .assessments { border-color: #17a2b8; }
+        .assessments h4 { background: #17a2b8; }
+        .notes-section { border-color: #7f8c8d; flex: 1; display: flex; flex-direction: column; }
+        .notes-section h4 { background: #7f8c8d; }
+        .checklist {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px 4px;
+            font-size: 6.5pt;
+        }
+        .check-item {
+            white-space: nowrap;
+        }
+        .text-input {
+            border: none;
+            border-bottom: 1px solid #95a5a6;
+            background: transparent;
+            font-size: 6.5pt;
+            padding: 0 2px;
+            font-family: inherit;
+            width: 40px;
+        }
+        .text-input.wide { width: 80px; }
+        .text-input.narrow { width: 25px; }
+        .pain-scale-visual {
+            display: flex;
+            justify-content: space-between;
+            margin: 3px 0;
+            padding: 2px 4px;
+            background: white;
+            border-radius: 2px;
+            border: 1px solid #c0392b;
+        }
+        .pain-number {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 1px solid #c0392b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6pt;
+            font-weight: 600;
+            cursor: pointer;
+            background: white;
+        }
+        .pain-number.selected {
+            background: #c0392b;
+            color: white;
+        }
+        .pain-descriptors {
+            display: flex;
+            justify-content: space-between;
+            font-size: 5.5pt;
+            color: #666;
+            margin-top: 1px;
+        }
+        .notes-area {
+            flex: 1;
+            width: 100%;
+            border: 1px dashed #bdc3c7;
+            background: #fafafa;
+            font-size: 7pt;
+            padding: 4px;
+            resize: none;
+            min-height: 0.8in;
+        }
+        .sub-label {
+            font-size: 6pt;
+            font-weight: 600;
+            color: #555;
+            margin-right: 3px;
+        }
+        @media print {
+            body { font-size: 7pt; }
+            .sheet { width: 100%; height: 100%; margin: 0; }
+            .section { border-width: 1.5px; }
+            .text-input { border-bottom: 1px solid #ccc; }
+            .notes-area { background: #f5f5f5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sheet">
+        <!-- PATIENT 1 -->
+        <div class="patient-column">
+            <div class="room-header">Room: <input type="text"></div>
+            <div class="human-outline">
+                <svg viewBox="0 0 300 100" preserveAspectRatio="xMidYMid meet">
+                    <g transform="translate(40, 5)">
+                        <circle cx="35" cy="15" r="10" stroke-width="1.2"/>
+                        <path d="M35 25 L35 65" stroke-width="1.2"/>
+                        <path d="M35 32 L12 48" stroke-width="1.2"/>
+                        <path d="M35 32 L58 48" stroke-width="1.2"/>
+                        <path d="M35 65 L22 92" stroke-width="1.2"/>
+                        <path d="M35 65 L48 92" stroke-width="1.2"/>
+                        <text x="35" y="100" text-anchor="middle" font-size="8" fill="#34495e" stroke="none">Front</text>
+                    </g>
+                    <g transform="translate(160, 5)">
+                        <circle cx="35" cy="15" r="10" stroke-width="1.2"/>
+                        <path d="M35 25 L35 65" stroke-width="1.2"/>
+                        <path d="M35 32 L15 50" stroke-width="1.2"/>
+                        <path d="M35 32 L55 50" stroke-width="1.2"/>
+                        <path d="M35 65 L25 92" stroke-width="1.2"/>
+                        <path d="M35 65 L45 92" stroke-width="1.2"/>
+                        <text x="35" y="100" text-anchor="middle" font-size="8" fill="#34495e" stroke="none">Back</text>
+                    </g>
+                </svg>
+            </div>
+            <div class="section mental-status">
+                <h4>Mental Status</h4>
+                <div class="checklist">
+                    <span class="check-item">A&O 1/2/3/4</span>
+                    <span class="check-item">Alert</span>
+                    <span class="check-item">Confused</span>
+                    <span class="check-item">Lethargic</span>
+                    <span class="check-item">Restless</span>
+                    <span class="check-item">Agitated</span>
+                    <span class="check-item">Sedated</span>
+                    <span class="check-item">Follows cmds</span>
+                    <span class="check-item">Aphasic</span>
+                </div>
+                <div style="margin-top: 2px;">Other: <input type="text" class="text-input wide"></div>
+            </div>
+            <div class="section iv-fluids">
+                <h4>IV Fluids</h4>
+                <div class="checklist">
+                    <span class="sub-label">Type:</span>
+                    <span class="check-item">LR</span>/<span class="check-item">NS</span>/<span class="check-item">D5W</span>/<span class="check-item">D5½NS</span>/<span class="check-item">D5NS</span>/<span class="check-item">Other</span><input type="text" class="text-input narrow">
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Rate:</span>
+                    <span class="check-item">KVO</span>/<span class="check-item">50</span>/<span class="check-item">75</span>/<span class="check-item">100</span>/<span class="check-item">125</span>/<span class="check-item">150</span>/<span class="check-item">200</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Site:</span>
+                    <span class="check-item">L AC</span>/<span class="check-item">R AC</span>/<span class="check-item">L hand</span>/<span class="check-item">R hand</span>/<span class="check-item">PICC</span>/<span class="check-item">Port</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Status:</span>
+                    <span class="check-item">Patent</span>/<span class="check-item">Infiltrated</span>/<span class="check-item">Phlebitis</span>/<span class="check-item">D/C'd</span>
+                </div>
+            </div>
+            <div class="section mobility">
+                <h4>Mobility</h4>
+                <div class="checklist">
+                    <span class="check-item">Ambulate</span>/<span class="check-item">Bedrest</span>/<span class="check-item">Up ad lib</span>/<span class="check-item">Chair only</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Assist:</span>
+                    <span class="check-item">Ind</span>/<span class="check-item">x1</span>/<span class="check-item">x2</span>/<span class="check-item">WC</span>/<span class="check-item">Walker</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Skin:</span>
+                    <span class="check-item">Q2h turns</span>/<span class="check-item">PR mattress</span>/<span class="check-item">Heel pro</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Fall:</span>
+                    <span class="check-item">Bed alarm</span>/<span class="check-item">Low bed</span>/<span class="check-item">Non-skid</span>
+                </div>
+            </div>
+            <div class="section pain-scale">
+                <h4>Pain Scale (0-10)</h4>
+                <div class="pain-scale-visual">
+                    <div class="pain-number" data-value="0">0</div>
+                    <div class="pain-number" data-value="1">1</div>
+                    <div class="pain-number" data-value="2">2</div>
+                    <div class="pain-number" data-value="3">3</div>
+                    <div class="pain-number" data-value="4">4</div>
+                    <div class="pain-number" data-value="5">5</div>
+                    <div class="pain-number" data-value="6">6</div>
+                    <div class="pain-number" data-value="7">7</div>
+                    <div class="pain-number" data-value="8">8</div>
+                    <div class="pain-number" data-value="9">9</div>
+                    <div class="pain-number" data-value="10">10</div>
+                </div>
+                <div class="pain-descriptors">
+                    <span>None</span><span>Mild</span><span>Mod</span><span>Severe</span><span>Worst</span>
+                </div>
+                <div style="margin-top: 3px;">Loc: <input type="text" class="text-input" style="width: 70px;"></div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">Medicated</span>/<span class="check-item">Non-pharm</span>/<span class="check-item">Reassess</span>
+                </div>
+            </div>
+            <div class="section common-meds">
+                <h4>Common Medications</h4>
+                <div class="checklist">
+                    <span class="sub-label">Analgesics:</span>
+                    <span class="check-item">Acetam</span>/<span class="check-item">Ibuprof</span>/<span class="check-item">Oxy PRN</span>/<span class="check-item">Morph PRN</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Anticoag:</span>
+                    <span class="check-item">Hep SQ</span>/<span class="check-item">Enox</span>/<span class="check-item">ASA</span>/<span class="check-item">Clopid</span>/<span class="check-item">Apix</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">GI:</span>
+                    <span class="check-item">PPI</span>/<span class="check-item">Senna</span>/<span class="check-item">Colace</span>/<span class="check-item">Zofran</span>
+                </div>
+                <div style="margin-top: 2px;">Abx: <input type="text" class="text-input wide"></div>
+                <div style="margin-top: 1px;">Other: <input type="text" class="text-input wide"></div>
+            </div>
+            <div class="section assessments">
+                <h4>Assessments & Interventions</h4>
+                <div class="checklist">
+                    <span class="check-item">Neuro q<input type="text" class="text-input narrow">h</span>/<span class="check-item">PERRLA</span>/<span class="check-item">GCS <input type="text" class="text-input narrow"></span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">Dressing chg</span>/<span class="check-item">Wound vac</span>/<span class="check-item">Foley</span>/<span class="check-item">JP drain</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">O2 NC <input type="text" class="text-input narrow">L</span>/<span class="check-item">Mask <input type="text" class="text-input narrow">L</span>/<span class="check-item">IS q2h</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">NPO</span>/<span class="check-item">Clear liq</span>/<span class="check-item">Reg diet</span>/<span class="check-item">Cardiac</span>/<span class="check-item">Diabetic</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">BM</span>/<span class="check-item">I&O</span>/<span class="check-item">Daily wt</span>
+                </div>
+            </div>
+            <div class="section notes-section">
+                <h4>Notes</h4>
+                <textarea class="notes-area"></textarea>
+            </div>
+        </div>
+        <!-- PATIENT 2 -->
+        <div class="patient-column">
+            <div class="room-header">Room: <input type="text"></div>
+            <div class="human-outline">
+                <svg viewBox="0 0 300 100" preserveAspectRatio="xMidYMid meet">
+                    <g transform="translate(40, 5)">
+                        <circle cx="35" cy="15" r="10" stroke-width="1.2"/>
+                        <path d="M35 25 L35 65" stroke-width="1.2"/>
+                        <path d="M35 32 L12 48" stroke-width="1.2"/>
+                        <path d="M35 32 L58 48" stroke-width="1.2"/>
+                        <path d="M35 65 L22 92" stroke-width="1.2"/>
+                        <path d="M35 65 L48 92" stroke-width="1.2"/>
+                        <text x="35" y="100" text-anchor="middle" font-size="8" fill="#34495e" stroke="none">Front</text>
+                    </g>
+                    <g transform="translate(160, 5)">
+                        <circle cx="35" cy="15" r="10" stroke-width="1.2"/>
+                        <path d="M35 25 L35 65" stroke-width="1.2"/>
+                        <path d="M35 32 L15 50" stroke-width="1.2"/>
+                        <path d="M35 32 L55 50" stroke-width="1.2"/>
+                        <path d="M35 65 L25 92" stroke-width="1.2"/>
+                        <path d="M35 65 L45 92" stroke-width="1.2"/>
+                        <text x="35" y="100" text-anchor="middle" font-size="8" fill="#34495e" stroke="none">Back</text>
+                    </g>
+                </svg>
+            </div>
+            <div class="section mental-status">
+                <h4>Mental Status</h4>
+                <div class="checklist">
+                    <span class="check-item">A&O 1/2/3/4</span>
+                    <span class="check-item">Alert</span>
+                    <span class="check-item">Confused</span>
+                    <span class="check-item">Lethargic</span>
+                    <span class="check-item">Restless</span>
+                    <span class="check-item">Agitated</span>
+                    <span class="check-item">Sedated</span>
+                    <span class="check-item">Follows cmds</span>
+                    <span class="check-item">Aphasic</span>
+                </div>
+                <div style="margin-top: 2px;">Other: <input type="text" class="text-input wide"></div>
+            </div>
+            <div class="section iv-fluids">
+                <h4>IV Fluids</h4>
+                <div class="checklist">
+                    <span class="sub-label">Type:</span>
+                    <span class="check-item">LR</span>/<span class="check-item">NS</span>/<span class="check-item">D5W</span>/<span class="check-item">D5½NS</span>/<span class="check-item">D5NS</span>/<span class="check-item">Other</span><input type="text" class="text-input narrow">
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Rate:</span>
+                    <span class="check-item">KVO</span>/<span class="check-item">50</span>/<span class="check-item">75</span>/<span class="check-item">100</span>/<span class="check-item">125</span>/<span class="check-item">150</span>/<span class="check-item">200</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Site:</span>
+                    <span class="check-item">L AC</span>/<span class="check-item">R AC</span>/<span class="check-item">L hand</span>/<span class="check-item">R hand</span>/<span class="check-item">PICC</span>/<span class="check-item">Port</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Status:</span>
+                    <span class="check-item">Patent</span>/<span class="check-item">Infiltrated</span>/<span class="check-item">Phlebitis</span>/<span class="check-item">D/C'd</span>
+                </div>
+            </div>
+            <div class="section mobility">
+                <h4>Mobility</h4>
+                <div class="checklist">
+                    <span class="check-item">Ambulate</span>/<span class="check-item">Bedrest</span>/<span class="check-item">Up ad lib</span>/<span class="check-item">Chair only</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Assist:</span>
+                    <span class="check-item">Ind</span>/<span class="check-item">x1</span>/<span class="check-item">x2</span>/<span class="check-item">WC</span>/<span class="check-item">Walker</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Skin:</span>
+                    <span class="check-item">Q2h turns</span>/<span class="check-item">PR mattress</span>/<span class="check-item">Heel pro</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Fall:</span>
+                    <span class="check-item">Bed alarm</span>/<span class="check-item">Low bed</span>/<span class="check-item">Non-skid</span>
+                </div>
+            </div>
+            <div class="section pain-scale">
+                <h4>Pain Scale (0-10)</h4>
+                <div class="pain-scale-visual">
+                    <div class="pain-number" data-value="0">0</div>
+                    <div class="pain-number" data-value="1">1</div>
+                    <div class="pain-number" data-value="2">2</div>
+                    <div class="pain-number" data-value="3">3</div>
+                    <div class="pain-number" data-value="4">4</div>
+                    <div class="pain-number" data-value="5">5</div>
+                    <div class="pain-number" data-value="6">6</div>
+                    <div class="pain-number" data-value="7">7</div>
+                    <div class="pain-number" data-value="8">8</div>
+                    <div class="pain-number" data-value="9">9</div>
+                    <div class="pain-number" data-value="10">10</div>
+                </div>
+                <div class="pain-descriptors">
+                    <span>None</span><span>Mild</span><span>Mod</span><span>Severe</span><span>Worst</span>
+                </div>
+                <div style="margin-top: 3px;">Loc: <input type="text" class="text-input" style="width: 70px;"></div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">Medicated</span>/<span class="check-item">Non-pharm</span>/<span class="check-item">Reassess</span>
+                </div>
+            </div>
+            <div class="section common-meds">
+                <h4>Common Medications</h4>
+                <div class="checklist">
+                    <span class="sub-label">Analgesics:</span>
+                    <span class="check-item">Acetam</span>/<span class="check-item">Ibuprof</span>/<span class="check-item">Oxy PRN</span>/<span class="check-item">Morph PRN</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Anticoag:</span>
+                    <span class="check-item">Hep SQ</span>/<span class="check-item">Enox</span>/<span class="check-item">ASA</span>/<span class="check-item">Clopid</span>/<span class="check-item">Apix</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">GI:</span>
+                    <span class="check-item">PPI</span>/<span class="check-item">Senna</span>/<span class="check-item">Colace</span>/<span class="check-item">Zofran</span>
+                </div>
+                <div style="margin-top: 2px;">Abx: <input type="text" class="text-input wide"></div>
+                <div style="margin-top: 1px;">Other: <input type="text" class="text-input wide"></div>
+            </div>
+            <div class="section assessments">
+                <h4>Assessments & Interventions</h4>
+                <div class="checklist">
+                    <span class="check-item">Neuro q<input type="text" class="text-input narrow">h</span>/<span class="check-item">PERRLA</span>/<span class="check-item">GCS <input type="text" class="text-input narrow"></span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">Dressing chg</span>/<span class="check-item">Wound vac</span>/<span class="check-item">Foley</span>/<span class="check-item">JP drain</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">O2 NC <input type="text" class="text-input narrow">L</span>/<span class="check-item">Mask <input type="text" class="text-input narrow">L</span>/<span class="check-item">IS q2h</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">NPO</span>/<span class="check-item">Clear liq</span>/<span class="check-item">Reg diet</span>/<span class="check-item">Cardiac</span>/<span class="check-item">Diabetic</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">BM</span>/<span class="check-item">I&O</span>/<span class="check-item">Daily wt</span>
+                </div>
+            </div>
+            <div class="section notes-section">
+                <h4>Notes</h4>
+                <textarea class="notes-area"></textarea>
+            </div>
+        </div>
+        <!-- PATIENT 3 -->
+        <div class="patient-column">
+            <div class="room-header">Room: <input type="text"></div>
+            <div class="human-outline">
+                <svg viewBox="0 0 300 100" preserveAspectRatio="xMidYMid meet">
+                    <g transform="translate(40, 5)">
+                        <circle cx="35" cy="15" r="10" stroke-width="1.2"/>
+                        <path d="M35 25 L35 65" stroke-width="1.2"/>
+                        <path d="M35 32 L12 48" stroke-width="1.2"/>
+                        <path d="M35 32 L58 48" stroke-width="1.2"/>
+                        <path d="M35 65 L22 92" stroke-width="1.2"/>
+                        <path d="M35 65 L48 92" stroke-width="1.2"/>
+                        <text x="35" y="100" text-anchor="middle" font-size="8" fill="#34495e" stroke="none">Front</text>
+                    </g>
+                    <g transform="translate(160, 5)">
+                        <circle cx="35" cy="15" r="10" stroke-width="1.2"/>
+                        <path d="M35 25 L35 65" stroke-width="1.2"/>
+                        <path d="M35 32 L15 50" stroke-width="1.2"/>
+                        <path d="M35 32 L55 50" stroke-width="1.2"/>
+                        <path d="M35 65 L25 92" stroke-width="1.2"/>
+                        <path d="M35 65 L45 92" stroke-width="1.2"/>
+                        <text x="35" y="100" text-anchor="middle" font-size="8" fill="#34495e" stroke="none">Back</text>
+                    </g>
+                </svg>
+            </div>
+            <div class="section mental-status">
+                <h4>Mental Status</h4>
+                <div class="checklist">
+                    <span class="check-item">A&O 1/2/3/4</span>
+                    <span class="check-item">Alert</span>
+                    <span class="check-item">Confused</span>
+                    <span class="check-item">Lethargic</span>
+                    <span class="check-item">Restless</span>
+                    <span class="check-item">Agitated</span>
+                    <span class="check-item">Sedated</span>
+                    <span class="check-item">Follows cmds</span>
+                    <span class="check-item">Aphasic</span>
+                </div>
+                <div style="margin-top: 2px;">Other: <input type="text" class="text-input wide"></div>
+            </div>
+            <div class="section iv-fluids">
+                <h4>IV Fluids</h4>
+                <div class="checklist">
+                    <span class="sub-label">Type:</span>
+                    <span class="check-item">LR</span>/<span class="check-item">NS</span>/<span class="check-item">D5W</span>/<span class="check-item">D5½NS</span>/<span class="check-item">D5NS</span>/<span class="check-item">Other</span><input type="text" class="text-input narrow">
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Rate:</span>
+                    <span class="check-item">KVO</span>/<span class="check-item">50</span>/<span class="check-item">75</span>/<span class="check-item">100</span>/<span class="check-item">125</span>/<span class="check-item">150</span>/<span class="check-item">200</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Site:</span>
+                    <span class="check-item">L AC</span>/<span class="check-item">R AC</span>/<span class="check-item">L hand</span>/<span class="check-item">R hand</span>/<span class="check-item">PICC</span>/<span class="check-item">Port</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Status:</span>
+                    <span class="check-item">Patent</span>/<span class="check-item">Infiltrated</span>/<span class="check-item">Phlebitis</span>/<span class="check-item">D/C'd</span>
+                </div>
+            </div>
+            <div class="section mobility">
+                <h4>Mobility</h4>
+                <div class="checklist">
+                    <span class="check-item">Ambulate</span>/<span class="check-item">Bedrest</span>/<span class="check-item">Up ad lib</span>/<span class="check-item">Chair only</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Assist:</span>
+                    <span class="check-item">Ind</span>/<span class="check-item">x1</span>/<span class="check-item">x2</span>/<span class="check-item">WC</span>/<span class="check-item">Walker</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Skin:</span>
+                    <span class="check-item">Q2h turns</span>/<span class="check-item">PR mattress</span>/<span class="check-item">Heel pro</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Fall:</span>
+                    <span class="check-item">Bed alarm</span>/<span class="check-item">Low bed</span>/<span class="check-item">Non-skid</span>
+                </div>
+            </div>
+            <div class="section pain-scale">
+                <h4>Pain Scale (0-10)</h4>
+                <div class="pain-scale-visual">
+                    <div class="pain-number" data-value="0">0</div>
+                    <div class="pain-number" data-value="1">1</div>
+                    <div class="pain-number" data-value="2">2</div>
+                    <div class="pain-number" data-value="3">3</div>
+                    <div class="pain-number" data-value="4">4</div>
+                    <div class="pain-number" data-value="5">5</div>
+                    <div class="pain-number" data-value="6">6</div>
+                    <div class="pain-number" data-value="7">7</div>
+                    <div class="pain-number" data-value="8">8</div>
+                    <div class="pain-number" data-value="9">9</div>
+                    <div class="pain-number" data-value="10">10</div>
+                </div>
+                <div class="pain-descriptors">
+                    <span>None</span><span>Mild</span><span>Mod</span><span>Severe</span><span>Worst</span>
+                </div>
+                <div style="margin-top: 3px;">Loc: <input type="text" class="text-input" style="width: 70px;"></div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">Medicated</span>/<span class="check-item">Non-pharm</span>/<span class="check-item">Reassess</span>
+                </div>
+            </div>
+            <div class="section common-meds">
+                <h4>Common Medications</h4>
+                <div class="checklist">
+                    <span class="sub-label">Analgesics:</span>
+                    <span class="check-item">Acetam</span>/<span class="check-item">Ibuprof</span>/<span class="check-item">Oxy PRN</span>/<span class="check-item">Morph PRN</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">Anticoag:</span>
+                    <span class="check-item">Hep SQ</span>/<span class="check-item">Enox</span>/<span class="check-item">ASA</span>/<span class="check-item">Clopid</span>/<span class="check-item">Apix</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="sub-label">GI:</span>
+                    <span class="check-item">PPI</span>/<span class="check-item">Senna</span>/<span class="check-item">Colace</span>/<span class="check-item">Zofran</span>
+                </div>
+                <div style="margin-top: 2px;">Abx: <input type="text" class="text-input wide"></div>
+                <div style="margin-top: 1px;">Other: <input type="text" class="text-input wide"></div>
+            </div>
+            <div class="section assessments">
+                <h4>Assessments & Interventions</h4>
+                <div class="checklist">
+                    <span class="check-item">Neuro q<input type="text" class="text-input narrow">h</span>/<span class="check-item">PERRLA</span>/<span class="check-item">GCS <input type="text" class="text-input narrow"></span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">Dressing chg</span>/<span class="check-item">Wound vac</span>/<span class="check-item">Foley</span>/<span class="check-item">JP drain</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">O2 NC <input type="text" class="text-input narrow">L</span>/<span class="check-item">Mask <input type="text" class="text-input narrow">L</span>/<span class="check-item">IS q2h</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">NPO</span>/<span class="check-item">Clear liq</span>/<span class="check-item">Reg diet</span>/<span class="check-item">Cardiac</span>/<span class="check-item">Diabetic</span>
+                </div>
+                <div class="checklist" style="margin-top: 2px;">
+                    <span class="check-item">BM</span>/<span class="check-item">I&O</span>/<span class="check-item">Daily wt</span>
+                </div>
+            </div>
+            <div class="section notes-section">
+                <h4>Notes</h4>
+                <textarea class="notes-area"></textarea>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

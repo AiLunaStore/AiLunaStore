@@ -1,0 +1,220 @@
+# Model Configuration
+
+# Primary and Fallback Models
+models:
+  # Coding models
+  coding:
+    primary:
+      name: "kimi-k2.5"
+      provider: "moonshot"
+      max_tokens: 8000
+      cost_per_1k_input: 0.002
+      cost_per_1k_output: 0.006
+      
+    fallback_chain:
+      - name: "deepseek-coder"
+        provider: "deepseek"
+        max_tokens: 8000
+        cost_per_1k_input: 0.001
+        cost_per_1k_output: 0.002
+        
+      - name: "gpt-4o-mini"
+        provider: "openai"
+        max_tokens: 4000
+        cost_per_1k_input: 0.00015
+        cost_per_1k_output: 0.0006
+        
+  # Research models
+  research:
+    primary:
+      name: "deepseek-chat"
+      provider: "deepseek"
+      max_tokens: 4000
+      cost_per_1k_input: 0.001
+      cost_per_1k_output: 0.002
+      
+    fallback_chain:
+      - name: "mixtral"
+        provider: "openrouter"
+        max_tokens: 4000
+        cost_per_1k_input: 0.0005
+        cost_per_1k_output: 0.0015
+        
+      - name: "llama3"
+        provider: "openrouter"
+        max_tokens: 4000
+        cost_per_1k_input: 0.0003
+        cost_per_1k_output: 0.0009
+        
+  # Triage models
+  triage:
+    primary:
+      name: "gpt-4o-mini"
+      provider: "openai"
+      max_tokens: 1000
+      cost_per_1k_input: 0.00015
+      cost_per_1k_output: 0.0006
+      
+    fallback:
+      name: "gpt-5-nano"
+      provider: "openai"
+      max_tokens: 1000
+      cost_per_1k_input: 0.0001
+      cost_per_1k_output: 0.0004
+      
+  # Orchestrator models
+  orchestrator:
+    primary:
+      name: "deepseek-chat"
+      provider: "deepseek"
+      max_tokens: 2000
+      cost_per_1k_input: 0.001
+      cost_per_1k_output: 0.002
+      
+    fallback:
+      name: "gpt-4o"
+      provider: "openai"
+      max_tokens: 2000
+      cost_per_1k_input: 0.005
+      cost_per_1k_output: 0.015
+      
+  # Planner models
+  planner:
+    primary:
+      name: "deepseek-reasoner"
+      provider: "deepseek"
+      max_tokens: 4000
+      cost_per_1k_input: 0.002
+      cost_per_1k_output: 0.004
+      
+    fallback:
+      name: "claude-3.5-sonnet"
+      provider: "openrouter"
+      max_tokens: 4000
+      cost_per_1k_input: 0.003
+      cost_per_1k_output: 0.015
+      
+  # Critique models
+  critique:
+    primary:
+      name: "gpt-4o-mini"
+      provider: "openai"
+      max_tokens: 2000
+      cost_per_1k_input: 0.00015
+      cost_per_1k_output: 0.0006
+      
+    fallback:
+      name: "deepseek-chat"
+      provider: "deepseek"
+      max_tokens: 2000
+      cost_per_1k_input: 0.001
+      cost_per_1k_output: 0.002
+      
+  # Reviewer models
+  reviewer:
+    primary:
+      name: "gpt-5.1-codex"
+      provider: "openai"
+      max_tokens: 4000
+      cost_per_1k_input: 0.01
+      cost_per_1k_output: 0.03
+      
+    fallback:
+      name: "claude-3.5-sonnet"
+      provider: "openrouter"
+      max_tokens: 4000
+      cost_per_1k_input: 0.003
+      cost_per_1k_output: 0.015
+
+# Model Capabilities Matrix
+capabilities:
+  kimi-k2.5:
+    coding: excellent
+    reasoning: good
+    speed: fast
+    cost: medium
+    
+  deepseek-coder:
+    coding: excellent
+    reasoning: good
+    speed: fast
+    cost: low
+    
+  deepseek-chat:
+    coding: good
+    reasoning: excellent
+    speed: fast
+    cost: low
+    
+  deepseek-reasoner:
+    coding: good
+    reasoning: excellent
+    speed: medium
+    cost: low
+    
+  gpt-4o-mini:
+    coding: good
+    reasoning: good
+    speed: fast
+    cost: very_low
+    
+  gpt-4o:
+    coding: excellent
+    reasoning: excellent
+    speed: fast
+    cost: medium
+    
+  gpt-5.1-codex:
+    coding: excellent
+    reasoning: excellent
+    speed: medium
+    cost: high
+    
+  claude-3.5-sonnet:
+    coding: excellent
+    reasoning: excellent
+    speed: medium
+    cost: medium
+    
+  mixtral:
+    coding: good
+    reasoning: good
+    speed: fast
+    cost: low
+    
+  llama3:
+    coding: good
+    reasoning: good
+    speed: fast
+    cost: very_low
+
+# Cost Optimization Rules
+cost_optimization:
+  # Use cheaper models for simple tasks
+  simple_tasks:
+    max_tokens_threshold: 500
+    use_model: "gpt-4o-mini"
+    
+  # Use expensive models only when necessary
+  high_value_tasks:
+    patterns:
+      - "production.*code"
+      - "security.*review"
+      - "architecture.*design"
+      - "critical.*bug"
+    use_model: "gpt-5.1-codex"
+    
+  # Budget limits per request type
+  budget_limits:
+    triage:
+      max_cost_usd: 0.01
+    automation:
+      max_cost_usd: 0.05
+    research:
+      max_cost_usd: 0.10
+    coding:
+      max_cost_usd: 0.20
+    planning:
+      max_cost_usd: 0.15
+    review:
+      max_cost_usd: 0.30

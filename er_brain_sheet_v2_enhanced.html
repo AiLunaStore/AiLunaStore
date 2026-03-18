@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Room Patient Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 100%;
+            max-width: 8.5in;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background: white;
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #eaeaea;
+        }
+        .esi-1 { background-color: red; }
+        .esi-2 { background-color: orange; }
+        .esi-3 { background-color: yellow; }
+        .esi-4 { background-color: green; }
+        .esi-5 { background-color: blue; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Emergency Room Patient Report</h1>
+        <table>
+            <tr>
+                <th>Patient ID</th>
+                <th>Name</th>
+                <th>ESI Level</th>
+                <th>Condition</th>
+                <th>Notes</th>
+            </tr>
+            <!-- Example Row -->
+            <tr class="esi-1">
+                <td>1</td>
+                <td>John Doe</td>
+                <td>1</td>
+                <td>Critical</td>
+                <td>Needs immediate attention.</td>
+            </tr>
+            <tr class="esi-3">
+                <td>2</td>
+                <td>Jane Smith</td>
+                <td>3</td>
+                <td>Stable</td>
+                <td>Monitor closely.</td>
+            </tr>
+        </table>
+        <p style="text-align:center">[Add more rows as needed]</p>
+    </div>
+</body>
+</html>

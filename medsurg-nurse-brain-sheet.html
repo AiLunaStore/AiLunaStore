@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSurg Nurse Brain Sheet</title>
+    <style>
+        /* Medical Color Scheme */
+        :root {
+            --primary-blue: #2E5A88;
+            --secondary-green: #4CAF50;
+            --accent-teal: #26A69A;
+            --light-gray: #F8F9FA;
+            --border-blue: #E3F2FD;
+            --text-dark: #2C3E50;
+            --text-light: #546E7A;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 11in;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue), #1E3A5F);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-teal);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .quick-reference {
+            background-color: var(--border-blue);
+            padding: 15px;
+            margin: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--secondary-green);
+        }
+        
+        .quick-reference h3 {
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .patients-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .patient-section {
+            background: white;
+            border: 2px solid var(--border-blue);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            min-height: 800px;
+        }
+        
+        .patient-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-teal));
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .section-title {
+            color: var(--primary-blue);
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border-blue);
+            font-weight: 600;
+        }
+        
+        .patient-header {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-blue);
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-teal);
+            box-shadow: 0 0 0 2px rgba(38, 166, 154, 0.2);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--secondary-green);
+        }
+        
+        .medication-section {
+            background-color: #F0F7FF;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-blue);
+        }
+        
+        .medication-section h4 {
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .vital-box {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .vital-box label {
+            display: block;
+            color: var(--text-light);
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        
+        .vital-input {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .io-section {
+            background-color: #E8F5E9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #C8E6C9;
+        }
+        
+        .io-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .wound-section {
+            background-color: #FFF3E0;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #FFE0B2;
+        }
+        
+        .pain-section {
+            background-color: #FCE4EC;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #F8BBD0;
+        }
+        
+        .mobility-section {
+            background-color: #F3E5F5;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #E1BEE7;
+        }
+        
+        .notes-section {
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 2px dashed var(--border-blue);
+            margin-top: 20px;
+        }
+        
+        .notes-section textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 14px;
+            border-top: 1px solid var(--border-blue);
+            margin-top: 20px;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+            
+            .header {
+                background: white !important;
+                color: black !important;
+                border-bottom: 2px solid black;
+            }
+            
+            .patient-section {
+                break-inside: avoid;
+                border: 1px solid #ccc;
+            }
+            
+            .checkbox-item input[type="checkbox"] {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .footer {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MedSurg Nurse Brain Sheet</h1>
+            <div class="subtitle">Professional 3-Patient Landscape • 12-Hour Shift Documentation</div>
+        </div>
+        
+        <div class="quick-reference">
+            <h3>Quick Reference</h3>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                <div>
+                    <strong>Emergency Contacts:</strong><br>
+                    Rapid Response: ______<br>
+                    Charge Nurse: ______
+                </div>
+                <div>
+                    <strong>Common Abbreviations:</strong><br>
+                    NKDA, PRN, I&O, ADL<br>
+                    PERRLA, GCS
+                </div>
+                <div>
+                    <strong>Key Protocols:</strong><br>
+                    Isolation: □ Contact □ Droplet □ Airborne<br>
+                    Fall Risk: □ Low □ High
+                </div>
+            </div>
+        </div>
+        
+        <div class="patients-grid">
+            <!-- Patient 1 -->
+            <div class="patient-section">
+                <h3 class="section-title">Patient 1</h3>
+                
+                <div class="patient-header">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-input" placeholder="Patient Name">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="form-group">
+                            <label>Room</label>
+                            <input type="text" class="form-input" placeholder="Room #">
+                        </div>
+                        <div class="form-group">
+                            <label>Allergies</label>
+                            <input type="text" class="form-input" placeholder="List allergies">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Code Status</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="code-full-1">
+                                <label for="code-full-1">Full</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="code-dnr-1">
+                                <label for="code-dnr-1">DNR</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="code-other-1">
+                                <label for="code-other-1">Other</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Shift & Times</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="shift-day-1">
+                                <label for="shift-day-1">Day</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="shift-night-1">
+                                <label for="shift-night-1">Night</label>
+                            </div>
+                        </div>
+                        <input type="text" class="form-input" placeholder="Times: ____, ____, ____, ____" style="margin-top: 8px;">
+                    </div>
+                </div>
+                
+                <div class="medication-section">
+                    <h4>Medications</h4>
+                    <div class="form-group">
+                        <label>Antibiotics</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="abx-0800-1">
+                                <label for="abx-0800-1">0800</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="abx-1600-1">
+                                <label for="abx-1600-1">1600</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="abx-0000-1">
+                                <label for="abx-0000-1">0000</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Pain Medications</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pain-0800-1">
+                                <label for="pain-0800-1">0800</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pain-1200-1">
+                                <label for="pain-1200-1">1200</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pain-1600-1">
+                                <label for="pain-1600-1">1600</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pain-2000-1">
+                                <label for="pain-2000-1">2000</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pain-0000-1">
+                                <label for="pain-0000-1">0000</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pain-0400-1">
+                                <label for="pain-0400-1">0400</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>PRN Medications</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="prn-pain-1">
+                                <label for="prn-pain-1">Pain</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="prn-nausea-1">
+                                <label for="prn-nausea-1">Nausea</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="prn-anxiety-1">
+                                <label for="prn-anxiety-1">Anxiety</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="text" class="form-input" placeholder="Other" style="width: 100px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h4 style="color: var(--primary-blue); margin-bottom: 10px;">Vitals & Assessments</h4>
+                    <div class="vitals-grid">
+                        <div class="vital-box">
+                            <label>Set 1</label>
+                            <input type="text" class="vital-input" placeholder="BP">
+                            <input type="text" class="vital-input" placeholder="Temp" style="margin-top: 5px;">
+                            <input type="text" class="vital-input" placeholder="SpO₂" style="margin-top: 5px;">
+                        </div>
+                        <div class="vital-box">
+                            <label>Set 2</label>
+                            <input type="text" class="vital-input" placeholder="BP">
+                            <input type="text" class="vital-input" placeholder="Temp" style="margin-top: 5px;">
+                            <input type="text" class="vital-input" placeholder="SpO₂" style="margin-top: 5px;">
+                        </div>
+                        <div class="vital-box">
+                            <label>Set 3</label>
+                            <input type="text" class="vital-input" placeholder="BP">
+                            <input type="text" class="vital-input" placeholder="Temp" style="margin-top: 5px;">
+                            <input type="text" class="vital-input" placeholder="SpO₂" style="margin-top: 5px;">
+                        </div>
+                        <div class="vital-box">
+                            <label>Set 4</label>
+                            <input type="text" class="vital-input" placeholder="BP">
+                            <input type="text" class="vital-input" placeholder="Temp" style="margin-top: 5px;">
+                            <input type="text" class="vital-input" placeholder="SpO₂" style="margin-top: 5px;">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                        <div>
+                            <label>Neuro Status</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="neuro-alert-1">
+                                    <label for="neuro-alert-1">Alert</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="neuro-confused-1">
+                                    <label for="neuro-confused-1">Confused</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="neuro-lethargic-1">
+                                    <label for="neuro-lethargic-1">Lethargic</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Respiratory</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="resp-ra-1">
+                                    <label for="resp

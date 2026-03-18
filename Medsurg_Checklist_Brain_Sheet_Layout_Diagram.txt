@@ -1,0 +1,93 @@
+MEDSURG CHECKLIST BRAIN SHEET LAYOUT (Portrait 8.5"×11")
+========================================================
+
+┌─────────────────────────────────────────────────────────────────┐
+│ HEADER (multi‑column)                                           │
+│ Patient: ___________  MRN: ______  Room: ___  Allergies: ____   │
+│ Code Status: ________  Isolation: ________  Fall Risk: ______   │
+│ Nurse: ________  Shift: ________  Date: ____________________   │
+├─────────────────────────────────────────────────────────────────┤
+│ MENTAL STATUS (Green)                                           │
+│ □ A&O x1 □ x2 □ x3 □ x4 □ Confused □ Lethargic □ Alert         │
+│ □ Restless □ Agitated □ Sedated □ Follows commands             │
+│ Other: ______________________________________________________   │
+├─────────────────────────────────────────────────────────────────┤
+│ IV FLUIDS (Blue)                                                │
+│ Fluid: □ LR □ NS □ D5W □ D5½NS □ D5LR □ Other: ______________   │
+│ Rate: □ KVO □ 50 □ 100 □ 125 □ 150 □ Other: ______ mL/hr       │
+│ Site: □ L AC □ R AC □ L forearm □ R forearm □ Central □ PICC   │
+│ Status: □ Patent □ Infiltrated □ Discontinued □ New IV needed  │
+├─────────────────────────────────────────────────────────────────┤
+│ MOBILITY (Yellow)                                               │
+│ Ambulate: □ Ambulate □ Bedrest □ Up ad lib □ Chair only        │
+│ Assist: □ Assist x1 □ x2 □ Wheelchair □ Walker □ Cane          │
+│ Turning: □ Q2h □ Q4h □ Pressure‑relief mattress                │
+│ Falls: □ Bed alarm □ Low bed □ Non‑skid socks □ Call bell      │
+├─────────────────────────────────────────────────────────────────┤
+│ PAIN SCALE (Red)                                                │
+│ 0 (No pain) – 2 (Mild) – 4 (Discomforting) – 6 (Distressing) – │
+│ 8 (Intense) – 10 (Unbearable)  Circle: 0 1 2 3 4 5 6 7 8 9 10  │
+│ Location: ___________________________________________________   │
+│ Interventions: □ Medicated □ Non‑pharm □ Reassess in 30 min    │
+├─────────────────────────────────────────────────────────────────┤
+│ COMMON MEDICATIONS (Purple)                                     │
+│ Analgesics: □ Acetaminophen □ Ibuprofen □ Oxycodone □ Morphine │
+│ Anticoag: □ Heparin SQ □ Enoxaparin □ Aspirin □ Clopidogrel    │
+│ Diabetes: □ Insulin SS □ Lantus □ Metformin                    │
+│ Antibiotics: ________ (q__h)  ________ (q__h)                  │
+│ Other: ________ (q__h)  ________ (q__h)                        │
+├─────────────────────────────────────────────────────────────────┤
+│ ASSESSMENTS & INTERVENTIONS (Teal)                              │
+│ Neuro: □ Neuro checks q__h □ Pupils equal □ GCS ___            │
+│ Wound: □ Dressing change □ Wound vac □ Drain care              │
+│ Drains: □ Foley □ JP □ Hemovac □ Chest tube □ NG               │
+│ Respiratory: □ O2 NC ____L □ O2 mask ____L □ IS q2h            │
+│ GI/GU: □ NPO □ Clear liquids □ Regular diet □ BM               │
+├─────────────────────────────────────────────────────────────────┤
+│ VITAL SIGNS & I&O (Gray)                                        │
+│ ┌──────┬───┬────┬───┬───┬────┬────┬──────┬──────┐              │
+│ │ Time │ T │ BP │HR │RR │SpO₂│Pain│Intake│Output│              │
+│ ├──────┼───┼────┼───┼───┼────┼────┼──────┼──────┤              │
+│ │ 0800 │   │    │   │   │    │    │      │      │              │
+│ │ 1200 │   │    │   │   │    │    │      │      │              │
+│ │ 1600 │   │    │   │   │    │    │      │      │              │
+│ │ 2000 │   │    │   │   │    │    │      │      │              │
+│ └──────┴───┴────┴───┴───┴────┴────┴──────┴──────┘              │
+│ Total Intake: ________ mL  Output: ________ mL  Bal: ________  │
+├─────────────────────────────────────────────────────────────────┤
+│ HUMAN OUTLINE (Right Column)                                    │
+│   ╭─────────────────╮                                           │
+│   │      HEAD       │                                           │
+│   ╰─────────────────╯                                           │
+│   │    SHOULDERS    │  L ● IV site                             │
+│   │  ╭───╮   ╭───╮  │  R ▲ Foley                               │
+│   │  │   │   │   │  │  ✕ Wound                                 │
+│   │  ╰───╯   ╰───╯  │  ○ Drain                                 │
+│   │    ARMS/LEGS    │  ■ Pressure injury                       │
+│   ╰─────────────────╯                                           │
+│ Notes: ______________________________________________________   │
+├─────────────────────────────────────────────────────────────────┤
+│ NOTES & PLAN (Gray)                                             │
+│ Plan/To‑Do: ________________________________________________   │
+│ Notes: ______________________________________________________   │
+│ Handoff Priority: □ Stable □ Watch □ Unstable                  │
+└─────────────────────────────────────────────────────────────────┘
+
+Color Legend:
+Green=Mental Status, Blue=IV Fluids, Yellow=Mobility, Red=Pain Scale,
+Purple=Common Meds, Teal=Assessments, Gray=Vitals/I&O & Notes
+
+Design Features:
+- Checklist‑based with pre‑defined options for 80% of common cases
+- Human outline diagram for visual mapping of equipment/locations
+- Color‑coded sections for ADHD‑friendly navigation
+- Balanced mix of checkboxes and free‑text space for unusual cases
+- MedSurg‑specific content (fluids, mobility, common meds)
+- Print‑optimized single‑page layout
+
+File Deliverables:
+1. Medsurg_Checklist_Brain_Sheet_Design_Plan.md - Overall design plan
+2. Medsurg_Checklist_Brain_Sheet_Specifications.md - Detailed section specs
+3. Medsurg_Checklist_Brain_Sheet_Layout_Diagram.txt - This ASCII diagram
+4. (Optional) HTML mockup for interactive review
+

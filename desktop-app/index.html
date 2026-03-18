@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control - Agent Monitor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+        
+        /* macOS title bar drag region */
+        .title-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 38px;
+            -webkit-app-region: drag;
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .title-bar-text {
+            font-size: 0.85em;
+            font-weight: 500;
+            color: #a0aec0;
+            margin-left: 10px;
+        }
+        
+        /* Floating bubbles container */
+        #agent-space {
+            position: absolute;
+            top: 38px;
+            width: 100%;
+            height: calc(100% - 38px);
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0f 100%);
+            overflow: hidden;
+        }
+        
+        /* Agent bubble */
+        .agent-bubble {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid transparent;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .agent-bubble:hover {
+            transform: scale(1.1);
+            z-index: 100;
+            box-shadow: 0 0 50px currentColor;
+        }
+        
+        /* Agent status colors */
+        .status-active {
+            background: radial-gradient(circle at 30% 30%, rgba(72, 187, 120, 0.9), rgba(72, 187, 120, 0.3));
+            border-color: #48bb78;
+            color: #48bb78;
+        }
+        
+        .status-thinking {
+            background: radial-gradient(circle at 30% 30%, rgba(246, 173, 85, 0.9), rgba(246, 173, 85, 0.3));
+            border-color: #f6ad55;
+            color: #f6ad55;
+            animation: pulse 2s infinite, float 20s infinite ease-in-out;
+        }
+        
+        .status-idle {
+            background: radial-gradient(circle at 30% 30%, rgba(113, 128, 150, 0.9), rgba(113, 128, 150, 0.3));
+            border-color: #718096;
+            color: #718096;
+        }
+        
+        .status-error {
+            background: radial-gradient(circle at 30% 30%, rgba(245, 101, 101, 0.9), rgba(245, 101, 101, 0.3));
+            border-color: #f56565;
+            color: #f56565;
+            animation: shake 0.5s infinite, float 20s infinite ease-in-out;
+        }
+        
+        /* Agent content */
+        .agent-name {
+            font-weight: 600;
+            font-size: 0.9em;
+            text-align: center;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .agent-model {
+            font-size: 0.7em;
+            opacity: 0.8;
+            text-align: center;
+        }
+        
+        .agent-metrics {
+            font-size: 0.6em;
+            opacity: 0.7;
+            margin-top: 4px;
+            text-align: center;
+        }
+        
+        /* Connection lines */
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, currentColor, transparent);
+            transform-origin: 0 0;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        /* Control panel */
+        #control-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            -webkit-app-region: no-drag;
+        }
+        
+        .control-button {
+            background: #2d3748;
+            border: none;
+            color: #e2e8f0;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .control-button:hover {
+            background: #4a5568;
+            transform: translateY(-2px);
+        }
+        
+        /* Stats overlay */
+        #stats-overlay {
+            position: fixed;
+            top: 48px;
+            right: 20px;
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 15px;
+            width: 220px;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            -webkit-app-region: no-drag;
+        }
+        
+        .stats-title {
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #63b3ed;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.85em;
+        }
+        
+        .stat-label {
+            opacity: 0.8;
+        }
+        
+        .stat-value {
+            font-weight: 500;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, -10px) rotate(1deg); }
+            50% { transform: translate(-5px, 5px) rotate(-1deg); }
+            75% { transform: translate(-10px, -5px) rotate(1deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+        
+        /* Agent detail modal */
+        .agent-detail {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(26, 26, 46, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid #4a5568;
+            border-radius: 16px;
+            padding: 25px;
+            width: 380px;
+            z-index: 2000;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            display: none;
+            -webkit-app-region: no-drag;
+        }
+        
+        .detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .detail-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .detail-title {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        .detail-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #a0aec0;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .detail-close:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .detail-content {
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .detail-section {
+            margin-bottom: 15px;
+        }
+        
+        .detail-label {
+            opacity: 0.8;
+            margin-bottom: 5px;
+            font-size: 0.85em;
+            color: #a0aec0;
+        }
+        
+        /* Status indicators for detail modal */
+        .detail-status.status-active {
+            background: #48bb78;
+        }
+        
+        .detail-status.status-thinking {
+            background: #f6ad55;
+        }
+        
+        .detail-status.status-idle {
+            background: #718096;
+        }
+        
+        .detail-status.status-error {
+            background: #f56565;
+        }
+        
+        /* Keyboard shortcut hint */
+        .shortcut-hint {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            color: #718096;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .shortcut-hint.visible {
+            opacity: 1;
+        }
+        
+        /* Loading indicator */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #0a0a0f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s;
+        }
+        
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #2d3748;
+            border-top-color: #63b3ed;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- Title bar for macOS drag -->
+    <div class="title-bar">
+        <span class="title-bar-text">🎯 Mission Control</span>
+    </div>
+    
+    <!-- Floating agent space -->
+    <div id="agent-space">
+        <!-- Connection lines will be drawn here -->
+        <!-- Agent bubbles will be added here -->
+    </div>
+    
+    <!-- Stats overlay -->
+    <div id="stats-overlay">
+        <div class="stats-title">📊 System Stats</div>
+        <div class="stat-item">
+            <span class="stat-label">Active Agents:</span>
+            <span class="stat-value" id="active-count">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Total Tokens:</span>
+            <span class="stat-value" id="total-tokens">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Success Rate:</span>
+            <span class="stat-value" id="success-rate">100%</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Avg Duration:</span>
+            <span class="stat-value" id="avg-duration">0s</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Uptime:</span>
+            <span class="stat-value" id="uptime">100%</span>
+        </div>
+    </div>
+    
+    <!-- Control panel -->
+    <div id="control-panel">
+        <button class="control-button" onclick="addRandomAgent()">➕ Add Agent</button>
+        <button class="control-button" onclick="toggleConnections()">🔗 Toggle Connections</button>
+        <button class="control-button" onclick="resetAgents()">🔄 Reset</button>
+        <button class="control-button" onclick="toggleAutoAdd()" id="auto-add-btn">⏯️ Auto-add</button>
+        <button class="control-button" onclick="exportStats()">📥 Export</button>
+    </div>
+    
+    <!-- Shortcut hint -->
+    <div class="shortcut-hint" id="shortcut-hint">
+        Press Cmd/Ctrl + , for Settings
+    </div>
+    
+    <!-- Agent detail modal -->
+    <div id="agent-detail" class="agent-detail">
+        <div class="detail-header">
+            <div class="detail-status" id="detail-status"></div>
+            <div class="detail-title" id="detail-name"></div>
+            <button class="detail-close" onclick="closeDetail()">×</button>
+        </div>
+        <div class="detail-content">
+            <div class="detail-section">
+                <div class="detail-label">Model:</div>
+                <div id="detail-model"></div>
+            </div>
+            <div class="detail-section">
+                <div class="detail-label">Status:</div>
+                <div id="detail-status-text"></div>
+            </div>
+            <div class="detail-section">
+                <div class="detail-label">Duration:</div>
+                <div id="detail-duration"></div>
+            </div>
+            <div class="detail-section">
+                <div class="detail-label">Tokens:</div>
+                <div id="detail-tokens"></div>
+            </div>
+            <div class="detail-section">
+                <div class="detail-label">Task:</div>
+                <div id="detail-task"></div>
+            </div>
+            <div class="detail-section">
+                <div class="detail-label">Last Activity:</div>
+                <div id="detail-last-activity"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Agent data
+        const agents = [
+            { id: 1, name: "Triage", model: "GPT-5-nano", status: "active", size: 80, tokens: 1250, duration: "45s", task: "System health check" },
+            { id: 2, name: "Planner", model: "DeepSeek Reasoner", status: "thinking", size: 100, tokens: 8500, duration: "2m", task: "Nurse sheet design" },
+            { id: 3, name: "Implementer", model: "Kimi K2.5", status: "active", size: 90, tokens: 32000, duration: "4m", task: "HTML implementation" },
+            { id: 4, name: "Reviewer", model: "GPT-5.1 Codex", status: "idle", size: 85, tokens: 0, duration: "0s", task: "Waiting for review" },
+            { id: 5, name: "Research", model: "DeepSeek V3", status: "active", size: 75, tokens: 18500, duration: "3m", task: "Etsy market analysis" },
+            { id: 6, name: "Creative", model: "Claude 3.5 Haiku", status: "thinking", size: 95, tokens: 4200, duration: "1m", task: "Listing description" },
+            { id: 7, name: "Analytics", model: "GPT-4o-mini", status: "idle", size: 70, tokens: 0, duration: "0s", task: "Awaiting data" },
+            { id: 8, name: "Communication", model: "GPT-4o-mini", status: "error", size: 65, tokens: 800, duration: "30s", task: "API connection failed" }
+        ];
+        
+        const agentSpace = document.getElementById('agent-space');
+        let connectionsVisible = true;
+        let autoAddInterval = null;
+        let refreshRate = 2000;
+        let notificationsEnabled = true;
+        
+        // Initialize
+        async function init() {
+            // Load settings from Electron
+            if (window.electronAPI) {
+                try {
+                    const settings = await window.electronAPI.getSettings();
+                    refreshRate = settings.refreshRate || 2000;
+                    notificationsEnabled = settings.notifications !== false;
+                } catch (e) {
+                    console.log('Settings not available');
+                }
+                
+                // Listen for menu export
+                window.electronAPI.onMenuExportStats(() => {
+                    exportStats();
+                });
+            }
+            
+            // Hide loading overlay
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 500);
+            
+            // Show shortcut hint briefly
+            setTimeout(() => {
+                document.getElementById('shortcut-hint').classList.add('visible');
+                setTimeout(() => {
+                    document.getElementById('shortcut-hint').classList.remove('visible');
+                }, 3000);
+            }, 1000);
+            
+            initAgents();
+        }
+        
+        // Initialize agents
+        function initAgents() {
+            agents.forEach(agent => {
+                createAgentBubble(agent);
+            });
+            updateStats();
+            drawConnections();
+            startSimulation();
+        }
+        
+        // Create agent bubble
+        function createAgentBubble(agent) {
+            const bubble = document.createElement('div');
+            bubble.className = `agent-bubble status-${agent.status}`;
+            bubble.id = `agent-${agent.id}`;
+            bubble.style.width = `${agent.size}px`;
+            bubble.style.height = `${agent.size}px`;
+            
+            // Random position (accounting for title bar)
+            const x = Math.random() * (window.innerWidth - agent.size - 100) + 50;
+            const y = Math.random() * (window.innerHeight - agent.size - 200) + 50;
+            bubble.style.left = `${x}px`;
+            bubble.style.top = `${y}px`;
+            
+            // Random animation delay
+            bubble.style.animationDelay = `${Math.random() * 5}s`;
+            
+            // Content
+            bubble.innerHTML = `
+                <div class="agent-name">${agent.name}</div>
+                <div class="agent-model">${agent.model}</div>
+                <div class="agent-metrics">${agent.tokens.toLocaleString()} tokens</div>
+            `;
+            
+            // Click handler
+            bubble.onclick = () => showAgentDetail(agent);
+            
+            agentSpace.appendChild(bubble);
+        }
+        
+        // Draw connections between agents
+        function drawConnections() {
+            // Clear existing connections
+            document.querySelectorAll('.connection').forEach(el => el.remove());
+            
+            if (!connectionsVisible) return;
+            
+            // Draw connections between some agents
+            const connections = [
+                [1, 2], [2, 3], [3, 4], [1, 5], [5, 6], [6, 7], [7, 8]
+            ];
+            
+            connections.forEach(([fromId, toId]) => {
+                const from = document.getElementById(`agent-${fromId}`);
+                const to = document.getElementById(`agent-${toId}`);
+                
+                if (from && to) {
+                    const fromRect = from.getBoundingClientRect();
+                    const toRect = to.getBoundingClientRect();
+                    
+                    const x1 = fromRect.left + fromRect.width / 2;
+                    const y1 = fromRect.top + fromRect.height / 2;
+                    const x2 = toRect.left + toRect.width / 2;
+                    const y2 = toRect.top + toRect.height / 2;
+                    
+                    const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+                    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                    
+                    const connection = document.createElement('div');
+                    connection.className = 'connection';
+                    connection.style.width = `${length}px`;
+                    connection.style.left = `${x1}px`;
+                    connection.style.top = `${y1}px`;
+                    connection.style.transform = `rotate(${angle}deg)`;
+                    connection.style.color = getComputedStyle(from).color;
+                    
+                    agentSpace.appendChild(connection);
+                }
+            });
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const activeAgents = agents.filter(a => a.status === 'active' || a.status === 'thinking').length;
+            const totalTokens = agents.reduce((sum, a) => sum + a.tokens, 0);
+            const activeDurations = agents.filter(a => a.duration !== '0s').map(a => parseInt(a.duration));
+            const avgDuration = activeDurations.length > 0 
+                ? Math.round(activeDurations.reduce((a, b) => a + b) / activeDurations.length) + 's'
+                : '0s';
+            
+            document.getElementById('active-count').textContent = `${activeAgents}/${agents.length}`;
+            document.getElementById('total-tokens').textContent = totalTokens.toLocaleString();
+            document.getElementById('avg-duration').textContent = avgDuration;
+            
+            // Simulate success rate
+            const successRate = 95 + Math.random() * 5;
+            document.getElementById('success-rate').textContent = `${successRate.toFixed(1)}%`;
+            
+            // Simulate uptime
+            const uptime = 99.5 + Math.random() * 0.5;
+            document.getElementById('uptime').textContent = `${uptime.toFixed(1)}%`;
+        }
+        
+        // Show agent detail
+        function showAgentDetail(agent) {
+            document.getElementById('detail-name').textContent = agent.name;
+            document.getElementById('detail-model').textContent = agent.model;
+            document.getElementById('detail-status-text').textContent = agent.status.charAt(0).toUpperCase() + agent.status.slice(1);
+            document.getElementById('detail-duration').textContent = agent.duration;
+            document.getElementById('detail-tokens').textContent = agent.tokens.toLocaleString() + ' tokens';
+            document.getElementById('detail-task').textContent = agent.task;
+            document.getElementById('detail-last-activity').textContent = new Date().toLocaleTimeString();
+            
+            // Set status color
+            const statusEl = document.getElementById('detail-status');
+            statusEl.className = 'detail-status';
+            statusEl.classList.add(`status-${agent.status}`);
+            
+            document.getElementById('agent-detail').style.display = 'block';
+        }
+        
+        // Close detail
+        function closeDetail() {
+            document.getElementById('agent-detail').style.display = 'none';
+        }
+        
+        // Control functions
+        function addRandomAgent() {
+            const models = ['GPT-5-nano', 'DeepSeek Reasoner', 'Kimi K2.5', 'GPT-5.1 Codex', 'Claude 3.5 Haiku', 'GPT-4o-mini'];
+            const tasks = ['System monitoring', 'Data analysis', 'Content generation', 'Code review', 'Research', 'Customer service'];
+            const statuses = ['active', 'thinking', 'idle', 'error'];
+            
+            const newAgent = {
+                id: agents.length + 1,
+                name: `Agent-${agents.length + 1}`,
+                model: models[Math.floor(Math.random() * models.length)],
+                status: statuses[Math.floor(Math.random() * statuses.length)],
+                size: 60 + Math.random() * 40,
+                tokens: Math.floor(Math.random() * 50000),
+                duration: `${Math.floor(Math.random() * 300)}s`,
+                task: tasks[Math.floor(Math.random() * tasks.length)]
+            };
+            
+            agents.push(newAgent);
+            createAgentBubble(newAgent);
+            drawConnections();
+            updateStats();
+            
+            // Send notification if enabled
+            if (notificationsEnabled && window.electronAPI) {
+                window.electronAPI.notifyAgentStatus(
+                    newAgent.name,
+                    newAgent.status,
+                    newAgent.task
+                );
+            }
+        }
+        
+        function toggleConnections() {
+            connectionsVisible = !connectionsVisible;
+            drawConnections();
+        }
+        
+        function resetAgents() {
+            document.querySelectorAll('.agent-bubble, .connection').forEach(el => el.remove());
+            agents.length = 0;
+            
+            // Re-add original agents
+            const originalAgents = [
+                { id: 1, name: "Triage", model: "GPT-5-nano", status: "active", size: 80, tokens: 1250, duration: "45s", task: "System health check" },
+                { id: 2, name: "Planner", model: "DeepSeek Reasoner", status: "thinking", size: 100, tokens: 8500, duration: "2m", task: "Nurse sheet design" },
+                { id: 3, name: "Implementer", model: "Kimi K2.5", status: "active", size: 90, tokens: 32000, duration: "4m", task: "HTML implementation" },
+                { id: 4, name: "Reviewer", model: "GPT-5.1 Codex", status: "idle", size: 85, tokens: 0, duration: "0s", task: "Waiting for review" }
+            ];
+            
+            originalAgents.forEach(agent => {
+                agents.push(agent);
+                createAgentBubble(agent);
+            });
+            
+            drawConnections();
+            updateStats();
+        }
+        
+        function toggleAutoAdd() {
+            const btn = document.getElementById('auto-add-btn');
+            if (autoAddInterval) {
+                clearInterval(autoAddInterval);
+                autoAddInterval = null;
+                btn.textContent = '⏯️ Auto-add';
+            } else {
+                autoAddInterval = setInterval(addRandomAgent, 3000);
+                btn.textContent = '⏸️ Stop Auto-add';
+            }
+        }
+        
+        async function exportStats() {
+            const stats = {
+                timestamp: new Date().toISOString(),
+                agents: agents.length,
+                activeAgents: agents.filter(a => a.status === 'active' || a.status === 'thinking').length,
+                totalTokens: agents.reduce((sum, a) => sum + a.tokens, 0),
+                agents: agents.map(a => ({
+                    name: a.name,
+                    status: a.status,
+                    tokens: a.tokens,
+                    duration: a.duration,
+                    task: a.task
+                }))
+            };
+            
+            const dataStr = JSON.stringify(stats, null, 2);
+            
+            // Use Electron's save dialog if available
+            if (window.electronAPI) {
+                try {
+                    const result = await window.electronAPI.showSaveDialog({
+                        defaultPath: `mission-control-stats-${new Date().toISOString().split('T')[0]}.json`,
+                        filters: [
+                            { name: 'JSON Files', extensions: ['json'] },
+                            { name: 'All Files', extensions: ['*'] }
+                        ]
+                    });
+                    
+                    if (!result.canceled && result.filePath) {
+                        await window.electronAPI.writeFile(result.filePath, dataStr);
+                        
+                        // Show success notification
+                        window.electronAPI.showNotification(
+                            'Export Complete',
+                            `Stats saved to ${result.filePath}`
+                        );
+                    }
+                    return;
+                } catch (e) {
+                    console.error('Export failed:', e);
+                }
+            }
+            
+            // Fallback to browser download
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `mission-control-stats-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            drawConnections();
+        });
+        
+        // Close detail when clicking outside
+        window.addEventListener('click', (e) => {
+            const detail = document.getElementById('agent-detail');
+            if (detail.style.display === 'block' && !detail.contains(e.target) && !e.target.closest('.agent-bubble')) {
+                closeDetail();
+            }
+        });
+        
+        // Keyboard shortcuts
+        window.addEventListener('keydown', (e) => {
+            // Cmd/Ctrl + , for settings
+            if ((e.metaKey || e.ctrlKey) && e.key === ',') {
+                e.preventDefault();
+                // Settings will be opened by the main process
+            }
+            
+            // Escape to close detail
+            if (e.key === 'Escape') {
+                closeDetail();
+            }
+        });
+        
+        // Start simulation loop
+        function startSimulation() {
+            setInterval(() => {
+                agents.forEach(agent => {
+                    if (Math.random() > 0.7) {
+                        const statuses = ['active', 'thinking', 'idle', 'error'];
+                        const newStatus = statuses[Math.floor(Math.random() * statuses.length)];
+                        const oldStatus = agent.status;
+                        
+                        if (oldStatus !== newStatus) {
+                            agent.status = newStatus;
+                            const bubble = document.getElementById(`agent-${agent.id}`);
+                            if (bubble) {
+                                bubble.className = `agent-bubble status-${newStatus}`;
+                            }
+                            
+                            // Send notification for important status changes
+                            if (notificationsEnabled && window.electronAPI && newStatus === 'error') {
+                                window.electronAPI.notifyAgentStatus(
+                                    agent.name,
+                                    newStatus,
+                                    agent.task
+                                );
+                            }
+                        }
+                        
+                        // Update tokens
+                        if (agent.status === 'active' || agent.status === 'thinking') {
+                            agent.tokens += Math.floor(Math.random() * 1000);
+                            const metrics = bubble?.querySelector('.agent-metrics');
+                            if (metrics) {
+                                metrics.textContent = `${agent.tokens.toLocaleString()} tokens`;
+                            }
+                        }
+                    }
+                });
+                
+                updateStats();
+            }, refreshRate);
+        }
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

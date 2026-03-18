@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Control - Integrated Agent System</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- App Container -->
+  <div id="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">🌙</span>
+          <span class="logo-text">Mission Control</span>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-view="dashboard">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-view="agents">
+          <span class="nav-icon">🤖</span>
+          <span class="nav-label">Agents</span>
+          <span class="nav-badge" id="agentBadge">0</span>
+        </a>
+        <a href="#" class="nav-item" data-view="costs">
+          <span class="nav-icon">💰</span>
+          <span class="nav-label">Costs</span>
+        </a>
+        <a href="#" class="nav-item" data-view="performance">
+          <span class="nav-icon">📈</span>
+          <span class="nav-label">Performance</span>
+        </a>
+        <a href="#" class="nav-item" data-view="history">
+          <span class="nav-icon">📜</span>
+          <span class="nav-label">History</span>
+        </a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="connection-status" id="connectionStatus">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="status-text" id="statusText">Connecting...</span>
+        </div>
+        <a href="#" class="nav-item" data-view="settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        <div class="header-actions">
+          <button class="btn btn-icon" id="refreshBtn" title="Refresh data">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+          </button>
+          <button class="btn btn-primary" id="newTaskBtn">
+            <span>+</span> New Task
+          </button>
+        </div>
+      </header>
+
+      <!-- Views -->
+      <div class="views-container">
+        <!-- Dashboard View -->
+        <div class="view active" id="dashboardView">
+          <!-- Key Metrics -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-header">
+                <span class="metric-label">Current Spending</span>
+                <span class="metric-trend" id="spendingTrend">--</span>
+              </div>
+              <div class="metric-value" id="currentSpending">$0.00</div>
+              <div class="metric-subtitle">
+                Budget: <span id="totalBudget">$10.00</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="budgetProgress"></div>
+              </div>
+            </div>
+            
+            <div class="metric-card">
+              <div class="metric-header">
+                <span class="metric-label">Cost Savings</span>
+                <span class="metric-badge success" id="savingsBadge">--</span>
+              </div>
+              <div class="metric-value success" id="costSavings">$0.00</div>
+              <div class="metric-subtitle">
+                vs Kimi-only: <span id="savingsPercent">0%</span>
+              </div>
+            </div>
+            
+            <div class="metric-card">
+              <div class="metric-header">
+                <span class="metric-label">Success Rate</span>
+                <span class="metric-badge" id="successBadge">--</span>
+              </div>
+              <div class="metric-value" id="successRate">100%</div>
+              <div class="metric-subtitle">
+                <span id="totalExecutions">0</span> total executions
+              </div>
+            </div>
+            
+            <div class="metric-card">
+              <div class="metric-header">
+                <span class="metric-label">Avg Quality</span>
+                <span class="metric-badge" id="qualityBadge">--</span>
+              </div>
+              <div class="metric-value" id="avgQuality">0.0</div>
+              <div class="metric-subtitle">
+                Avg duration: <span id="avgDuration">0ms</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Strategy & Controls -->
+          <div class="controls-section">
+            <div class="control-card">
+              <h3>Execution Strategy</h3>
+              <div class="strategy-selector">
+                <button class="strategy-btn active" data-strategy="progressive">
+                  <span class="strategy-icon">🎯</span>
+                  <span class="strategy-name">Progressive</span>
+                  <span class="strategy-desc">Confidence-based refinement</span>
+                </button>
+                <button class="strategy-btn" data-strategy="traditional">
+                  <span class="strategy-icon">⛓️</span>
+                  <span class="strategy-name">Traditional</span>
+                  <span class="strategy-desc">Fallback chain</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="control-card">
+              <h3>Quality / Cost Balance</h3>
+              <div class="slider-container">
+                <div class="slider-labels">
+                  <span>💰 Economy</span>
+                  <span>⚖️ Balanced</span>
+                  <span>✨ Quality</span>
+                </div>
+                <input type="range" class="slider" id="qualitySlider" min="0" max="100" value="50">
+                <div class="slider-value" id="sliderValue">Balanced</div>
+              </div>
+            </div>
+            
+            <div class="control-card">
+              <h3>Budget Limit</h3>
+              <div class="budget-input">
+                <span class="currency">$</span>
+                <input type="number" id="budgetInput" value="10.00" step="0.01" min="0.01">
+              </div>
+              <div class="budget-alerts">
+                <label class="checkbox">
+                  <input type="checkbox" id="alert50" checked>
+                  <span>Alert at 50%</span>
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" id="alert80" checked>
+                  <span>Alert at 80%</span>
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" id="alert95" checked>
+                  <span>Alert at 95%</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Agent Status -->
+          <div class="section">
+            <div class="section-header">
+              <h2>Active Agents</h2>
+              <a href="#" class="view-all" data-view="agents">View all →</a>
+            </div>
+            <div class="agents-grid" id="dashboardAgents">
+              <!-- Dynamic agent cards -->
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="section">
+            <div class="section-header">
+              <h2>Recent Activity</h2>
+              <a href="#" class="view-all" data-view="history">View all →</a>
+            </div>
+            <div class="activity-list" id="recentActivity">
+              <!-- Dynamic activity items -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Agents View -->
+        <div class="view" id="agentsView">
+          <div class="agents-header">
+            <div class="filter-tabs">
+              <button class="tab active" data-filter="all">All</button>
+              <button class="tab" data-filter="active">Active</button>
+              <button class="tab" data-filter="idle">Idle</button>
+            </div>
+          </div>
+          <div class="agents-list" id="agentsList">
+            <!-- Dynamic agent list -->
+          </div>
+        </div>
+
+        <!-- Costs View -->
+        <div class="view" id="costsView">
+          <div class="costs-grid">
+            <div class="cost-card wide">
+              <h3>Cost by Model</h3>
+              <div class="chart-container" id="modelCostChart">
+                <!-- Dynamic chart -->
+              </div>
+            </div>
+            <div class="cost-card wide">
+              <h3>Cost by Task Type</h3>
+              <div class="chart-container" id="taskTypeCostChart">
+                <!-- Dynamic chart -->
+              </div>
+            </div>
+            <div class="cost-card">
+              <h3>Cost Breakdown</h3>
+              <div class="breakdown-list" id="costBreakdown">
+                <!-- Dynamic breakdown -->
+              </div>
+            </div>
+            <div class="cost-card">
+              <h3>Budget Status</h3>
+              <div class="budget-status" id="budgetStatus">
+                <!-- Dynamic budget status -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance View -->
+        <div class="view" id="performanceView">
+          <div class="performance-grid">
+            <div class="perf-card wide">
+              <h3>Model Performance</h3>
+              <div class="performance-table-container">
+                <table class="performance-table" id="modelPerformanceTable">
+                  <thead>
+                    <tr>
+                      <th>Model</th>
+                      <th>Success Rate</th>
+                      <th>Avg Cost</th>
+                      <th>Avg Duration</th>
+                      <th>Quality</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Dynamic rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="perf-card">
+              <h3>Efficiency Metrics</h3>
+              <div class="efficiency-list" id="efficiencyList">
+                <!-- Dynamic efficiency metrics -->
+              </div>
+            </div>
+            <div class="perf-card">
+              <h3>Progressive Refinement</h3>
+              <div class="progressive-stats" id="progressiveStats">
+                <!-- Dynamic progressive stats -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- History View -->
+        <div class="view" id="historyView">
+          <div class="history-controls">
+            <div class="filter-group">
+              <label>Model:</label>
+              <select id="historyModelFilter">
+                <option value="">All</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Agent:</label>
+              <select id="historyAgentFilter">
+                <option value="">All</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Task Type:</label>
+              <select id="historyTypeFilter">
+                <option value="">All</option>
+                <option value="coding">Coding</option>
+                <option value="research">Research</option>
+                <option value="planning">Planning</option>
+                <option value="ui">UI</option>
+                <option value="backend">Backend</option>
+              </select>
+            </div>
+          </div>
+          <div class="history-list" id="historyList">
+            <!-- Dynamic history items -->
+          </div>
+        </div>
+
+        <!-- Settings View -->
+        <div class="view" id="settingsView">
+          <div class="settings-grid">
+            <div class="settings-card">
+              <h3>Connection</h3>
+              <div class="form-group">
+                <label>WebSocket URL</label>
+                <input type="text" id="wsUrl" value="ws://localhost:8080/ws">
+              </div>
+              <div class="form-group">
+                <label>Reconnect Interval (ms)</label>
+                <input type="number" id="reconnectInterval" value="3000">
+              </div>
+              <button class="btn btn-primary" id="saveConnection">Save</button>
+            </div>
+            
+            <div class="settings-card">
+              <h3>Display</h3>
+              <div class="form-group">
+                <label class="checkbox">
+                  <input type="checkbox" id="darkMode" checked>
+                  <span>Dark mode</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="checkbox">
+                  <input type="checkbox" id="showNotifications" checked>
+                  <span>Show notifications</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="checkbox">
+                  <input type="checkbox" id="autoRefresh" checked>
+                  <span>Auto-refresh data</span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="settings-card">
+              <h3>About</h3>
+              <div class="about-info">
+                <p><strong>Mission Control</strong></p>
+                <p>Version 2.0.0</p>
+                <p>Integrated Agent System</p>
+                <p class="text-secondary">© 2026 OpenClaw Team</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- New Task Modal -->
+  <div class="modal" id="newTaskModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>New Task</h3>
+        <button class="modal-close" id="closeTaskModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Task Description</label>
+          <textarea id="taskDescription" rows="3" placeholder="Describe what you want to accomplish..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Complexity (1-10)</label>
+            <input type="range" id="taskComplexity" min="1" max="10" value="5">
+            <span class="range-value" id="complexityValue">5</span>
+          </div>
+          <div class="form-group">
+            <label>Domain</label>
+            <select id="taskDomain">
+              <option value="general">General</option>
+              <option value="coding">Coding</option>
+              <option value="research">Research</option>
+              <option value="planning">Planning</option>
+              <option value="ui">UI</option>
+              <option value="backend">Backend</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Strategy</label>
+          <select id="taskStrategy">
+            <option value="balanced">Balanced</option>
+            <option value="quality">Quality First</option>
+            <option value="economy">Economy</option>
+            <option value="speed">Speed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Budget Limit ($)</label>
+          <input type="number" id="taskBudget" value="1.00" step="0.01" min="0.01">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelTask">Cancel</button>
+        <button class="btn btn-primary" id="submitTask">Execute Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

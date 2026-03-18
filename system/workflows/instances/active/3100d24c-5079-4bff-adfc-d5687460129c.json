@@ -1,0 +1,20 @@
+{
+  "id": "3100d24c-5079-4bff-adfc-d5687460129c",
+  "definition_id": "phase3_test",
+  "state": "ERROR",
+  "parameters": {
+    "test": true
+  },
+  "context": {
+    "start_time": "2026-03-16T01:14:21.086954",
+    "trust_level": "L2",
+    "approval_required": true,
+    "approval_reason": "Action requires approval",
+    "error": "Action requires approval: Action requires approval"
+  },
+  "current_phase": "integration_phase",
+  "current_step": "check_trust",
+  "steps_completed": [],
+  "created_at": "2026-03-16T01:14:21.085982",
+  "updated_at": "2026-03-16T01:14:21.428443"
+}

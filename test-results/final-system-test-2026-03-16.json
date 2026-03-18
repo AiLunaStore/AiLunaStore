@@ -1,0 +1,243 @@
+{
+  "timestamp": "2026-03-16T09:05:54.333269",
+  "requests": [
+    {
+      "label": "low_risk_summary",
+      "prompt": "Summarize the top benefits of using remote work policies for distributed teams.",
+      "request_id": "e9f8e108",
+      "risk_level": "low_risk",
+      "reviewed": false,
+      "parallel_speedup": 1.0,
+      "total_latency_ms": 102,
+      "agent_calls": {
+        "triage": {
+          "calls": 1,
+          "total_latency_ms": 0,
+          "tokens_in": 100,
+          "tokens_out": 200
+        },
+        "research": {
+          "calls": 1,
+          "total_latency_ms": 102,
+          "tokens_in": 500,
+          "tokens_out": 1000
+        },
+        "critique": {
+          "calls": 1,
+          "total_latency_ms": 0,
+          "tokens_in": 300,
+          "tokens_out": 400
+        }
+      },
+      "tokens_total": {
+        "in": 900,
+        "out": 1600
+      },
+      "output_sample": {
+        "results": [
+          "Result from research agent"
+        ],
+        "agents_used": [
+          "research"
+        ],
+        "total_tasks": 1
+      }
+    },
+    {
+      "label": "high_risk_code",
+      "prompt": "Write Python code that implements a quicksort function and explain how it works.",
+      "request_id": "6ce7781c",
+      "risk_level": "high_risk",
+      "reviewed": true,
+      "parallel_speedup": 1.0,
+      "total_latency_ms": 102,
+      "agent_calls": {
+        "triage": {
+          "calls": 1,
+          "total_latency_ms": 0,
+          "tokens_in": 100,
+          "tokens_out": 200
+        },
+        "coding": {
+          "calls": 1,
+          "total_latency_ms": 102,
+          "tokens_in": 500,
+          "tokens_out": 1000
+        },
+        "critique": {
+          "calls": 1,
+          "total_latency_ms": 0,
+          "tokens_in": 300,
+          "tokens_out": 400
+        },
+        "reviewer": {
+          "calls": 1,
+          "total_latency_ms": 0,
+          "tokens_in": 500,
+          "tokens_out": 800
+        }
+      },
+      "tokens_total": {
+        "in": 1400,
+        "out": 2400
+      },
+      "output_sample": {
+        "verified": true,
+        "findings": {
+          "logical_errors": [],
+          "hallucinations": [],
+          "incomplete_tasks": [],
+          "inconsistencies": [],
+          "overall_quality": "good"
+        },
+        "results": [
+          "Result from coding agent"
+        ],
+        "approval": "approved"
+      }
+    },
+    {
+      "label": "complex_parallel",
+      "prompt": "Research two modern Python web frameworks and generate a table comparing FastAPI and Django, then produce code samples demonstrating a hello world API for each.",
+      "request_id": "722fff30",
+      "risk_level": "high_risk",
+      "reviewed": true,
+      "parallel_speedup": 1.4950980392156863,
+      "total_latency_ms": 204,
+      "agent_calls": {
+        "triage": {
+          "calls": 1,
+          "total_latency_ms": 0,
+          "tokens_in": 100,
+          "tokens_out": 200
+        },
+        "planner": {
+          "calls": 1,
+          "total_latency_ms": 0,
+          "tokens_in": 200,
+          "tokens_out": 500
+        },
+        "research": {
+          "calls": 2,
+          "total_latency_ms": 203,
+          "tokens_in": 1750,
+          "tokens_out": 3500
+        },
+        "coding": {
+          "calls": 1,
+          "total_latency_ms": 102,
+          "tokens_in": 1500,
+          "tokens_out": 3000
+        },
+        "critique": {
+          "calls": 1,
+          "total_latency_ms": 0,
+          "tokens_in": 300,
+          "tokens_out": 400
+        },
+        "reviewer": {
+          "calls": 1,
+          "total_latency_ms": 0,
+          "tokens_in": 500,
+          "tokens_out": 800
+        }
+      },
+      "tokens_total": {
+        "in": 4350,
+        "out": 8400
+      },
+      "output_sample": {
+        "verified": true,
+        "findings": {
+          "logical_errors": [],
+          "hallucinations": [],
+          "incomplete_tasks": [],
+          "inconsistencies": [],
+          "overall_quality": "good"
+        },
+        "results": [
+          "Result from research agent",
+          "Result from coding agent",
+          "Result from research agent"
+        ],
+        "approval": "approved"
+      }
+    }
+  ],
+  "custom_parallel": {
+    "task_results": [
+      {
+        "task_id": "research",
+        "agent": "research",
+        "latency_ms": 102,
+        "status": "completed"
+      },
+      {
+        "task_id": "coding",
+        "agent": "coding",
+        "latency_ms": 102,
+        "status": "completed"
+      },
+      {
+        "task_id": "automation",
+        "agent": "automation",
+        "latency_ms": 102,
+        "status": "completed"
+      },
+      {
+        "task_id": "integration",
+        "agent": "research",
+        "latency_ms": 102,
+        "status": "completed"
+      }
+    ],
+    "parallel_speedup": 1.3333333333333333,
+    "agent_calls": {
+      "research": {
+        "calls": 2,
+        "total_latency_ms": 204,
+        "tokens_in": 1550,
+        "tokens_out": 3100
+      },
+      "coding": {
+        "calls": 1,
+        "total_latency_ms": 102,
+        "tokens_in": 1000,
+        "tokens_out": 2000
+      },
+      "automation": {
+        "calls": 1,
+        "total_latency_ms": 102,
+        "tokens_in": 600,
+        "tokens_out": 1200
+      }
+    }
+  },
+  "watchdog_timeout": {
+    "result": {
+      "success": true,
+      "result": {
+        "model": "deepseek-coder",
+        "status": "completed"
+      },
+      "model_used": "deepseek-coder",
+      "attempts": 2,
+      "task_id": "watchdog-timeout"
+    },
+    "watchdog_metrics": {
+      "tasks_monitored": 1,
+      "timeouts": 1,
+      "retries": 2,
+      "fallbacks": 2,
+      "stalls_detected": 0
+    },
+    "status": "healthy"
+  },
+  "metrics_logging": {
+    "log_dir": "test-results/metrics-log-final",
+    "request_file_exists": true,
+    "parallel_speedup": 1.875,
+    "total_latency_ms": 0,
+    "tokens_in": 1000
+  }
+}

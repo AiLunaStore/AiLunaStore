@@ -1,0 +1,20 @@
+{
+  "current_level": "L2",
+  "trust_score": 45,
+  "achieved_at": "2026-03-15T00:00:00Z",
+  "days_at_level": 1,
+  "metrics": {
+    "success_rate": 97.9,
+    "tasks_completed": 47,
+    "tasks_failed": 1,
+    "boundary_violations": 0,
+    "safety_incidents": 0
+  },
+  "history": [
+    {"level": "L0", "started": "2026-03-10", "ended": "2026-03-11", "duration_days": 1},
+    {"level": "L1", "started": "2026-03-11", "ended": "2026-03-15", "duration_days": 4},
+    {"level": "L2", "started": "2026-03-15", "ended": null, "duration_days": 1}
+  ],
+  "elevation_requests": [],
+  "violations": []
+}

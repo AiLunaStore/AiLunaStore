@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER Nurse Brain Sheet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: landscape letter;
+            margin: 0.25in;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 8pt;
+            line-height: 1.2;
+            color: #1a1a1a;
+            background: #fff;
+            padding: 0.25in;
+        }
+
+        .page {
+            width: 10.5in;
+            height: 8in;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .header h1 {
+            font-size: 14pt;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header-info {
+            display: flex;
+            gap: 16px;
+            font-size: 9pt;
+        }
+
+        .header-info span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .header-info input {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 2px;
+            padding: 2px 6px;
+            font-size: 8pt;
+            width: 80px;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .patient-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            border: 2px solid #2c5282;
+            border-radius: 4px;
+            padding: 6px;
+            background: #fafbfc;
+        }
+
+        .patient-header {
+            background: #2c5282;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: 700;
+            font-size: 10pt;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .room-input {
+            background: white;
+            border: none;
+            border-radius: 2px;
+            padding: 2px 6px;
+            font-size: 9pt;
+            width: 50px;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .esi-section {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: white;
+            border-radius: 3px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .esi-box {
+            flex: 1;
+            text-align: center;
+            padding: 4px 2px;
+            border-radius: 3px;
+            font-size: 7pt;
+            font-weight: 700;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .esi-1 { background: #dc2626; color: white; }
+        .esi-2 { background: #ea580c; color: white; }
+        .esi-3 { background: #ca8a04; color: white; }
+        .esi-4 { background: #16a34a; color: white; }
+        .esi-5 { background: #2563eb; color: white; }
+
+        .demo-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 0.8fr;
+            gap: 4px;
+        }
+
+        .demo-field {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .demo-field label {
+            font-size: 6pt;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .demo-field input {
+            border: 1px solid #cbd5e0;
+            border-radius: 2px;
+            padding: 3px 4px;
+            font-size: 8pt;
+            background: white;
+        }
+
+        .cc-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            padding: 4px;
+        }
+
+        .cc-section label {
+            font-size: 6pt;
+            font-weight: 600;
+            color: #dc2626;
+            text-transform: uppercase;
+        }
+
+        .cc-section input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #cbd5e0;
+            padding: 2px 0;
+            font-size: 9pt;
+            font-weight: 600;
+            color: #dc2626;
+        }
+
+        .vitals-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            padding: 4px;
+        }
+
+        .vitals-header {
+            font-size: 6pt;
+            font-weight: 700;
+            color: #2c5282;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 2px;
+        }
+
+        .vitals-grid.header-row {
+            background: #e2e8f0;
+            font-size: 6pt;
+            font-weight: 600;
+            text-align: center;
+            padding: 2px;
+        }
+
+        .vitals-grid.data-row input {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            padding: 2px;
+            text-align: center;
+            font-size: 7pt;
+        }
+
+        .vitals-label {
+            font-size: 6pt;
+            font-weight: 600;
+            color: #4a5568;
+            padding: 2px;
+            background: #f7fafc;
+        }
+
+        .scales-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+
+        .scale-box {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            padding: 4px;
+        }
+
+        .scale-title {
+            font-size: 6pt;
+            font-weight: 700;
+            color: #2c5282;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .gcs-grid {
+            display: grid;
+            grid-template-columns: 1fr 0.5fr;
+            gap: 1px;
+            font-size: 6pt;
+        }
+
+        .gcs-grid input {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            padding: 1px 2px;
+            font-size: 6pt;
+        }
+
+        .gcs-total {
+            grid-column: span 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1e3a5f;
+            color: white;
+            padding: 2px 4px;
+            margin-top: 2px;
+            border-radius: 2px;
+        }
+
+        .revised-grid {
+            display: grid;
+            grid-template-columns: 1fr 0.6fr;
+            gap: 1px;
+            font-size: 6pt;
+        }
+
+        .revised-grid input {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            padding: 1px 2px;
+            font-size: 6pt;
+        }
+
+        .revised-total {
+            grid-column: span 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #7c2d12;
+            color: white;
+            padding: 2px 4px;
+            margin-top: 2px;
+            border-radius: 2px;
+        }
+
+        .meds-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            padding: 4px;
+            flex: 1;
+        }
+
+        .meds-header {
+            font-size: 6pt;
+            font-weight: 700;
+            color: #2c5282;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .meds-grid {
+            display: grid;
+            grid-template-columns: 0.4fr 1fr 0.5fr 0.5fr 0.4fr;
+            gap: 2px;
+        }
+
+        .meds-grid.header {
+            background: #e2e8f0;
+            font-size: 6pt;
+            font-weight: 600;
+            text-align: center;
+            padding: 2px;
+        }
+
+        .meds-grid.row input {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            padding: 2px;
+            font-size: 7pt;
+        }
+
+        .procedures-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+
+        .proc-box {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            padding: 4px;
+        }
+
+        .proc-title {
+            font-size: 6pt;
+            font-weight: 700;
+            color: #2c5282;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 6pt;
+        }
+
+        .check-item input[type="checkbox"] {
+            width: 10px;
+            height: 10px;
+        }
+
+        .check-item input[type="text"] {
+            flex: 1;
+            border: none;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 6pt;
+            padding: 1px;
+        }
+
+        .sbar-section {
+            background: white;
+            border: 1px solid #2c5282;
+            border-radius: 3px;
+            padding: 4px;
+        }
+
+        .sbar-title {
+            font-size: 7pt;
+            font-weight: 700;
+            color: white;
+            background: #2c5282;
+            padding: 2px 6px;
+            margin: -4px -4px 4px -4px;
+            border-radius: 3px 3px 0 0;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .sbar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+        }
+
+        .sbar-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .sbar-box label {
+            font-size: 6pt;
+            font-weight: 700;
+            color: #4a5568;
+        }
+
+        .sbar-box textarea {
+            width: 100%;
+            height: 35px;
+            border: 1px solid #e2e8f0;
+            border-radius: 2px;
+            padding: 2px;
+            font-size: 6pt;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .trauma-team-section {
+            background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
+            color: white;
+            border-radius: 3px;
+            padding: 4px;
+        }
+
+        .trauma-team-title {
+            font-size: 7pt;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+
+        .trauma-roles {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3px;
+        }
+
+        .role-box {
+            background: rgba(255,255,255,0.15);
+            border-radius: 2px;
+            padding: 2px 4px;
+        }
+
+        .role-box label {
+            font-size: 5pt;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .role-box input {
+            width: 100%;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 1px;
+            padding: 1px 3px;
+            font-size: 6pt;
+            margin-top: 1px;
+        }
+
+        .notes-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            padding: 4px;
+            flex: 1;
+        }
+
+        .notes-title {
+            font-size: 6pt;
+            font-weight: 700;
+            color: #4a5568;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .notes-section textarea {
+            width: 100%;
+            height: 100%;
+            min-height: 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 2px;
+            padding: 3px;
+            font-size: 7pt;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .right-panel {
+            width: 2.8in;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .reference-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            padding: 5px;
+        }
+
+        .ref-title {
+            font-size: 7pt;
+            font-weight: 700;
+            color: #2c5282;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 2px;
+        }
+
+        .esi-ref {
+            font-size: 6pt;
+        }
+
+        .esi-ref-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 0;
+            border-bottom: 1px dotted #e2e8f0;
+        }
+
+        .esi-ref-row:last-child {
+            border-bottom: none;
+        }
+
+        .esi-badge {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 7pt;
+            flex-shrink: 0;
+        }
+
+        .sepsis-alert {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            border-radius: 3px;
+            padding: 5px;
+        }
+
+        .sepsis-title {
+            font-size: 7pt;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3px;
+        }
+
+        .sepsis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            font-size: 6pt;
+        }
+
+        .sepsis-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .code-section {
+            background: linear-gradient(135deg, #1e3a5f 0%, #dc2626 100%);
+            color: white;
+            border-radius: 3px;
+            padding: 5px;
+        }
+
+        .code-title {
+            font-size: 8pt;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .code-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .code-box {
+            background: rgba(255,255,255,0.15);
+            border-radius: 2px;
+            padding: 3px;
+            text-align: center;
+        }
+
+        .code-box label {
+            font-size: 5pt;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .code-box input {
+            width: 100%;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 1px;
+            padding: 2px;
+            font-size: 7pt;
+            margin-top: 2px;
+            text-align: center;
+        }
+
+        .quick-meds {
+            font-size: 6pt;
+        }
+
+        .med-cat {
+            margin-bottom: 3px;
+        }
+
+        .med-cat-title {
+            font-weight: 700;
+            color: #2c5282;
+            font-size: 6pt;
+        }
+
+        .med-list {
+            padding-left: 8px;
+            color: #4a5568;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+            
+            input, textarea {
+                border: 1px solid #ccc !important;
+            }
+            
+            .esi-box {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏥 EMERGENCY DEPARTMENT — NURSE BRAIN SHEET</h1>
+            <div class="header-info">
+                <span>Date: <input type="text" placeholder="MM/DD/YY"></span>
+                <span>Shift: <input type="text" placeholder="Day/Eve/Night"></span>
+                <span>Nurse: <input type="text" placeholder="Name/Initials"></span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Patient 1 Column -->
+            <div class="patient-column">
+                <div class="patient-header">
+                    <span>PATIENT 1</span>
+                    <span>Room: <input type="text" class="room-input" placeholder="___"></span>
+                </div>
+
+                <!-- ESI Triage -->
+                <div class="esi-section">
+                    <div class="esi-box esi-1">ESI 1<br>Resuscitation</div>
+                    <div class="esi-box esi-2">ESI 2<br>Emergent</div>
+                    <div class="esi-box esi-3">ESI 3<br>Urgent</div>
+                    <div class="esi-box esi-4">ESI 4<br>Less Urgent</div>
+                    <div class="esi-box esi-5">ESI 5<br>Non-Urgent</div>
+                </div>
+
+                <!-- Demographics -->
+                <div class="demo-row">
+                    <div class="demo-field">
+                        <label>Patient Name</label>
+                        <input type="text" placeholder="Last, First">
+                    </div>
+                    <div class="demo-field">
+                        <label>MRN</label>
+                        <input type="text" placeholder="Medical Record #">
+                    </div>
+                    <div class="demo-field">
+                        <label>Age/Sex</label>
+                        <input type="text" placeholder="__ / M/F">
+                    </div>
+                    <div class="demo-field">
+                        <label>Arrival</label>
+                        <input type="text" placeholder="HH:MM">
+                    </div>
+                </div>
+
+                <!-- Chief Complaint -->
+                <div class="cc-section">
+                    <label>Chief Complaint</label>
+                    <input type="text" placeholder="_______________________________________________________">
+                </div>
+
+                <!-- Vitals Grid -->
+                <div class="vitals-section">
+                    <div class="vitals-header">
+                        <span>Vitals (q5-15min in critical)</span>
+                        <span>Time →</span>
+                    </div>
+                    <div class="vitals-grid header-row">
+                        <div></div>
+                        <div>T1</div>
+                        <div>T2</div>
+                        <div>T3</div>
+                        <div>T4</div>
+                        <div>T5</div>
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">BP</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">HR</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">RR</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">SpO2</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">Temp</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">Pain</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">Glucose</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                </div>
+
+                <!-- Trauma Scales -->
+                <div class="scales-section">
+                    <div class="scale-box">
+                        <div class="scale-title">Glasgow Coma Scale</div>
+                        <div class="gcs-grid">
+                            <span>Eye (1-4):</span><input type="text" placeholder="__">
+                            <span>Verbal (1-5):</span><input type="text" placeholder="__">
+                            <span>Motor (1-6):</span><input type="text" placeholder="__">
+                            <div class="gcs-total">
+                                <span>TOTAL GCS</span>
+                                <input type="text" placeholder="__/15" style="width:35px;text-align:center;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scale-box">
+                        <div class="scale-title">REVISED Trauma Score</div>
+                        <div class="revised-grid">
+                            <span>GCS (0-4):</span><input type="text" placeholder="__">
+                            <span>SBP (0-4):</span><input type="text" placeholder="__">
+                            <span>RR (0-4):</span><input type="text" placeholder="__">
+                            <div class="revised-total">
+                                <span>TOTAL RTS</span>
+                                <input type="text" placeholder="__/12" style="width:35px;text-align:center;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Meds -->
+                <div class="meds-section">
+                    <div class="meds-header">Emergency Medications & Interventions</div>
+                    <div class="meds-grid header">
+                        <div>Time</div>
+                        <div>Medication/Intervention</div>
+                        <div>Dose/Route</div>
+                        <div>Response</div>
+                        <div>RN</div>
+                    </div>
+                    <div class="meds-grid row">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="meds-grid row">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="meds-grid row">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="meds-grid row">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                </div>
+
+                <!-- Procedures & Tasks -->
+                <div class="procedures-section">
+                    <div class="proc-box">
+                        <div class="proc-title">Procedure Checklist</div>
+                        <div class="checklist">
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="IV Access"></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="Labs Drawn"></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="EKG"></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="Imaging"></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="Foley"></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="NGT"></div>
+                        </div>
+                    </div>
+                    <div class="proc-box">
+                        <div class="proc-title">To-Do / Tasks</div>
+                        <div class="checklist">
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trauma Team -->
+                <div class="trauma-team-section">
+                    <div class="trauma-team-title">🚨 TRAUMA TEAM ROLES</div>
+                    <div class="trauma-roles">
+                        <div class="role-box">
+                            <label>Team Leader</label>
+                            <input type="text" placeholder="Name">
+                        </div>
+                        <div class="role-box">
+                            <label>Airway</label>
+                            <input type="text" placeholder="Name">
+                        </div>
+                        <div class="role-box">
+                            <label>Procedures</label>
+                            <input type="text" placeholder="Name">
+                        </div>
+                        <div class="role-box">
+                            <label>Meds/Document</label>
+                            <input type="text" placeholder="Name">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SBAR Handoff -->
+                <div class="sbar-section">
+                    <div class="sbar-title">SBAR HANDOFF REPORT</div>
+                    <div class="sbar-grid">
+                        <div class="sbar-box">
+                            <label>SITUATION</label>
+                            <textarea placeholder="Why is patient here?
+Key events..."></textarea>
+                        </div>
+                        <div class="sbar-box">
+                            <label>BACKGROUND</label>
+                            <textarea placeholder="PMH, allergies
+Home meds..."></textarea>
+                        </div>
+                        <div class="sbar-box">
+                            <label>ASSESSMENT</label>
+                            <textarea placeholder="Current status
+Changes..."></textarea>
+                        </div>
+                        <div class="sbar-box">
+                            <label>RECOMMENDATION</label>
+                            <textarea placeholder="Plan of care
+Pending items..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="notes-section">
+                    <div class="notes-title">Additional Notes / Events</div>
+                    <textarea placeholder="Document critical events, family notifications, consultant calls, disposition plan..."></textarea>
+                </div>
+            </div>
+
+            <!-- Patient 2 Column -->
+            <div class="patient-column">
+                <div class="patient-header">
+                    <span>PATIENT 2</span>
+                    <span>Room: <input type="text" class="room-input" placeholder="___"></span>
+                </div>
+
+                <!-- ESI Triage -->
+                <div class="esi-section">
+                    <div class="esi-box esi-1">ESI 1<br>Resuscitation</div>
+                    <div class="esi-box esi-2">ESI 2<br>Emergent</div>
+                    <div class="esi-box esi-3">ESI 3<br>Urgent</div>
+                    <div class="esi-box esi-4">ESI 4<br>Less Urgent</div>
+                    <div class="esi-box esi-5">ESI 5<br>Non-Urgent</div>
+                </div>
+
+                <!-- Demographics -->
+                <div class="demo-row">
+                    <div class="demo-field">
+                        <label>Patient Name</label>
+                        <input type="text" placeholder="Last, First">
+                    </div>
+                    <div class="demo-field">
+                        <label>MRN</label>
+                        <input type="text" placeholder="Medical Record #">
+                    </div>
+                    <div class="demo-field">
+                        <label>Age/Sex</label>
+                        <input type="text" placeholder="__ / M/F">
+                    </div>
+                    <div class="demo-field">
+                        <label>Arrival</label>
+                        <input type="text" placeholder="HH:MM">
+                    </div>
+                </div>
+
+                <!-- Chief Complaint -->
+                <div class="cc-section">
+                    <label>Chief Complaint</label>
+                    <input type="text" placeholder="_______________________________________________________">
+                </div>
+
+                <!-- Vitals Grid -->
+                <div class="vitals-section">
+                    <div class="vitals-header">
+                        <span>Vitals (q5-15min in critical)</span>
+                        <span>Time →</span>
+                    </div>
+                    <div class="vitals-grid header-row">
+                        <div></div>
+                        <div>T1</div>
+                        <div>T2</div>
+                        <div>T3</div>
+                        <div>T4</div>
+                        <div>T5</div>
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="                        <div class="vitals-label">BP</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">HR</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">RR</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">SpO2</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">Temp</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">Pain</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="vitals-grid data-row">
+                        <div class="vitals-label">Glucose</div>
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                </div>
+
+                <!-- Trauma Scales -->
+                <div class="scales-section">
+                    <div class="scale-box">
+                        <div class="scale-title">Glasgow Coma Scale</div>
+                        <div class="gcs-grid">
+                            <span>Eye (1-4):</span><input type="text" placeholder="__">
+                            <span>Verbal (1-5):</span><input type="text" placeholder="__">
+                            <span>Motor (1-6):</span><input type="text" placeholder="__">
+                            <div class="gcs-total">
+                                <span>TOTAL GCS</span>
+                                <input type="text" placeholder="__/15" style="width:35px;text-align:center;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scale-box">
+                        <div class="scale-title">REVISED Trauma Score</div>
+                        <div class="revised-grid">
+                            <span>GCS (0-4):</span><input type="text" placeholder="__">
+                            <span>SBP (0-4):</span><input type="text" placeholder="__">
+                            <span>RR (0-4):</span><input type="text" placeholder="__">
+                            <div class="revised-total">
+                                <span>TOTAL RTS</span>
+                                <input type="text" placeholder="__/12" style="width:35px;text-align:center;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Meds -->
+                <div class="meds-section">
+                    <div class="meds-header">Emergency Medications & Interventions</div>
+                    <div class="meds-grid header">
+                        <div>Time</div>
+                        <div>Medication/Intervention</div>
+                        <div>Dose/Route</div>
+                        <div>Response</div>
+                        <div>RN</div>
+                    </div>
+                    <div class="meds-grid row">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="meds-grid row">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="meds-grid row">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                    <div class="meds-grid row">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                        <input type="text">
+                    </div>
+                </div>
+
+                <!-- Procedures & Tasks -->
+                <div class="procedures-section">
+                    <div class="proc-box">
+                        <div class="proc-title">Procedure Checklist</div>
+                        <div class="checklist">
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="IV Access"></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="Labs Drawn"></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="EKG"></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="Imaging"></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="Foley"></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder="NGT"></div>
+                        </div>
+                    </div>
+                    <div class="proc-box">
+                        <div class="proc-title">To-Do / Tasks</div>
+                        <div class="checklist">
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                            <div class="check-item"><input type="checkbox"><input type="text" placeholder=""></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trauma Team -->
+                <div class="trauma-team-section">
+                    <div class="trauma-team-title">🚨 TRAUMA TEAM ROLES</div>
+                    <div class="trauma-roles">
+                        <div class="role-box">
+                            <label>Team Leader</label>
+                            <input type="text" placeholder="Name">
+                        </div>
+                        <div class="role-box">
+                            <label>Airway</label>
+                            <input type="text" placeholder="Name">
+                        </div>
+                        <div class="role-box">
+                            <label>Procedures</label>
+                            <input type="text" placeholder="Name">
+                        </div>
+                        <div class="role-box">
+                            <label>Meds/Document</label>
+                            <input type="text" placeholder="Name">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SBAR Handoff -->
+                <div class="sbar-section">
+                    <div class="sbar-title">SBAR HANDOFF REPORT</div>
+                    <div class="sbar-grid">
+                        <div class="sbar-box">
+                            <label>SITUATION</label>
+                            <textarea placeholder="Why is patient here?
+Key events..."></textarea>
+                        </div>
+                        <div class="sbar-box">
+                            <label>BACKGROUND</label>
+                            <textarea placeholder="PMH, allergies
+Home meds..."></textarea>
+                        </div>
+                        <div class="sbar-box">
+                            <label>ASSESSMENT</label>
+                            <textarea placeholder="Current status
+Changes..."></textarea>
+                        </div>
+                        <div class="sbar-box">
+                            <label>RECOMMENDATION</label>
+                            <textarea placeholder="Plan of care
+Pending items..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="notes-section">
+                    <div class="notes-title">Additional Notes / Events</div>
+                    <textarea placeholder="Document critical events, family notifications, consultant calls, disposition plan..."></textarea>
+                </div>
+            </div>
+
+            <!-- Right Panel - Quick Reference -->
+            <div class="right-panel">
+                <!-- ESI Reference -->
+                <div class="reference-card">
+                    <div class="ref-title">🎯 ESI Triage Reference</div>
+                    <div class="esi-ref">
+                        <div class="esi-ref-row">
+                            <div class="esi-badge esi-1">1</div>
+                            <span><strong>Resuscitation</strong> - Immediate life threat</span>
+                        </div>
+                        <div class="esi-ref-row">
+                            <div class="esi-badge esi-2">2</div>
+                            <span><strong>Emergent</strong> - High risk, confused, severe pain</span>
+                        </div>
+                        <div class="esi-ref-row">
+                            <div class="esi-badge esi-3">3</div>
+                            <span><strong>Urgent</strong> - Multiple resources needed</span>
+                        </div>
+                        <div class="esi-ref-row">
+                            <div class="esi-badge esi-4">4</div>
+                            <span><strong>Less Urgent</strong> - One resource needed</span>
+                        </div>
+                        <div class="esi-ref-row">
+                            <div class="esi-badge esi-5">5</div>
+                            <span><strong>Non-Urgent</strong> - No resources needed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sepsis Alert -->
+                <div class="sepsis-alert">
+                    <div class="sepsis-title">🚨 SEPSIS ALERT CRITERIA</div>
+                    <div class="sepsis-grid">
+                        <div class="sepsis-item"><input type="checkbox"> Temp >38°C or <36°C</div>
+                        <div class="sepsis-item"><input type="checkbox"> HR >90 bpm</div>
+                        <div class="sepsis-item"><input type="checkbox"> RR >20/min</div>
+                        <div class="sepsis-item"><input type="checkbox"> WBC >12K or <4K</div>
+                        <div class="sepsis-item"><input type="checkbox"> Glucose >140</div>
+                        <div class="sepsis-item"><input type="checkbox"> Altered mental status</div>
+                    </div>
+                </div>
+
+                <!-- Code Blue / Rapid Response -->
+                <div class="code-section">
+                    <div class="code-title">🚨 CODE BLUE / RAPID RESPONSE</div>
+                    <div class="code-grid">
+                        <div class="code-box">
+                            <label>Time Called</label>
+                            <input type="text" placeholder="__ : __">
+                        </div>
+                        <div class="code-box">
+                            <label>Time Arrival</label>
+                            <input type="text" placeholder="__ : __">
+                        </div>
+                        <div class="code-box">
+                            <label>Team Leader</label>
+                            <input type="text" placeholder="Name">
+                        </div>
+                        <div class="code-box">
+                            <label>Outcome</label>
+                            <input type="text" placeholder="ROSC/Expired">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Meds Reference -->
+                <div class="reference-card">
+                    <div class="ref-title">💊 Emergency Meds Quick Ref</div>
+                    <div class="quick-meds">
+                        <div class="med-cat">
+                            <div class="med-cat-title">ACLS</div>
+                            <div class="med-list">Epi 1mg q3-5min, Amio 300mg, Atropine 1mg</div>
+                        </div>
+                        <div class="med-cat">
+                            <div class="med-cat-title">Analgesia</div>
+                            <div class="med-list">Fentanyl 1-2mcg/kg, Morphine 2-5mg, Toradol 15-30mg</div>
+                        </div>
+                        <div class="med-cat">
+                            <div class="med-cat-title">Sedation</div>
+                            <div class="med-list">Etomidate 0.3mg/kg, Propofol 1-2mg/kg, Versed 2-5mg</div>
+                        </div>
+                        <div class="med-cat">
+                            <div class="med-cat-title">Paralytics</div>
+                            <div class="med-list">Succinylcholine 1.5mg/kg, Rocuronium 1mg/kg</div>
+                        </div>
+                        <div class="med-cat">
+                            <div class="med-cat-title">Reversal</div>
+                            <div class="med-list">Narcan 0.4-2mg, Romazicon 0.2mg, Flumazenil</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GCS Reference -->
+                <div class="reference-card">
+                    <div class="ref-title">🧠 GCS Quick Reference</div>
+                    <div class="quick-meds">
+                        <div class="med-cat">
+                            <div class="med-cat-title">Eye Opening (1-4)</div>
+                            <div class="med-list">4=Spont, 3=Voice, 2=Pain, 1=None</div>
+                        </div>
+                        <div class="med-cat">
+                            <div class="med-cat-title">Verbal (1-5)</div>
+                            <div class="med-list">5=Oriented, 4=Confused, 3=Words, 2=Sounds, 1=None</div>
+                        </div>
+                        <div class="med-cat">
+                            <div class="med-cat-title">Motor (1-6)</div>
+                            <div class="med-list">6=Commands, 5=Localize, 4=Withdraw, 3=Flexion, 2=Extension, 1=None</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stroke Alert -->
+                <div class="reference-card" style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #1e3a5f;">
+                    <div class="ref-title" style="color: #1e3a5f; border-color: #1e3a5f;">⚡ STROKE ALERT</div>
+                    <div class="quick-meds" style="color: #1e3a5f;">
+                        <div class="med-cat">
+                            <div class="med-cat-title" style="color: #7c2d12;">Last Known Well:</div>
+                            <input type="text" style="width: 100%; padding: 2px; border: 1px solid #1e3a5f; border-radius: 2px; margin-top: 2px;">
+                        </div>
+                        <div class="med-cat">
+                            <div class="med-cat-title" style="color: #7c2d12;">NIHSS Score:</div>
+                            <input type="text" style="width: 100%; padding: 2px; border: 1px solid #1e3a5f; border-radius: 2px; margin-top: 2px;">
+                        </div>
+                        <div class="med-cat">
+                            <div class="med-cat-title" style="color: #7c2d12;">CT Time:</div>
+                            <input type="text" style="width: 100%; padding: 2px; border: 1px solid #1e3a5f; border-radius: 2px; margin-top: 2px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Notes -->
+                <div class="reference-card" style="flex: 1;">
+                    <div class="ref-title">📝 Shift Notes / Tasks</div>
+                    <textarea style="width: 100%; height: calc(100% - 20px); min-height: 60px; border: 1px solid #e2e8f0; border-radius: 2px; padding: 3px; font-size: 7pt; resize: none; font-family: inherit;" placeholder="General shift notes, bed assignments, pending admits..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+{
+  "version": "1.0.0",
+  "strategies": {
+    "balanced": {
+      "id": "balanced",
+      "name": "Balanced",
+      "description": "Optimal balance between quality and cost",
+      "weights": {
+        "quality": 0.4,
+        "cost": 0.4,
+        "speed": 0.2
+      },
+      "constraints": {
+        "minQuality": 7,
+        "maxCostPerTask": 0.01
+      },
+      "fallbackStrategy": "quality"
+    },
+    "quality": {
+      "id": "quality",
+      "name": "Quality First",
+      "description": "Prioritize highest quality regardless of cost",
+      "weights": {
+        "quality": 0.8,
+        "cost": 0.1,
+        "speed": 0.1
+      },
+      "constraints": {
+        "minQuality": 9,
+        "maxCostPerTask": null
+      },
+      "fallbackStrategy": "balanced"
+    },
+    "economy": {
+      "id": "economy",
+      "name": "Economy",
+      "description": "Minimize costs while maintaining acceptable quality",
+      "weights": {
+        "quality": 0.2,
+        "cost": 0.7,
+        "speed": 0.1
+      },
+      "constraints": {
+        "minQuality": 6,
+        "maxCostPerTask": 0.005
+      },
+      "fallbackStrategy": "balanced"
+    },
+    "speed": {
+      "id": "speed",
+      "name": "Speed",
+      "description": "Fastest execution with reasonable quality",
+      "weights": {
+        "quality": 0.2,
+        "cost": 0.2,
+        "speed": 0.6
+      },
+      "constraints": {
+        "minQuality": 7,
+        "maxCostPerTask": 0.01
+      },
+      "fallbackStrategy": "balanced"
+    },
+    "research": {
+      "id": "research",
+      "name": "Research",
+      "description": "Optimized for information gathering and analysis",
+      "weights": {
+        "quality": 0.3,
+        "cost": 0.5,
+        "speed": 0.2
+      },
+      "constraints": {
+        "minQuality": 7,
+        "maxCostPerTask": 0.003
+      },
+      "preferredAgents": ["research-specialist"],
+      "fallbackStrategy": "economy"
+    },
+    "coding": {
+      "id": "coding",
+      "name": "Coding",
+      "description": "Optimized for code implementation tasks",
+      "weights": {
+        "quality": 0.6,
+        "cost": 0.2,
+        "speed": 0.2
+      },
+      "constraints": {
+        "minQuality": 9,
+        "maxCostPerTask": 0.005
+      },
+      "preferredAgents": ["coding-specialist", "ui-specialist", "backend-specialist"],
+      "fallbackStrategy": "quality"
+    },
+    "planning": {
+      "id": "planning",
+      "name": "Planning",
+      "description": "Optimized for architecture and planning tasks",
+      "weights": {
+        "quality": 0.7,
+        "cost": 0.2,
+        "speed": 0.1
+      },
+      "constraints": {
+        "minQuality": 9,
+        "maxCostPerTask": 0.003
+      },
+      "preferredAgents": ["planning-specialist"],
+      "fallbackStrategy": "quality"
+    }
+  },
+  "defaultStrategy": "balanced",
+  "strategySelectionRules": [
+    {
+      "condition": "task.type == 'coding' || task.type == 'implementation'",
+      "strategy": "coding"
+    },
+    {
+      "condition": "task.type == 'research' || task.type == 'analysis'",
+      "strategy": "research"
+    },
+    {
+      "condition": "task.type == 'planning' || task.type == 'architecture'",
+      "strategy": "planning"
+    },
+    {
+      "condition": "budget.remaining < 1.0",
+      "strategy": "economy"
+    }
+  ]
+}

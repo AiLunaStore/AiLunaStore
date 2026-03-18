@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenClaw Mission Control</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Title Bar -->
+  <div class="title-bar">
+    <div class="title-bar-left">
+      <div class="app-logo">🌙</div>
+      <span class="app-name">Mission Control</span>
+      <div class="server-status" id="serverStatus" title="Click for connection details">
+        <span class="status-led" id="statusLed"></span>
+        <span class="status-text" id="statusText">Connecting...</span>
+      </div>
+    </div>
+    <div class="title-bar-right">
+      <button class="title-btn" id="updateBtn" title="Check for updates" style="display: none;">
+        ⬇️
+      </button>
+      <button class="title-btn" id="minimizeBtn" title="Minimize">−</button>
+      <button class="title-btn" id="maximizeBtn" title="Maximize">□</button>
+      <button class="title-btn close" id="closeBtn" title="Close">×</button>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
+          ☰
+        </button>
+      </div>
+      
+      <ul class="nav-menu">
+        <li class="nav-item active" data-view="dashboard">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Dashboard</span>
+        </li>
+        <li class="nav-item" data-view="agents">
+          <span class="nav-icon">🤖</span>
+          <span class="nav-label">Agents</span>
+          <span class="nav-badge" id="agentCount">0</span>
+        </li>
+        <li class="nav-item" data-view="tasks">
+          <span class="nav-icon">📋</span>
+          <span class="nav-label">Tasks</span>
+          <span class="nav-badge" id="taskCount">0</span>
+        </li>
+        <li class="nav-item" data-view="performance">
+          <span class="nav-icon">📈</span>
+          <span class="nav-label">Performance</span>
+        </li>
+        <li class="nav-item" data-view="logs">
+          <span class="nav-icon">📝</span>
+          <span class="nav-label">Logs</span>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <button class="nav-item" data-view="settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="content">
+      <!-- Dashboard View -->
+      <div class="view active" id="dashboardView">
+        <header class="view-header">
+          <h1>Dashboard</h1>
+          <div class="header-actions">
+            <button class="btn btn-secondary" id="refreshDashboard">🔄 Refresh</button>
+          </div>
+        </header>
+        
+        <div class="dashboard-grid">
+          <!-- Server Status Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Server Status</h3>
+              <span class="badge" id="serverBadge">Checking...</span>
+            </div>
+            <div class="card-body">
+              <div class="metric-row">
+                <span class="metric-label">URL:</span>
+                <span class="metric-value" id="serverUrl">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-label">Latency:</span>
+                <span class="metric-value" id="serverLatency">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-label">Last Ping:</span>
+                <span class="metric-value" id="lastPing">-</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-label">Reconnections:</span>
+                <span class="metric-value" id="reconnections">0</span>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary" id="reconnectBtn">Reconnect</button>
+            </div>
+          </div>
+
+          <!-- Active Agents Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Active Agents</h3>
+              <span class="badge badge-success" id="activeAgentCount">0</span>
+            </div>
+            <div class="card-body">
+              <div class="agent-list" id="dashboardAgentList">
+                <p class="empty-state">No agents connected</p>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-secondary" data-view="agents">View All</button>
+            </div>
+          </div>
+
+          <!-- Recent Tasks Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Recent Tasks</h3>
+              <span class="badge" id="recentTaskCount">0</span>
+            </div>
+            <div class="card-body">
+              <div class="task-list" id="dashboardTaskList">
+                <p class="empty-state">No recent tasks</p>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-secondary" data-view="tasks">View All</button>
+            </div>
+          </div>
+
+          <!-- Quick Stats Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Quick Stats</h3>
+            </div>
+            <div class="card-body">
+              <div class="stat-grid">
+                <div class="stat-item">
+                  <span class="stat-value" id="statTasksToday">0</span>
+                  <span class="stat-label">Tasks Today</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value" id="statSuccessRate">0%</span>
+                  <span class="stat-label">Success Rate</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value" id="statAvgLatency">0ms</span>
+                  <span class="stat-label">Avg Latency</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value" id="statUptime">0h</span>
+                  <span class="stat-label">Uptime</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agents View -->
+      <div class="view" id="agentsView">
+        <header class="view-header">
+          <h1>Agents</h1>
+          <div class="header-actions">
+            <button class="btn btn-primary" id="refreshAgents">🔄 Refresh</button>
+          </div>
+        </header>
+        
+        <div class="agents-grid" id="agentsGrid">
+          <!-- Agent cards will be dynamically inserted here -->
+        </div>
+      </div>
+
+      <!-- Tasks View -->
+      <div class="view" id="tasksView">
+        <header class="view-header">
+          <h1>Tasks</h1>
+          <div class="header-actions">
+            <select class="select" id="taskFilter">
+              <option value="all">All Tasks</option>
+              <option value="pending">Pending</option>
+              <option value="running">Running</option>
+              <option value="completed">Completed</option>
+              <option value="failed">Failed</option>
+            </select>
+            <button class="btn btn-secondary" id="exportTasks">📥 Export</button>
+            <button class="btn btn-primary" id="refreshTasks">🔄 Refresh</button>
+          </div>
+        </header>
+        
+        <div class="task-timeline" id="taskTimeline">
+          <!-- Task items will be dynamically inserted here -->
+        </div>
+      </div>
+
+      <!-- Performance View -->
+      <div class="view" id="performanceView">
+        <header class="view-header">
+          <h1>Performance</h1>
+          <div class="header-actions">
+            <select class="select" id="metricPeriod">
+              <option value="1h">Last Hour</option>
+              <option value="24h">Last 24 Hours</option>
+              <option value="7d">Last 7 Days</option>
+            </select>
+          </div>
+        </header>
+        
+        <div class="performance-grid">
+          <div class="card card-large">
+            <div class="card-header">
+              <h3>Token Usage</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="tokenChart"></canvas>
+            </div>
+          </div>
+          
+          <div class="card card-large">
+            <div class="card-header">
+              <h3>Response Times</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="latencyChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logs View -->
+      <div class="view" id="logsView">
+        <header class="view-header">
+          <h1>Logs</h1>
+          <div class="header-actions">
+            <select class="select" id="logAgentFilter">
+              <option value="all">All Agents</option>
+            </select>
+            <select class="select" id="logLevelFilter">
+              <option value="all">All Levels</option>
+              <option value="error">Error</option>
+              <option value="warn">Warning</option>
+              <option value="info">Info</option>
+              <option value="debug">Debug</option>
+            </select>
+            <button class="btn btn-secondary" id="exportLogs">📥 Export</button>
+            <button class="btn btn-primary" id="refreshLogs">🔄 Refresh</button>
+          </div>
+        </header>
+        
+        <div class="logs-container" id="logsContainer">
+          <!-- Log entries will be dynamically inserted here -->
+        </div>
+      </div>
+
+      <!-- Settings View -->
+      <div class="view" id="settingsView">
+        <header class="view-header">
+          <h1>Settings</h1>
+        </header>
+        
+        <div class="settings-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>Server Configuration</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="serverUrlInput">Server URL</label>
+                <input type="url" id="serverUrlInput" class="input" placeholder="http://localhost:8080">
+              </div>
+              <div class="form-group">
+                <label for="pingInterval">Ping Interval (seconds)</label>
+                <input type="number" id="pingInterval" class="input" value="30" min="5" max="300">
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary" id="saveServerSettings">Save</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Appearance</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="themeSelect">Theme</label>
+                <select id="themeSelect" class="select">
+                  <option value="system">System Default</option>
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="checkbox">
+                  <input type="checkbox" id="minimizeToTray">
+                  <span>Minimize to tray instead of closing</span>
+                </label>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary" id="saveAppearanceSettings">Save</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Notifications</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="checkbox">
+                  <input type="checkbox" id="enableNotifications" checked>
+                  <span>Enable desktop notifications</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="checkbox">
+                  <input type="checkbox" id="notifyOnDisconnect" checked>
+                  <span>Notify on server disconnect</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="checkbox">
+                  <input type="checkbox" id="notifyOnUpdate" checked>
+                  <span>Notify on app updates</span>
+                </label>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary" id="saveNotificationSettings">Save</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Updates</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="checkbox">
+                  <input type="checkbox" id="autoUpdate" checked>
+                  <span>Automatically download updates</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <p class="text-secondary">Current Version: <span id="appVersion">1.0.0</span></p>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-secondary" id="checkUpdatesBtn">Check for Updates</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Help</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <button class="btn btn-secondary btn-block" id="showTutorial">🎓 Show Tutorial</button>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-secondary btn-block" id="viewDocs">📖 Documentation</button>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-secondary btn-block" id="reportIssue">🐛 Report Issue</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Connection Details Modal -->
+  <div class="modal" id="connectionModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Connection Details</h3>
+        <button class="modal-close" id="closeConnectionModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="connection-info">
+          <div class="info-row">
+            <span class="info-label">Status:</span>
+            <span class="info-value" id="modalStatus">-</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Server URL:</span>
+            <span class="info-value" id="modalUrl">-</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Latency:</span>
+            <span class="info-value" id="modalLatency">-</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Last Ping:</span>
+            <span class="info-value" id="modalLastPing">-</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Retry Count:</span>
+            <span class="info-value" id="modalRetries">-</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="modalReconnectBtn">Reconnect</button>
+        <button class="btn btn-secondary" id="closeModalBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Modal -->
+  <div class="modal" id="updateModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Update Available</h3>
+        <button class="modal-close" id="closeUpdateModal">×</button>
+      </div>
+      <div class="modal-body">
+        <p>A new version of OpenClaw Mission Control is available!</p>
+        <div class="update-info">
+          <div class="info-row">
+            <span class="info-label">Current Version:</span>
+            <span class="info-value" id="currentVersion">-</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">New Version:</span>
+            <span class="info-value" id="newVersion">-</span>
+          </div>
+        </div>
+        <div class="progress-bar" id="updateProgressBar" style="display: none;">
+          <div class="progress-fill" id="updateProgressFill"></div>
+        </div>
+        <p class="update-status" id="updateStatus">Ready to download</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="downloadUpdateBtn">Download</button>
+        <button class="btn btn-secondary" id="laterUpdateBtn">Later</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tutorial Overlay -->
+  <div class="tutorial-overlay" id="tutorialOverlay" style="display: none;">
+    <div class="tutorial-content">
+      <div class="tutorial-step active" data-step="1">
+        <h2>Welcome to Mission Control! 🌙</h2>
+        <p>This is your command center for managing OpenClaw agents and monitoring system performance.</p>
+        <div class="tutorial-highlight" data-target="sidebar"></div>
+      </div>
+      <div class="tutorial-step" data-step="2">
+        <h2>Server Status</h2>
+        <p>The LED indicator in the title bar shows your connection status. Click it for detailed connection info.</p>
+        <div class="tutorial-highlight" data-target="serverStatus"></div>
+      </div>
+      <div class="tutorial-step" data-step="3">
+        <h2>Navigation</h2>
+        <p>Use the sidebar to switch between Dashboard, Agents, Tasks, Performance, and Logs views.</p>
+        <div class="tutorial-highlight" data-target="sidebar"></div>
+      </div>
+      <div class="tutorial-step" data-step="4">
+        <h2>Agent Control</h2>
+        <p>Start, stop, and monitor your agents from the Agents view. View real-time logs and performance metrics.</p>
+        <div class="tutorial-highlight" data-target="agentsView"></div>
+      </div>
+      <div class="tutorial-step" data-step="5">
+        <h2>You're All Set!</h2>
+        <p>Mission Control will automatically check for updates and notify you of important events.</p>
+      </div>
+      <div class="tutorial-controls">
+        <button class="btn btn-secondary" id="tutorialPrev" style="display: none;">Previous</button>
+        <div class="tutorial-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <button class="btn btn-primary" id="tutorialNext">Next</button>
+        <button class="btn btn-primary" id="tutorialFinish" style="display: none;">Get Started</button>
+      </div>
+      <button class="tutorial-skip" id="tutorialSkip">Skip Tutorial</button>
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
