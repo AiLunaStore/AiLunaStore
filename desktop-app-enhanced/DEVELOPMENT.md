@@ -195,15 +195,16 @@ switchView(viewName) {
 
 ```bash
 # GitHub token for publishing
-export GH_TOKEN=your_token_here
+# Set your GitHub token as environment variable
+# export GH_TOKEN=your_actual_token_here
 
 # Code signing (macOS)
-export CSC_LINK=path/to/certificate.p12
-export CSC_KEY_PASSWORD=certificate_password
+# export CSC_LINK=path/to/certificate.p12
+# export CSC_KEY_PASSWORD=your_certificate_password
 
 # Code signing (Windows)
-export WIN_CSC_LINK=path/to/certificate.p12
-export WIN_CSC_KEY_PASSWORD=certificate_password
+# export WIN_CSC_LINK=path/to/certificate.p12
+# export WIN_CSC_KEY_PASSWORD=your_certificate_password
 ```
 
 ### Build Commands
@@ -276,9 +277,9 @@ macOS requires notarization for distribution:
 
 ```bash
 # Set env vars
-export APPLE_ID=your@email.com
-export APPLE_ID_PASSWORD=app-specific-password
-export TEAM_ID=your-team-id
+# export APPLE_ID=your@email.com
+# export APPLE_ID_PASSWORD=your_app_specific_password
+# export TEAM_ID=your_team_id
 ```
 
 ### Auto-Update Not Working
