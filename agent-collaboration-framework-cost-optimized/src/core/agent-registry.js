@@ -6,11 +6,18 @@ export class AgentRegistry {
     this.agents = new Map();
     this.initialized = false;
     
-    // Pricing data per 1M tokens (from OpenRouter)
+    // Pricing data per 1M tokens (from requirements)
     this.pricing = {
+      'minimax/m2.7': { input: 0.30, output: 1.20 },
+      'minimax/m2.5': { input: 0.30, output: 1.20 },
+      'google/gemini-flash-lite': { input: 0.075, output: 0.30 },
+      'deepseek/deepseek-v3.2': { input: 0.14, output: 0.28 },
+      'deepseek/deepseek-reasoner': { input: 0.14, output: 0.28 },
+      'openai/gpt-5.1-codex': { input: 2.50, output: 10.00 }, // Estimated
+      'anthropic/claude-3.5-sonnet': { input: 3.00, output: 15.00 },
+      // Legacy models (keep for compatibility)
       'moonshot/kimi-k2.5': { input: 0.60, output: 3.00 },
       'openai/gpt-4o': { input: 2.50, output: 10.00 },
-      'anthropic/claude-3.5-sonnet': { input: 3.00, output: 15.00 },
       'anthropic/claude-3.5-haiku': { input: 0.75, output: 3.75 },
       'deepseek/deepseek-chat': { input: 0.14, output: 0.14 }
     };
@@ -25,16 +32,17 @@ export class AgentRegistry {
    * Register the default set of specialized agents with cost and quality data
    */
   registerDefaultAgents() {
-    // UI/JavaScript Specialist - Kimi K2.5 (balanced quality/cost)
+    // UI/JavaScript Specialist - MiniMax M2.7 (primary) → MiniMax M2.5 → DeepSeek V3.2
     this.register({
       id: 'ui-specialist',
       name: 'UI/JavaScript Specialist',
       description: 'Expert in HTML, CSS, JavaScript, DOM manipulation, and frontend frameworks',
-      model: 'moonshot/kimi-k2.5',
-      inputCost: 0.60,
-      outputCost: 3.00,
+      model: 'minimax/m2.7',
+      models: ['minimax/m2.7', 'minimax/m2.5', 'deepseek/deepseek-v3.2'],
+      inputCost: 0.30,
+      outputCost: 1.20,
       quality: 9,
-      speed: 6,
+      speed: 8,
       domains: ['ui', 'frontend', 'javascript', 'css', 'html'],
       capabilities: [
         'analyze_dom_structure',
@@ -59,20 +67,21 @@ export class AgentRegistry {
       costProfile: {
         avgInputTokens: 2000,
         avgOutputTokens: 1500,
-        estimatedCostPerTask: 0.0069 // (2000/1M * 0.60) + (1500/1M * 3.00)
+        estimatedCostPerTask: 0.00066 // (2000/1M * 0.30) + (1500/1M * 1.20)
       }
     });
 
-    // Backend/API Specialist - Kimi K2.5
+    // Backend/API Specialist - MiniMax M2.7 (primary) → MiniMax M2.5 → DeepSeek V3.2
     this.register({
       id: 'backend-specialist',
       name: 'Backend/API Specialist',
       description: 'Expert in Node.js, Express, WebSocket, REST APIs, and server-side logic',
-      model: 'moonshot/kimi-k2.5',
-      inputCost: 0.60,
-      outputCost: 3.00,
+      model: 'minimax/m2.7',
+      models: ['minimax/m2.7', 'minimax/m2.5', 'deepseek/deepseek-v3.2'],
+      inputCost: 0.30,
+      outputCost: 1.20,
       quality: 9,
-      speed: 6,
+      speed: 8,
       domains: ['backend', 'api', 'server', 'node', 'express', 'websocket'],
       capabilities: [
         'analyze_api_endpoints',
@@ -97,7 +106,7 @@ export class AgentRegistry {
       costProfile: {
         avgInputTokens: 2500,
         avgOutputTokens: 1800,
-        estimatedCostPerTask: 0.0079
+        estimatedCostPerTask: 0.00081 // (2500/1M * 0.30) + (1800/1M * 1.20)
       }
     });
 
@@ -177,15 +186,16 @@ export class AgentRegistry {
       }
     });
 
-    // Integration Specialist - Claude 3.5 Haiku (fast, good for integration)
+    // Integration Specialist - DeepSeek V3.2 (primary) → MiniMax M2.7 → GPT-5.1 Codex
     this.register({
       id: 'integration-specialist',
       name: 'Integration Specialist',
       description: 'Expert in combining components, end-to-end testing, and deployment',
-      model: 'anthropic/claude-3.5-haiku',
-      inputCost: 0.75,
-      outputCost: 3.75,
-      quality: 7,
+      model: 'deepseek/deepseek-v3.2',
+      models: ['deepseek/deepseek-v3.2', 'minimax/m2.7', 'openai/gpt-5.1-codex'],
+      inputCost: 0.14,
+      outputCost: 0.28,
+      quality: 9,
       speed: 8,
       domains: ['integration', 'testing', 'e2e', 'deployment', 'build'],
       capabilities: [
@@ -211,18 +221,19 @@ export class AgentRegistry {
       costProfile: {
         avgInputTokens: 2500,
         avgOutputTokens: 2000,
-        estimatedCostPerTask: 0.0094
+        estimatedCostPerTask: 0.00063 // (2500/1M * 0.14) + (2000/1M * 0.28)
       }
     });
 
-    // Debugging Specialist - Claude 3.5 Sonnet (highest quality for complex debugging)
+    // Debugging Specialist - DeepSeek Reasoner (primary) → MiniMax M2.7 → Claude 3.5 Sonnet
     this.register({
       id: 'debugging-specialist',
       name: 'Debugging Specialist',
       description: 'Expert in error diagnosis, console logs, stack traces, and root cause analysis',
-      model: 'anthropic/claude-3.5-sonnet',
-      inputCost: 3.00,
-      outputCost: 15.00,
+      model: 'deepseek/deepseek-reasoner',
+      models: ['deepseek/deepseek-reasoner', 'minimax/m2.7', 'anthropic/claude-3.5-sonnet'],
+      inputCost: 0.14,
+      outputCost: 0.28,
       quality: 10,
       speed: 6,
       domains: ['debugging', 'error', 'diagnosis', 'analysis'],
@@ -249,45 +260,241 @@ export class AgentRegistry {
       costProfile: {
         avgInputTokens: 4000,
         avgOutputTokens: 3000,
-        estimatedCostPerTask: 0.057
+        estimatedCostPerTask: 0.00112 // (4000/1M * 0.14) + (3000/1M * 0.28)
       }
     });
 
-    // GPT-4o Specialist - For tasks requiring cutting-edge capabilities
+    // Code Specialist - MiniMax M2.7 (primary) → MiniMax M2.5 → DeepSeek V3.2
     this.register({
-      id: 'gpt4o-specialist',
-      name: 'GPT-4o Specialist',
-      description: 'Advanced reasoning and multimodal capabilities for complex tasks',
-      model: 'openai/gpt-4o',
-      inputCost: 2.50,
-      outputCost: 10.00,
+      id: 'coding-specialist',
+      name: 'Code Specialist',
+      description: 'Expert in programming, debugging, refactoring, and testing code',
+      model: 'minimax/m2.7',
+      models: ['minimax/m2.7', 'minimax/m2.5', 'deepseek/deepseek-v3.2'],
+      inputCost: 0.30,
+      outputCost: 1.20,
       quality: 9,
-      speed: 7,
-      domains: ['reasoning', 'multimodal', 'complex-analysis', 'planning'],
+      speed: 8,
+      domains: ['coding', 'debugging', 'refactoring', 'testing', 'programming'],
       capabilities: [
-        'complex_reasoning',
-        'multimodal_analysis',
-        'advanced_planning',
-        'architecture_design',
-        'system_analysis',
-        'code_generation'
+        'analyze_code',
+        'debug_issues',
+        'refactor_code',
+        'write_tests',
+        'optimize_algorithms',
+        'review_pull_requests'
       ],
       expertise: {
-        'Complex Reasoning': 0.95,
-        'Architecture Design': 0.90,
-        'System Analysis': 0.92,
-        'Code Generation': 0.90,
-        'Planning': 0.88,
-        'Documentation': 0.85
+        'Coding': 0.95,
+        'Debugging': 0.95,
+        'Refactoring': 0.90,
+        'Testing': 0.90,
+        'Algorithms': 0.88,
+        'Code Review': 0.92
       },
       preferences: {
-        taskTypes: ['complex-analysis', 'architecture', 'planning'],
-        maxConcurrentTasks: 2
+        taskTypes: ['code-analysis', 'debug', 'refactor', 'test'],
+        maxConcurrentTasks: 3
+      },
+      costProfile: {
+        avgInputTokens: 3000,
+        avgOutputTokens: 2500,
+        estimatedCostPerTask: 0.00135 // (3000/1M * 0.30) + (2500/1M * 1.20)
+      }
+    });
+
+    // Research Specialist - Gemini Flash Lite (primary) → DeepSeek V3.2 → MiniMax M2.5
+    this.register({
+      id: 'research-specialist',
+      name: 'Research Specialist',
+      description: 'Expert in research, analysis, planning, and strategy development',
+      model: 'google/gemini-flash-lite',
+      models: ['google/gemini-flash-lite', 'deepseek/deepseek-v3.2', 'minimax/m2.5'],
+      inputCost: 0.075,
+      outputCost: 0.30,
+      quality: 8,
+      speed: 9,
+      domains: ['research', 'analysis', 'planning', 'strategy', 'investigation'],
+      capabilities: [
+        'conduct_research',
+        'analyze_data',
+        'develop_strategies',
+        'create_plans',
+        'synthesize_information',
+        'generate_insights'
+      ],
+      expertise: {
+        'Research': 0.95,
+        'Analysis': 0.94,
+        'Planning': 0.92,
+        'Strategy': 0.91,
+        'Investigation': 0.93,
+        'Synthesis': 0.90
+      },
+      preferences: {
+        taskTypes: ['research', 'analysis', 'planning'],
+        maxConcurrentTasks: 4
+      },
+      costProfile: {
+        avgInputTokens: 4000,
+        avgOutputTokens: 3000,
+        estimatedCostPerTask: 0.00048 // (4000/1M * 0.075) + (3000/1M * 0.30)
+      }
+    });
+
+    // Data Specialist - MiniMax M2.7 (primary) → MiniMax M2.5 → Gemini Flash Lite
+    this.register({
+      id: 'data-specialist',
+      name: 'Data Specialist',
+      description: 'Expert in data analysis, statistics, visualization, and data processing',
+      model: 'minimax/m2.7',
+      models: ['minimax/m2.7', 'minimax/m2.5', 'google/gemini-flash-lite'],
+      inputCost: 0.30,
+      outputCost: 1.20,
+      quality: 9,
+      speed: 8,
+      domains: ['data', 'analytics', 'statistics', 'visualization', 'processing'],
+      capabilities: [
+        'analyze_datasets',
+        'create_visualizations',
+        'perform_statistical_analysis',
+        'process_data',
+        'identify_trends',
+        'generate_reports'
+      ],
+      expertise: {
+        'Data': 0.95,
+        'Analytics': 0.94,
+        'Statistics': 0.93,
+        'Visualization': 0.92,
+        'Processing': 0.91,
+        'Reporting': 0.90
+      },
+      preferences: {
+        taskTypes: ['data-analysis', 'visualization', 'statistics'],
+        maxConcurrentTasks: 3
       },
       costProfile: {
         avgInputTokens: 3500,
-        avgOutputTokens: 2500,
-        estimatedCostPerTask: 0.0338
+        avgOutputTokens: 2800,
+        estimatedCostPerTask: 0.00147 // (3500/1M * 0.30) + (2800/1M * 1.20)
+      }
+    });
+
+    // Writing Specialist - Gemini Flash Lite (primary) → DeepSeek V3.2 → MiniMax M2.5
+    this.register({
+      id: 'writing-specialist',
+      name: 'Writing Specialist',
+      description: 'Expert in writing, content creation, documentation, and copywriting',
+      model: 'google/gemini-flash-lite',
+      models: ['google/gemini-flash-lite', 'deepseek/deepseek-v3.2', 'minimax/m2.5'],
+      inputCost: 0.075,
+      outputCost: 0.30,
+      quality: 8,
+      speed: 9,
+      domains: ['writing', 'content', 'documentation', 'copy', 'communication'],
+      capabilities: [
+        'write_content',
+        'create_documentation',
+        'edit_copy',
+        'proofread_text',
+        'structure_information',
+        'adapt_tone'
+      ],
+      expertise: {
+        'Writing': 0.95,
+        'Content': 0.94,
+        'Documentation': 0.93,
+        'Copy': 0.92,
+        'Communication': 0.91,
+        'Editing': 0.90
+      },
+      preferences: {
+        taskTypes: ['writing', 'documentation', 'content-creation'],
+        maxConcurrentTasks: 4
+      },
+      costProfile: {
+        avgInputTokens: 3800,
+        avgOutputTokens: 3200,
+        estimatedCostPerTask: 0.00053 // (3800/1M * 0.075) + (3200/1M * 0.30)
+      }
+    });
+
+    // Planning Specialist - DeepSeek Reasoner (primary) → MiniMax M2.7 → Claude 3.5 Sonnet
+    this.register({
+      id: 'planning-specialist',
+      name: 'Planning Specialist',
+      description: 'Expert in planning, project management, coordination, and workflow design',
+      model: 'deepseek/deepseek-reasoner',
+      models: ['deepseek/deepseek-reasoner', 'minimax/m2.7', 'anthropic/claude-3.5-sonnet'],
+      inputCost: 0.14,
+      outputCost: 0.28,
+      quality: 9,
+      speed: 7,
+      domains: ['planning', 'project-management', 'coordination', 'workflow', 'organization'],
+      capabilities: [
+        'create_plans',
+        'manage_projects',
+        'coordinate_tasks',
+        'design_workflows',
+        'allocate_resources',
+        'track_progress'
+      ],
+      expertise: {
+        'Planning': 0.96,
+        'Project Management': 0.95,
+        'Coordination': 0.94,
+        'Workflow': 0.93,
+        'Organization': 0.92,
+        'Resource Allocation': 0.91
+      },
+      preferences: {
+        taskTypes: ['planning', 'project-management', 'coordination'],
+        maxConcurrentTasks: 2
+      },
+      costProfile: {
+        avgInputTokens: 4200,
+        avgOutputTokens: 3500,
+        estimatedCostPerTask: 0.00088 // (4200/1M * 0.14) + (3500/1M * 0.28)
+      }
+    });
+
+    // QA Specialist - MiniMax M2.7 (primary) → MiniMax M2.5 → Gemini Flash Lite
+    this.register({
+      id: 'qa-specialist',
+      name: 'QA Specialist',
+      description: 'Expert in testing, quality assurance, validation, and review processes',
+      model: 'minimax/m2.7',
+      models: ['minimax/m2.7', 'minimax/m2.5', 'google/gemini-flash-lite'],
+      inputCost: 0.30,
+      outputCost: 1.20,
+      quality: 9,
+      speed: 8,
+      domains: ['testing', 'quality', 'validation', 'review', 'verification'],
+      capabilities: [
+        'test_functionality',
+        'validate_quality',
+        'review_code',
+        'verify_requirements',
+        'identify_bugs',
+        'ensure_compliance'
+      ],
+      expertise: {
+        'Testing': 0.96,
+        'Quality': 0.95,
+        'Validation': 0.94,
+        'Review': 0.93,
+        'Verification': 0.92,
+        'Compliance': 0.91
+      },
+      preferences: {
+        taskTypes: ['testing', 'quality-review', 'validation'],
+        maxConcurrentTasks: 4
+      },
+      costProfile: {
+        avgInputTokens: 2600,
+        avgOutputTokens: 2000,
+        estimatedCostPerTask: 0.00108 // (2600/1M * 0.30) + (2000/1M * 1.20)
       }
     });
 

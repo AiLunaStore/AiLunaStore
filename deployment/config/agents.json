@@ -5,8 +5,8 @@
       "id": "coding-specialist",
       "name": "Coding Specialist",
       "description": "Expert in code implementation, debugging, and optimization",
-      "primaryModel": "minimax-m2.5",
-      "fallbackChain": ["deepseek-v3.2", "gemini-3.1-pro", "claude-sonnet"],
+      "primaryModel": "minimax-m2.7",
+      "fallbackChain": ["minimax-m2.5", "deepseek-v3.2", "kimi-k2.5"],
       "domains": ["coding", "implementation", "debugging", "refactoring"],
       "capabilities": [
         "write_code",
@@ -27,7 +27,7 @@
       "costProfile": {
         "avgInputTokens": 3000,
         "avgOutputTokens": 2500,
-        "estimatedCostPerTask": 0.0039
+        "estimatedCostPerTask": 0.00165
       },
       "quality": 10,
       "speed": 7
@@ -92,8 +92,8 @@
       "id": "ui-specialist",
       "name": "UI Specialist",
       "description": "Expert in frontend development, CSS, and user interfaces",
-      "primaryModel": "minimax-m2.5",
-      "fallbackChain": ["deepseek-v3.2", "gemini-3.1-pro", "claude-sonnet"],
+      "primaryModel": "minimax-m2.7",
+      "fallbackChain": ["minimax-m2.5", "deepseek-v3.2", "kimi-k2.5"],
       "domains": ["ui", "frontend", "css", "html", "javascript"],
       "capabilities": [
         "build_ui_components",
@@ -121,8 +121,8 @@
       "id": "backend-specialist",
       "name": "Backend Specialist",
       "description": "Expert in APIs, databases, and server-side logic",
-      "primaryModel": "minimax-m2.5",
-      "fallbackChain": ["deepseek-v3.2", "gemini-3.1-pro", "claude-sonnet"],
+      "primaryModel": "minimax-m2.7",
+      "fallbackChain": ["minimax-m2.5", "deepseek-v3.2", "kimi-k2.5"],
       "domains": ["backend", "api", "database", "server"],
       "capabilities": [
         "design_apis",

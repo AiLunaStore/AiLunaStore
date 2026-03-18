@@ -14,7 +14,13 @@ class MissionControlApp {
       agents: [],
       metrics: {},
       system: {},
-      history: []
+      history: [],
+      collaboration: {
+        stats: {},
+        agents: [],
+        active: [],
+        history: []
+      }
     };
     this.charts = {};
     
@@ -23,6 +29,7 @@ class MissionControlApp {
 
   init() {
     this.setupEventListeners();
+    this.setupCollaborationListeners();
     this.connectWebSocket();
     this.startPeriodicUpdates();
   }
@@ -103,6 +110,29 @@ class MissionControlApp {
         this.handleTaskResult(message.data);
         break;
         
+      case 'collaboration_stats':
+        this.data.collaboration.stats = message.data;
+        this.renderCollaborationStats();
+        break;
+        
+      case 'collaboration_agents':
+        this.data.collaboration.agents = message.data;
+        this.renderSpecializedAgents();
+        break;
+        
+      case 'active_collaborations':
+        this.data.collaboration.active = message.data;
+        this.renderActiveCollaborations();
+        break;
+        
+      case 'collaboration_result':
+        this.handleCollaborationResult(message.data);
+        break;
+        
+      case 'collaboration_analysis':
+        this.handleCollaborationAnalysis(message.data);
+        break;
+        
       case 'error':
         this.showToast(message.error, 'error');
         break;
@@ -124,6 +154,7 @@ class MissionControlApp {
     if (newData.agents) this.data.agents = newData.agents;
     if (newData.metrics) this.data.metrics = newData.metrics;
     if (newData.system) this.data.system = newData.system;
+    if (newData.collaboration) this.data.collaboration = newData.collaboration;
   }
 
   // UI Rendering
@@ -132,6 +163,14 @@ class MissionControlApp {
     this.renderAgents();
     this.renderActivity();
     this.updateConnectionStatus(this.data.system.status === 'healthy' ? 'connected' : 'disconnected');
+    
+    // Render collaboration data if available
+    if (this.data.collaboration) {
+      this.renderCollaborationStats();
+      this.renderSpecializedAgents();
+      this.renderActiveCollaborations();
+      this.renderCollaborationHistory();
+    }
   }
 
   renderMetrics() {
@@ -377,6 +416,7 @@ class MissionControlApp {
     const titles = {
       dashboard: 'Dashboard',
       agents: 'Agents',
+      collaboration: 'Collaboration',
       costs: 'Cost Analysis',
       performance: 'Performance',
       history: 'History',
@@ -393,6 +433,17 @@ class MissionControlApp {
       this.renderPerformanceView();
     } else if (viewName === 'history') {
       this.renderHistoryView();
+    } else if (viewName === 'collaboration') {
+      // Request collaboration data if not already loaded
+      if (!this.data.collaboration.stats) {
+        this.sendMessage('get_collaboration_stats');
+      }
+      if (!this.data.collaboration.agents.length) {
+        this.sendMessage('get_collaboration_agents');
+      }
+      if (!this.data.collaboration.active.length) {
+        this.sendMessage('get_active_collaborations');
+      }
     }
   }
 
@@ -613,6 +664,192 @@ class MissionControlApp {
     setInterval(() => {
       this.sendMessage('ping');
     }, 30000);
+  }
+
+  // Collaboration Rendering Methods
+  renderCollaborationStats() {
+    const stats = this.data.collaboration.stats;
+    const container = document.getElementById('collaborationStats');
+    
+    if (!container || !stats) return;
+    
+    container.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-label">Total Collaborations</div>
+        <div class="stat-value">${stats.totalCollaborations || 0}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Success Rate</div>
+        <div class="stat-value">${stats.successRate || '0%'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg Speedup</div>
+        <div class="stat-value">${stats.averageSpeedup || '1.0'}x</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Cost Savings</div>
+        <div class="stat-value">$${stats.totalCostSavings || '0.0000'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Parallel Tasks</div>
+        <div class="stat-value">${stats.parallelTasksExecuted || 0}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Efficiency Gain</div>
+        <div class="stat-value">${stats.efficiencyGain || '0.0'}x</div>
+      </div>
+    `;
+    
+    // Update collaboration badge
+    const badge = document.getElementById('collaborationBadge');
+    if (badge) {
+      const activeCount = this.data.collaboration.active?.length || 0;
+      badge.textContent = activeCount;
+      badge.style.display = activeCount > 0 ? 'block' : 'none';
+    }
+  }
+
+  renderSpecializedAgents() {
+    const agents = this.data.collaboration.agents || [];
+    const container = document.getElementById('specializedAgents');
+    
+    if (!container) return;
+    
+    container.innerHTML = agents.map(agent => `
+      <div class="specialized-agent">
+        <div class="agent-header">
+          <div class="agent-name">${agent.name}</div>
+          <div class="agent-domains">${agent.domains.join(', ')}</div>
+        </div>
+        <div class="agent-stats">
+          <div class="stat">
+            <span class="stat-label">Quality:</span>
+            <span class="stat-value">${agent.quality}/10</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Speed:</span>
+            <span class="stat-value">${agent.speed}/10</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Cost:</span>
+            <span class="stat-value">$${agent.costPerTask.toFixed(4)}</span>
+          </div>
+        </div>
+        <div class="agent-models">
+          <span class="model-tag">${agent.models[0]}</span>
+          ${agent.models.length > 1 ? `<span class="model-tag">+${agent.models.length - 1}</span>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  renderActiveCollaborations() {
+    const active = this.data.collaboration.active || [];
+    const container = document.getElementById('activeCollaborations');
+    
+    if (!container) return;
+    
+    if (active.length === 0) {
+      container.innerHTML = '<div class="empty-state">No active collaborations</div>';
+      return;
+    }
+    
+    container.innerHTML = active.map(collab => `
+      <div class="active-collab">
+        <div class="collab-header">
+          <div class="collab-id">${collab.id.substring(0, 8)}...</div>
+          <div class="collab-status ${collab.status}">${collab.status}</div>
+        </div>
+        <div class="collab-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${collab.progress || 0}%"></div>
+          </div>
+          <span class="progress-text">${collab.progress || 0}%</span>
+        </div>
+        <div class="collab-details">
+          <div class="detail">
+            <span class="detail-label">Duration:</span>
+            <span class="detail-value">${Math.round(collab.duration / 1000)}s</span>
+          </div>
+          <div class="detail">
+            <span class="detail-label">Subtasks:</span>
+            <span class="detail-value">${collab.subtaskCount}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  renderCollaborationHistory() {
+    const history = this.data.collaboration.history || [];
+    const container = document.getElementById('collaborationHistory');
+    
+    if (!container) return;
+    
+    container.innerHTML = history.map(record => `
+      <tr>
+        <td>${record.taskId}</td>
+        <td><span class="mode-tag ${record.mode}">${record.mode}</span></td>
+        <td>${Math.round(record.duration / 1000)}s</td>
+        <td>${record.speedupFactor.toFixed(2)}x</td>
+        <td>$${record.cost.toFixed(4)}</td>
+        <td><span class="status-badge ${record.success ? 'success' : 'error'}">${record.success ? '✓' : '✗'}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  handleCollaborationResult(result) {
+    if (result.success) {
+      const speedup = result.metrics?.speedupFactor || 1.0;
+      const message = `Collaboration completed with ${speedup.toFixed(2)}x speedup`;
+      this.showToast(message, 'success');
+    } else {
+      this.showToast('Collaboration failed', 'error');
+    }
+  }
+
+  handleCollaborationAnalysis(analysis) {
+    const subtasks = analysis.subtasks || [];
+    const message = `Task analyzed: ${subtasks.length} subtask${subtasks.length !== 1 ? 's' : ''} identified`;
+    this.showToast(message, 'info');
+  }
+
+  // Setup collaboration event listeners
+  setupCollaborationListeners() {
+    const testBtn = document.getElementById('testCollaborationBtn');
+    const analyzeBtn = document.getElementById('analyzeTaskBtn');
+    
+    if (testBtn) {
+      testBtn.addEventListener('click', () => {
+        this.sendMessage('execute_collaboration_task', {
+          task: {
+            id: 'test-collaboration',
+            description: 'Test collaboration system with parallel agent delegation',
+            complexity: 7
+          },
+          options: {
+            budget: 3.00,
+            strategy: 'balanced'
+          }
+        });
+        this.showToast('Running collaboration test...', 'info');
+      });
+    }
+    
+    if (analyzeBtn) {
+      analyzeBtn.addEventListener('click', () => {
+        const description = prompt('Enter task description to analyze:');
+        if (description) {
+          this.sendMessage('analyze_collaboration_task', {
+            task: {
+              id: 'analysis-' + Date.now(),
+              description,
+              complexity: 5
+            }
+          });
+        }
+      });
+    }
   }
 }
 

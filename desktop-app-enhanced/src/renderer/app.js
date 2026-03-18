@@ -397,6 +397,11 @@ class MissionControlApp {
       this.agents = await window.electronAPI.agent.list();
       this.renderAgents();
       this.updateAgentCounts();
+      
+      // Update bubble visualization if it exists
+      if (this.bubbleVisualization && this.currentView === 'agents') {
+        this.bubbleVisualization.updateFromAgents(this.agents);
+      }
     } catch (err) {
       console.error('Failed to refresh agents:', err);
     }
@@ -432,24 +437,36 @@ class MissionControlApp {
       <div class="agent-item">
         <span class="agent-status ${agent.status}"></span>
         <span class="agent-name">${agent.name || agent.id}</span>
-        <span class="agent-type">${agent.type || 'Unknown'}</span>
+        <span class="agent-type">${agent.model || agent.type || 'Unknown'}</span>
       </div>
     `).join('');
 
     // Full grid
-    grid.innerHTML = this.agents.map(agent => `
+    grid.innerHTML = this.agents.map(agent => {
+      // Determine badge class based on status
+      let badgeClass = 'info';
+      if (agent.status === 'active') badgeClass = 'success';
+      else if (agent.status === 'thinking') badgeClass = 'warning';
+      else if (agent.status === 'idle') badgeClass = 'info';
+      else if (agent.status === 'error') badgeClass = 'error';
+      
+      return `
       <div class="agent-card" data-agent-id="${agent.id}">
         <div class="agent-card-header">
           <span class="agent-card-icon">🤖</span>
           <div class="agent-card-title">
             <h4>${agent.name || agent.id}</h4>
-            <span>${agent.type || 'Unknown type'}</span>
+            <span>${agent.model || agent.type || 'Unknown type'}</span>
           </div>
-          <span class="badge badge-${agent.status === 'running' ? 'success' : agent.status === 'error' ? 'error' : 'warning'}">
+          <span class="badge badge-${badgeClass}">
             ${agent.status}
           </span>
         </div>
         <div class="card-body">
+          <div class="metric-row">
+            <span class="metric-label">Model:</span>
+            <span class="metric-value">${agent.model || 'Unknown'}</span>
+          </div>
           <div class="metric-row">
             <span class="metric-label">Tasks Completed:</span>
             <span class="metric-value">${agent.tasksCompleted || 0}</span>
@@ -462,12 +479,18 @@ class MissionControlApp {
             <span class="metric-label">Last Active:</span>
             <span class="metric-value">${agent.lastActive ? new Date(agent.lastActive).toLocaleString() : 'Never'}</span>
           </div>
+          ${agent.parentId ? `
+          <div class="metric-row">
+            <span class="metric-label">Parent:</span>
+            <span class="metric-value">${agent.parentId}</span>
+          </div>
+          ` : ''}
         </div>
         <div class="card-footer">
-          <button class="btn btn-primary" onclick="app.controlAgent('${agent.id}', 'start')" ${agent.status === 'running' ? 'disabled' : ''}>
+          <button class="btn btn-primary" onclick="app.controlAgent('${agent.id}', 'start')" ${agent.status === 'active' ? 'disabled' : ''}>
             Start
           </button>
-          <button class="btn btn-secondary" onclick="app.controlAgent('${agent.id}', 'stop')" ${agent.status !== 'running' ? 'disabled' : ''}>
+          <button class="btn btn-secondary" onclick="app.controlAgent('${agent.id}', 'stop')" ${agent.status !== 'active' ? 'disabled' : ''}>
             Stop
           </button>
           <button class="btn btn-secondary" onclick="app.controlAgent('${agent.id}', 'restart')">
@@ -475,7 +498,7 @@ class MissionControlApp {
           </button>
         </div>
       </div>
-    `).join('');
+    `}).join('');
   }
 
   renderTasks() {
@@ -561,7 +584,7 @@ class MissionControlApp {
   }
 
   updateAgentCounts() {
-    const activeCount = this.agents.filter(a => a.status === 'running').length;
+    const activeCount = this.agents.filter(a => a.status === 'active' || a.status === 'thinking').length;
     document.getElementById('agentCount').textContent = this.agents.length;
     document.getElementById('activeAgentCount').textContent = activeCount;
   }
@@ -827,7 +850,529 @@ class MissionControlApp {
     // Initial render of current view
     if (this.currentView === 'dashboard') {
       this.updateServerStatusUI(this.serverStatus);
+    } else if (this.currentView === 'agents') {
+      this.initBubbleVisualization();
     }
+  }
+
+  initBubbleVisualization() {
+    // Initialize bubble visualization
+    this.bubbleVisualization = new BubbleVisualization();
+    
+    // Set up event listeners for bubble view
+    document.getElementById('toggleViewBtn').addEventListener('click', () => {
+      this.toggleAgentView();
+    });
+    
+    document.getElementById('agentStatusFilter').addEventListener('change', () => {
+      this.refreshAgents();
+    });
+    
+    // Initial render
+    setTimeout(() => {
+      if (this.currentView === 'agents') {
+        this.bubbleVisualization.init();
+      }
+    }, 100);
+  }
+
+  toggleAgentView() {
+    const bubbleContainer = document.getElementById('bubbleContainer');
+    const agentsGrid = document.getElementById('agentsGrid');
+    const toggleBtn = document.getElementById('toggleViewBtn');
+    
+    if (bubbleContainer.style.display !== 'none') {
+      // Switch to list view
+      bubbleContainer.style.display = 'none';
+      agentsGrid.style.display = 'grid';
+      toggleBtn.textContent = '🌀 Bubble View';
+    } else {
+      // Switch to bubble view
+      bubbleContainer.style.display = 'flex';
+      agentsGrid.style.display = 'none';
+      toggleBtn.textContent = '📋 List View';
+      this.bubbleVisualization.init();
+    }
+  }
+}
+
+// Bubble Visualization Class
+class BubbleVisualization {
+  constructor() {
+    this.canvas = document.getElementById('bubbleCanvas');
+    this.ctx = this.canvas.getContext('2d');
+    this.agents = [];
+    this.bubbles = [];
+    this.connections = [];
+    this.isDragging = false;
+    this.dragOffset = { x: 0, y: 0 };
+    this.scale = 1;
+    this.offset = { x: 0, y: 0 };
+    this.animationId = null;
+    
+    this.initEventListeners();
+    this.resizeCanvas();
+  }
+
+  init() {
+    this.resizeCanvas();
+    this.updateFromAgents(app.agents);
+    this.animate();
+  }
+
+  initEventListeners() {
+    // Canvas interactions
+    this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
+    this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+    this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
+    this.canvas.addEventListener('wheel', this.handleWheel.bind(this));
+    
+    // Touch events for mobile
+    this.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
+    this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this));
+    this.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    
+    // Window resize
+    window.addEventListener('resize', () => {
+      this.resizeCanvas();
+      this.render();
+    });
+  }
+
+  resizeCanvas() {
+    const container = this.canvas.parentElement;
+    this.canvas.width = container.clientWidth;
+    this.canvas.height = container.clientHeight;
+    this.render();
+  }
+
+  updateFromAgents(agents) {
+    // Filter agents based on selected filter
+    const filter = document.getElementById('agentStatusFilter').value;
+    let filteredAgents = agents;
+    
+    switch (filter) {
+      case 'active':
+        filteredAgents = agents.filter(a => a.status === 'active' || a.status === 'thinking');
+        break;
+      case 'active-only':
+        filteredAgents = agents.filter(a => a.status === 'active');
+        break;
+      case 'thinking-only':
+        filteredAgents = agents.filter(a => a.status === 'thinking');
+        break;
+      // 'all' shows all agents
+    }
+    
+    this.agents = filteredAgents;
+    this.createBubbles();
+    this.createConnections();
+    this.updateInfoDisplay();
+    this.render();
+  }
+
+  createBubbles() {
+    this.bubbles = [];
+    
+    // Calculate bubble positions using force-directed layout
+    const centerX = this.canvas.width / 2;
+    const centerY = this.canvas.height / 2;
+    
+    // Group agents by hierarchy
+    const mainAgents = this.agents.filter(a => !a.id.includes('subagent-'));
+    const subagents = this.agents.filter(a => a.id.includes('subagent-'));
+    
+    // Position main agents in a circle
+    const radius = Math.min(this.canvas.width, this.canvas.height) * 0.3;
+    const angleStep = (2 * Math.PI) / Math.max(mainAgents.length, 1);
+    
+    mainAgents.forEach((agent, index) => {
+      const angle = index * angleStep;
+      const x = centerX + radius * Math.cos(angle);
+      const y = centerY + radius * Math.sin(angle);
+      
+      // Calculate bubble size based on importance/activity
+      const size = this.calculateBubbleSize(agent);
+      const color = this.getStatusColor(agent.status);
+      
+      this.bubbles.push({
+        id: agent.id,
+        x,
+        y,
+        radius: size,
+        color,
+        agent,
+        isDragging: false,
+        targetX: x,
+        targetY: y
+      });
+    });
+    
+    // Position subagents around their parent agents
+    subagents.forEach(subagent => {
+      const parentId = this.findParentId(subagent.id);
+      const parentBubble = this.bubbles.find(b => b.id === parentId);
+      
+      if (parentBubble) {
+        // Position subagent in orbit around parent
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = parentBubble.radius + 80; // Minimum distance from parent
+        const x = parentBubble.x + distance * Math.cos(angle);
+        const y = parentBubble.y + distance * Math.sin(angle);
+        
+        const size = this.calculateBubbleSize(subagent);
+        const color = this.getStatusColor(subagent.status);
+        
+        this.bubbles.push({
+          id: subagent.id,
+          x,
+          y,
+          radius: size,
+          color,
+          agent: subagent,
+          isDragging: false,
+          targetX: x,
+          targetY: y,
+          parentId
+        });
+      }
+    });
+  }
+
+  createConnections() {
+    this.connections = [];
+    
+    // Create connections between parent and subagents
+    this.bubbles.forEach(bubble => {
+      if (bubble.parentId) {
+        const parentBubble = this.bubbles.find(b => b.id === bubble.parentId);
+        if (parentBubble) {
+          this.connections.push({
+            from: parentBubble,
+            to: bubble,
+            color: this.getConnectionColor(parentBubble.agent.status, bubble.agent.status)
+          });
+        }
+      }
+    });
+  }
+
+  calculateBubbleSize(agent) {
+    // Base size on importance/activity level
+    const baseSize = 40;
+    const importance = agent.importance || 0.5;
+    const activityMultiplier = agent.status === 'active' ? 1.2 : 
+                              agent.status === 'thinking' ? 1.1 : 0.8;
+    
+    return baseSize * importance * activityMultiplier;
+  }
+
+  getStatusColor(status) {
+    switch (status) {
+      case 'active': return '#22c55e'; // green
+      case 'thinking': return '#eab308'; // yellow
+      case 'idle': return '#94a3b8'; // gray
+      default: return '#6366f1'; // primary
+    }
+  }
+
+  getConnectionColor(parentStatus, childStatus) {
+    // Make connection more visible if either agent is active
+    if (parentStatus === 'active' || childStatus === 'active') {
+      return 'rgba(34, 197, 94, 0.4)'; // green with opacity
+    } else if (parentStatus === 'thinking' || childStatus === 'thinking') {
+      return 'rgba(234, 179, 8, 0.4)'; // yellow with opacity
+    }
+    return 'rgba(148, 163, 184, 0.2)'; // gray with opacity
+  }
+
+  findParentId(subagentId) {
+    // Extract parent ID from subagent ID
+    // Format: subagent-{parentId}-{index} or similar
+    const match = subagentId.match(/subagent-([^-]+)/);
+    if (match) {
+      return match[1];
+    }
+    
+    // Fallback: look for parent in agent data
+    const subagent = this.agents.find(a => a.id === subagentId);
+    return subagent?.parentId;
+  }
+
+  updateInfoDisplay() {
+    const activeCount = this.agents.filter(a => a.status === 'active' || a.status === 'thinking').length;
+    document.getElementById('activeAgentCount').textContent = activeCount;
+    document.getElementById('totalAgentCount').textContent = this.agents.length;
+  }
+
+  handleMouseDown(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / this.scale - this.offset.x;
+    const y = (e.clientY - rect.top) / this.scale - this.offset.y;
+    
+    // Check if clicking on a bubble
+    for (let i = this.bubbles.length - 1; i >= 0; i--) {
+      const bubble = this.bubbles[i];
+      const distance = Math.sqrt((x - bubble.x) ** 2 + (y - bubble.y) ** 2);
+      
+      if (distance <= bubble.radius) {
+        this.isDragging = true;
+        bubble.isDragging = true;
+        this.dragOffset.x = x - bubble.x;
+        this.dragOffset.y = y - bubble.y;
+        return;
+      }
+    }
+    
+    // If not clicking on a bubble, start panning
+    this.isDragging = true;
+    this.dragStart = { x: e.clientX, y: e.clientY };
+    this.offsetStart = { ...this.offset };
+  }
+
+  handleMouseMove(e) {
+    if (!this.isDragging) return;
+    
+    const rect = this.canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / this.scale;
+    const y = (e.clientY - rect.top) / this.scale;
+    
+    // Find the bubble being dragged
+    const draggingBubble = this.bubbles.find(b => b.isDragging);
+    
+    if (draggingBubble) {
+      draggingBubble.x = x - this.offset.x - this.dragOffset.x;
+      draggingBubble.y = y - this.offset.y - this.dragOffset.y;
+    } else {
+      // Pan the view
+      this.offset.x = this.offsetStart.x + (e.clientX - this.dragStart.x) / this.scale;
+      this.offset.y = this.offsetStart.y + (e.clientY - this.dragStart.y) / this.scale;
+    }
+    
+    this.render();
+  }
+
+  handleMouseUp() {
+    this.isDragging = false;
+    this.bubbles.forEach(bubble => {
+      bubble.isDragging = false;
+    });
+  }
+
+  handleWheel(e) {
+    e.preventDefault();
+    
+    const rect = this.canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    const zoomFactor = 0.1;
+    const oldScale = this.scale;
+    
+    if (e.deltaY < 0) {
+      // Zoom in
+      this.scale = Math.min(this.scale * (1 + zoomFactor), 3);
+    } else {
+      // Zoom out
+      this.scale = Math.max(this.scale * (1 - zoomFactor), 0.5);
+    }
+    
+    // Adjust offset to zoom toward mouse position
+    const scaleRatio = this.scale / oldScale;
+    this.offset.x = mouseX / oldScale - (mouseX / this.scale - this.offset.x) * scaleRatio;
+    this.offset.y = mouseY / oldScale - (mouseY / this.scale - this.offset.y) * scaleRatio;
+    
+    this.render();
+  }
+
+  handleTouchStart(e) {
+    e.preventDefault();
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      this.handleMouseDown(touch);
+    }
+  }
+
+  handleTouchMove(e) {
+    e.preventDefault();
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      this.handleMouseMove(touch);
+    }
+  }
+
+  handleTouchEnd(e) {
+    e.preventDefault();
+    this.handleMouseUp();
+  }
+
+  render() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Save context state
+    this.ctx.save();
+    
+    // Apply scale and offset
+    this.ctx.translate(this.offset.x * this.scale, this.offset.y * this.scale);
+    this.ctx.scale(this.scale, this.scale);
+    
+    // Draw connections first (behind bubbles)
+    this.connections.forEach(connection => {
+      this.drawConnection(connection);
+    });
+    
+    // Draw bubbles
+    this.bubbles.forEach(bubble => {
+      this.drawBubble(bubble);
+    });
+    
+    // Restore context state
+    this.ctx.restore();
+  }
+
+  drawConnection(connection) {
+    const { from, to, color } = connection;
+    
+    this.ctx.beginPath();
+    this.ctx.moveTo(from.x, from.y);
+    this.ctx.lineTo(to.x, to.y);
+    this.ctx.strokeStyle = color;
+    this.ctx.lineWidth = 2;
+    this.ctx.stroke();
+  }
+
+  drawBubble(bubble) {
+    const { x, y, radius, color, agent } = bubble;
+    
+    // Draw bubble
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+    this.ctx.fillStyle = color;
+    this.ctx.fill();
+    
+    // Draw border based on status
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+    this.ctx.strokeStyle = this.getStatusColor(agent.status);
+    this.ctx.lineWidth = 2;
+    this.ctx.stroke();
+    
+    // Draw agent name
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = `${Math.max(10, radius / 3)}px sans-serif`;
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'middle';
+    
+    // Truncate name if too long
+    const name = agent.name || agent.id;
+    const displayName = name.length > 10 ? name.substring(0, 10) + '...' : name;
+    this.ctx.fillText(displayName, x, y - radius / 4);
+    
+    // Draw model
+    this.ctx.font = `${Math.max(8, radius / 4)}px sans-serif`;
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    this.ctx.fillText(agent.model || 'unknown', x, y + radius / 4);
+    
+    // Draw status indicator
+    this.ctx.beginPath();
+    this.ctx.arc(x + radius * 0.7, y - radius * 0.7, radius / 4, 0, Math.PI * 2);
+    this.ctx.fillStyle = this.getStatusColor(agent.status);
+    this.ctx.fill();
+    
+    // Add pulsing animation for thinking agents
+    if (agent.status === 'thinking') {
+      this.ctx.beginPath();
+      this.ctx.arc(x + radius * 0.7, y - radius * 0.7, radius / 4, 0, Math.PI * 2);
+      this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+      this.ctx.lineWidth = 1;
+      this.ctx.stroke();
+    }
+  }
+
+  animate() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+    
+    const animateFrame = () => {
+      this.applyForces();
+      this.render();
+      this.animationId = requestAnimationFrame(animateFrame);
+    };
+    
+    this.animationId = requestAnimationFrame(animateFrame);
+  }
+
+  applyForces() {
+    // Simple force-directed layout
+    const repulsionForce = 100;
+    const attractionForce = 0.1;
+    const damping = 0.9;
+    
+    // Apply repulsion between all bubbles
+    for (let i = 0; i < this.bubbles.length; i++) {
+      const bubble1 = this.bubbles[i];
+      
+      for (let j = i + 1; j < this.bubbles.length; j++) {
+        const bubble2 = this.bubbles[j];
+        
+        const dx = bubble2.x - bubble1.x;
+        const dy = bubble2.y - bubble1.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const minDistance = bubble1.radius + bubble2.radius + 20;
+        
+        if (distance < minDistance && distance > 0) {
+          const force = repulsionForce / (distance * distance);
+          const fx = force * dx / distance;
+          const fy = force * dy / distance;
+          
+          bubble1.x -= fx;
+          bubble1.y -= fy;
+          bubble2.x += fx;
+          bubble2.y += fy;
+        }
+      }
+    }
+    
+    // Apply attraction for parent-child relationships
+    this.connections.forEach(connection => {
+      const { from, to } = connection;
+      const dx = to.x - from.x;
+      const dy = to.y - from.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const targetDistance = from.radius + to.radius + 80;
+      
+      if (distance > targetDistance) {
+        const force = attractionForce * (distance - targetDistance);
+        const fx = force * dx / distance;
+        const fy = force * dy / distance;
+        
+        from.x += fx * 0.5;
+        from.y += fy * 0.5;
+        to.x -= fx * 0.5;
+        to.y -= fy * 0.5;
+      }
+    });
+    
+    // Apply damping and move toward target positions
+    this.bubbles.forEach(bubble => {
+      if (!bubble.isDragging) {
+        const dx = bubble.targetX - bubble.x;
+        const dy = bubble.targetY - bubble.y;
+        
+        bubble.x += dx * 0.1;
+        bubble.y += dy * 0.1;
+        
+        // Apply boundary constraints
+        const padding = 50;
+        bubble.x = Math.max(padding, Math.min(this.canvas.width / this.scale - padding, bubble.x));
+        bubble.y = Math.max(padding, Math.min(this.canvas.height / this.scale - padding, bubble.y));
+      }
+      
+      // Apply velocity damping
+      bubble.x *= damping;
+      bubble.y *= damping;
+    });
   }
 }
 

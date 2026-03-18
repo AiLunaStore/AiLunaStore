@@ -37,6 +37,11 @@
           <span class="nav-label">Agents</span>
           <span class="nav-badge" id="agentBadge">0</span>
         </a>
+        <a href="#" class="nav-item" data-view="collaboration">
+          <span class="nav-icon">👥</span>
+          <span class="nav-label">Collaboration</span>
+          <span class="nav-badge" id="collaborationBadge">0</span>
+        </a>
         <a href="#" class="nav-item" data-view="costs">
           <span class="nav-icon">💰</span>
           <span class="nav-label">Costs</span>
@@ -288,6 +293,76 @@
               <h3>Progressive Refinement</h3>
               <div class="progressive-stats" id="progressiveStats">
                 <!-- Dynamic progressive stats -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Collaboration View -->
+        <div class="view" id="collaborationView">
+          <div class="collaboration-header">
+            <div class="header-actions">
+              <button class="btn btn-primary" id="testCollaborationBtn">
+                <span>🧪</span> Test Collaboration
+              </button>
+              <button class="btn btn-secondary" id="analyzeTaskBtn">
+                <span>🔍</span> Analyze Task
+              </button>
+            </div>
+          </div>
+          
+          <div class="collaboration-grid">
+            <!-- Collaboration Statistics -->
+            <div class="collab-card wide">
+              <h3>Collaboration Statistics</h3>
+              <div class="collab-stats-grid" id="collaborationStats">
+                <!-- Dynamic stats -->
+              </div>
+            </div>
+
+            <!-- Specialized Agents -->
+            <div class="collab-card">
+              <h3>Specialized Agents</h3>
+              <div class="agents-list" id="specializedAgents">
+                <!-- Dynamic specialized agents -->
+              </div>
+            </div>
+
+            <!-- Active Collaborations -->
+            <div class="collab-card">
+              <h3>Active Collaborations</h3>
+              <div class="active-collabs" id="activeCollaborations">
+                <!-- Dynamic active collaborations -->
+              </div>
+            </div>
+
+            <!-- Collaboration History -->
+            <div class="collab-card wide">
+              <h3>Collaboration History</h3>
+              <div class="collab-history-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Task</th>
+                      <th>Mode</th>
+                      <th>Duration</th>
+                      <th>Speedup</th>
+                      <th>Cost</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="collaborationHistory">
+                    <!-- Dynamic history -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Performance Comparison -->
+            <div class="collab-card wide">
+              <h3>Performance Comparison</h3>
+              <div class="comparison-chart" id="collaborationComparisonChart">
+                <!-- Dynamic chart -->
               </div>
             </div>
           </div>

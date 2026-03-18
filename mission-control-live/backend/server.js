@@ -25,6 +25,49 @@ let metrics = {
   successRate: 100
 };
 
+// Function to get real OpenClaw agents
+async function getRealAgents() {
+  try {
+    const { stdout } = await execAsync('openclaw sessions list --json');
+    const sessions = JSON.parse(stdout);
+    
+    // Convert OpenClaw sessions to agent format
+    const realAgents = sessions.map((session, index) => {
+      const isActive = session.lastMessage && 
+        (Date.now() - new Date(session.lastMessage.timestamp).getTime()) < 300000; // 5 minutes
+      
+      return {
+        id: session.sessionKey || `session-${index}`,
+        name: session.label || `Agent ${index}`,
+        status: isActive ? 'active' : 'idle',
+        model: session.model || 'unknown',
+        tasksCompleted: 0, // Would need to track this
+        currentTask: null,
+        lastActive: session.lastMessage?.timestamp || null
+      };
+    });
+    
+    return realAgents;
+  } catch (error) {
+    console.error('Failed to get real agents:', error.message);
+    // Fall back to simulation
+    return generateSimulationAgents();
+  }
+}
+
+// Fallback simulation agents
+function generateSimulationAgents() {
+  return AGENT_TYPES.map((type, index) => ({
+    id: type.id,
+    name: type.name,
+    status: Math.random() > 0.7 ? 'active' : 'idle',
+    model: type.model,
+    tasksCompleted: Math.floor(Math.random() * 50),
+    currentTask: Math.random() > 0.7 ? SAMPLE_TASKS[Math.floor(Math.random() * SAMPLE_TASKS.length)] : null,
+    lastActive: new Date(Date.now() - Math.random() * 3600000).toISOString() // Within last hour
+  }));
+}
+
 // WebSocket clients
 const clients = new Set();
 
@@ -57,9 +100,12 @@ const SAMPLE_TASKS = [
 // Parse OpenClaw sessions output
 async function getOpenClawSessions() {
   try {
-    const { stdout } = await execAsync('openclaw sessions_list --json 2>/dev/null || echo "[]"');
-    return JSON.parse(stdout);
+    const { stdout } = await execAsync('openclaw sessions --json 2>/dev/null || echo "[]"');
+    const data = JSON.parse(stdout);
+    // Convert to array of sessions
+    return Array.isArray(data) ? data : (data.sessions || []);
   } catch (error) {
+    console.error('Error getting OpenClaw sessions:', error.message);
     return [];
   }
 }
@@ -67,9 +113,10 @@ async function getOpenClawSessions() {
 // Parse OpenClaw subagents output
 async function getOpenClawSubagents() {
   try {
-    const { stdout } = await execAsync('openclaw subagents --json 2>/dev/null || echo "[]"');
+    const { stdout } = await execAsync('openclaw subagents list --json 2>/dev/null || echo "[]"');
     return JSON.parse(stdout);
   } catch (error) {
+    console.error('Error getting OpenClaw subagents:', error.message);
     return [];
   }
 }

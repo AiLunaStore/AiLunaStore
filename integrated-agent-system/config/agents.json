@@ -5,8 +5,8 @@
       "id": "coding-specialist",
       "name": "Coding Specialist",
       "description": "Expert in code implementation, debugging, and optimization",
-      "primaryModel": "minimax-m2.5",
-      "fallbackChain": ["deepseek-v3.2", "gemini-3.1-pro", "claude-sonnet"],
+      "primaryModel": "minimax-m2.7",
+      "fallbackChain": ["minimax-m2.5", "deepseek-v3.2", "gemini-3.1-pro"],
       "domains": ["coding", "implementation", "debugging", "refactoring"],
       "capabilities": [
         "write_code",
@@ -27,17 +27,17 @@
       "costProfile": {
         "avgInputTokens": 3000,
         "avgOutputTokens": 2500,
-        "estimatedCostPerTask": 0.0039
+        "estimatedCostPerTask": 0.00135
       },
       "quality": 10,
-      "speed": 7
+      "speed": 8
     },
     "research-specialist": {
       "id": "research-specialist",
       "name": "Research Specialist",
       "description": "Expert in information gathering, analysis, and synthesis",
       "primaryModel": "gemini-2.5-flash-lite",
-      "fallbackChain": ["deepseek-v3.2", "gemini-3.1-pro", "claude-sonnet"],
+      "fallbackChain": ["deepseek-v3.2", "minimax-m2.5", "gemini-3.1-pro"],
       "domains": ["research", "analysis", "documentation", "learning"],
       "capabilities": [
         "search_information",
@@ -55,7 +55,7 @@
       "costProfile": {
         "avgInputTokens": 4000,
         "avgOutputTokens": 2000,
-        "estimatedCostPerTask": 0.0012
+        "estimatedCostPerTask": 0.00048
       },
       "quality": 8,
       "speed": 9
@@ -65,7 +65,7 @@
       "name": "Planning Specialist",
       "description": "Expert in task decomposition, architecture, and strategy",
       "primaryModel": "deepseek-reasoner",
-      "fallbackChain": ["deepseek-v3.2", "claude-sonnet", "gemini-3.1-pro"],
+      "fallbackChain": ["minimax-m2.7", "claude-sonnet", "gemini-3.1-pro"],
       "domains": ["planning", "architecture", "strategy", "design"],
       "capabilities": [
         "decompose_tasks",
@@ -83,7 +83,7 @@
       "costProfile": {
         "avgInputTokens": 3500,
         "avgOutputTokens": 3000,
-        "estimatedCostPerTask": 0.0013
+        "estimatedCostPerTask": 0.00088
       },
       "quality": 10,
       "speed": 5
@@ -92,8 +92,8 @@
       "id": "ui-specialist",
       "name": "UI Specialist",
       "description": "Expert in frontend development, CSS, and user interfaces",
-      "primaryModel": "minimax-m2.5",
-      "fallbackChain": ["deepseek-v3.2", "gemini-3.1-pro", "claude-sonnet"],
+      "primaryModel": "minimax-m2.7",
+      "fallbackChain": ["minimax-m2.5", "deepseek-v3.2", "gemini-3.1-pro"],
       "domains": ["ui", "frontend", "css", "html", "javascript"],
       "capabilities": [
         "build_ui_components",
@@ -112,17 +112,17 @@
       "costProfile": {
         "avgInputTokens": 2500,
         "avgOutputTokens": 2000,
-        "estimatedCostPerTask": 0.00315
+        "estimatedCostPerTask": 0.00105
       },
       "quality": 10,
-      "speed": 7
+      "speed": 8
     },
     "backend-specialist": {
       "id": "backend-specialist",
       "name": "Backend Specialist",
       "description": "Expert in APIs, databases, and server-side logic",
-      "primaryModel": "minimax-m2.5",
-      "fallbackChain": ["deepseek-v3.2", "gemini-3.1-pro", "claude-sonnet"],
+      "primaryModel": "minimax-m2.7",
+      "fallbackChain": ["minimax-m2.5", "deepseek-v3.2", "gemini-3.1-pro"],
       "domains": ["backend", "api", "database", "server"],
       "capabilities": [
         "design_apis",
@@ -141,17 +141,17 @@
       "costProfile": {
         "avgInputTokens": 3000,
         "avgOutputTokens": 2500,
-        "estimatedCostPerTask": 0.0039
+        "estimatedCostPerTask": 0.00135
       },
       "quality": 10,
-      "speed": 7
+      "speed": 8
     },
     "integration-specialist": {
       "id": "integration-specialist",
       "name": "Integration Specialist",
       "description": "Expert in combining components and end-to-end testing",
       "primaryModel": "deepseek-v3.2",
-      "fallbackChain": ["minimax-m2.5", "gemini-3.1-pro", "claude-sonnet"],
+      "fallbackChain": ["minimax-m2.7", "gpt-4o", "gemini-3.1-pro"],
       "domains": ["integration", "testing", "deployment", "ci-cd"],
       "capabilities": [
         "integrate_components",
@@ -169,7 +169,7 @@
       "costProfile": {
         "avgInputTokens": 2800,
         "avgOutputTokens": 2200,
-        "estimatedCostPerTask": 0.0010
+        "estimatedCostPerTask": 0.00063
       },
       "quality": 9,
       "speed": 8
@@ -201,11 +201,104 @@
       },
       "quality": 9,
       "speed": 8
+    },
+    "data-specialist": {
+      "id": "data-specialist",
+      "name": "Data Specialist",
+      "description": "Expert in data analysis, statistics, visualization, and data processing",
+      "primaryModel": "minimax-m2.7",
+      "fallbackChain": ["minimax-m2.5", "gemini-2.5-flash-lite", "deepseek-v3.2"],
+      "domains": ["data", "analytics", "statistics", "visualization", "processing"],
+      "capabilities": [
+        "analyze_datasets",
+        "create_visualizations",
+        "perform_statistical_analysis",
+        "process_data",
+        "identify_trends",
+        "generate_reports"
+      ],
+      "expertise": {
+        "Data Analysis": 0.95,
+        "Statistics": 0.94,
+        "Visualization": 0.93,
+        "Data Processing": 0.92,
+        "Reporting": 0.91,
+        "Machine Learning": 0.85
+      },
+      "costProfile": {
+        "avgInputTokens": 3500,
+        "avgOutputTokens": 2800,
+        "estimatedCostPerTask": 0.00147
+      },
+      "quality": 9,
+      "speed": 8
+    },
+    "qa-specialist": {
+      "id": "qa-specialist",
+      "name": "QA Specialist",
+      "description": "Expert in testing, quality assurance, validation, and review processes",
+      "primaryModel": "minimax-m2.7",
+      "fallbackChain": ["minimax-m2.5", "gemini-2.5-flash-lite", "deepseek-v3.2"],
+      "domains": ["testing", "quality", "validation", "review", "verification"],
+      "capabilities": [
+        "test_functionality",
+        "validate_quality",
+        "review_code",
+        "verify_requirements",
+        "identify_bugs",
+        "ensure_compliance"
+      ],
+      "expertise": {
+        "Testing": 0.96,
+        "Quality Assurance": 0.95,
+        "Validation": 0.94,
+        "Code Review": 0.93,
+        "Verification": 0.92,
+        "Compliance": 0.91
+      },
+      "costProfile": {
+        "avgInputTokens": 2600,
+        "avgOutputTokens": 2000,
+        "estimatedCostPerTask": 0.00108
+      },
+      "quality": 9,
+      "speed": 8
+    },
+    "writing-specialist": {
+      "id": "writing-specialist",
+      "name": "Writing Specialist",
+      "description": "Expert in writing, content creation, documentation, and copywriting",
+      "primaryModel": "gemini-2.5-flash-lite",
+      "fallbackChain": ["deepseek-v3.2", "minimax-m2.5", "gemini-3.1-pro"],
+      "domains": ["writing", "content", "documentation", "copy", "communication"],
+      "capabilities": [
+        "write_content",
+        "create_documentation",
+        "edit_copy",
+        "proofread_text",
+        "structure_information",
+        "adapt_tone"
+      ],
+      "expertise": {
+        "Writing": 0.95,
+        "Content Creation": 0.94,
+        "Documentation": 0.93,
+        "Copywriting": 0.92,
+        "Communication": 0.91,
+        "Editing": 0.90
+      },
+      "costProfile": {
+        "avgInputTokens": 3800,
+        "avgOutputTokens": 3200,
+        "estimatedCostPerTask": 0.00053
+      },
+      "quality": 8,
+      "speed": 9
     }
   },
   "agentGroups": {
-    "development": ["coding-specialist", "ui-specialist", "backend-specialist"],
-    "analysis": ["research-specialist", "planning-specialist"],
+    "development": ["coding-specialist", "ui-specialist", "backend-specialist", "data-specialist", "qa-specialist"],
+    "analysis": ["research-specialist", "planning-specialist", "writing-specialist"],
     "operations": ["integration-specialist", "orchestrator"]
   }
 }

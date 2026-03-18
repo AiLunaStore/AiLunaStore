@@ -637,6 +637,183 @@ body {
   overflow: auto;
 }
 
+/* Bubble Visualization */
+.bubble-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.bubble-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.bubble-info {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.bubble-info .separator {
+  margin: 0 var(--spacing-sm);
+  opacity: 0.5;
+}
+
+.bubble-legend {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-color.active {
+  background: var(--color-success);
+  box-shadow: 0 0 8px var(--color-success);
+}
+
+.legend-color.thinking {
+  background: var(--color-warning);
+  box-shadow: 0 0 8px var(--color-warning);
+}
+
+.legend-color.idle {
+  background: var(--text-muted);
+  box-shadow: 0 0 4px var(--text-muted);
+}
+
+#bubbleCanvas {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+#bubbleCanvas:active {
+  cursor: grabbing;
+}
+
+/* Agent Bubble Styles */
+.agent-bubble {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.agent-bubble:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-lg);
+  z-index: 10;
+}
+
+.agent-bubble.active {
+  border: 2px solid var(--color-success);
+}
+
+.agent-bubble.thinking {
+  border: 2px solid var(--color-warning);
+}
+
+.agent-bubble.idle {
+  border: 2px solid var(--text-muted);
+  opacity: 0.6;
+}
+
+.agent-bubble-label {
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  padding: 4px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agent-bubble-name {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.agent-bubble-model {
+  font-size: 10px;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+.agent-bubble-status {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-card);
+}
+
+.agent-bubble-status.active {
+  background: var(--color-success);
+}
+
+.agent-bubble-status.thinking {
+  background: var(--color-warning);
+  animation: pulse 1.5s infinite;
+}
+
+.agent-bubble-status.idle {
+  background: var(--text-muted);
+}
+
+.connection-line {
+  position: absolute;
+  background: var(--color-primary);
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.agent-filter {
+  min-width: 180px;
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
 .agent-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);

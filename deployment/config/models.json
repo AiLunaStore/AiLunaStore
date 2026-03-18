@@ -1,11 +1,59 @@
 {
   "version": "1.0.0",
   "models": {
+    "minimax-m2.7": {
+      "id": "minimax/minimax-m2.7",
+      "name": "MiniMax M2.7",
+      "provider": "MiniMax",
+      "apiEndpoint": "openrouter",
+      "description": "MiniMax-M2.7 is a next-generation large language model designed for autonomous, real-world productivity and continuous improvement. Built to actively participate in its own evolution, M2.7 integrates advanced agentic capabilities through multi-agent collaboration, enabling it to plan, execute, and refine complex tasks across dynamic environments.",
+      "capabilities": {
+        "coding": 10,
+        "reasoning": 10,
+        "planning": 10,
+        "research": 9,
+        "chat": 9,
+        "autonomous": 10,
+        "collaboration": 10,
+        "debugging": 10,
+        "documentation": 10
+      },
+      "pricing": {
+        "inputPer1M": 0.30,
+        "outputPer1M": 1.20,
+        "currency": "USD"
+      },
+      "performance": {
+        "sweBench": 56.2,
+        "terminalBench": 57.0,
+        "gdPvalElo": 1495,
+        "speed": 8,
+        "contextWindow": 204800
+      },
+      "bestFor": [
+        "autonomous agent work",
+        "multi-agent collaboration", 
+        "live debugging",
+        "root cause analysis",
+        "financial modeling",
+        "document generation (Word/Excel/PPT)",
+        "complex workflows",
+        "real-world productivity",
+        "continuous improvement"
+      ],
+      "benchmarks": {
+        "SWE-Pro": "56.2%",
+        "Terminal Bench 2": "57.0%", 
+        "GDPval-AA ELO": "1495"
+      },
+      "releaseDate": "2026-03-18",
+      "fallbackTo": "minimax-m2.5"
+    },
     "minimax-m2.5": {
-      "id": "minimax-m2.5",
+      "id": "minimax/minimax-m2.5",
       "name": "MiniMax M2.5",
       "provider": "MiniMax",
-      "apiEndpoint": "minimax",
+      "apiEndpoint": "openrouter",
       "capabilities": {
         "coding": 10,
         "reasoning": 9,
@@ -21,7 +69,7 @@
       "performance": {
         "sweBench": 80.2,
         "speed": 7,
-        "contextWindow": 1000000
+        "contextWindow": 196608
       },
       "bestFor": ["coding", "implementation", "debugging"],
       "fallbackTo": "deepseek-v3.2"

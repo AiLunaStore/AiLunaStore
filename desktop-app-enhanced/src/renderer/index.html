@@ -177,11 +177,49 @@
         <header class="view-header">
           <h1>Agents</h1>
           <div class="header-actions">
+            <div class="view-toggle">
+              <button class="btn btn-secondary" id="toggleViewBtn" title="Toggle between list and bubble view">🌀 Bubble View</button>
+            </div>
+            <div class="agent-filter">
+              <select class="select" id="agentStatusFilter">
+                <option value="active">Active & Thinking</option>
+                <option value="all">All Agents</option>
+                <option value="active-only">Active Only</option>
+                <option value="thinking-only">Thinking Only</option>
+              </select>
+            </div>
             <button class="btn btn-primary" id="refreshAgents">🔄 Refresh</button>
           </div>
         </header>
         
-        <div class="agents-grid" id="agentsGrid">
+        <!-- Bubble Visualization Container -->
+        <div class="bubble-container" id="bubbleContainer">
+          <div class="bubble-controls">
+            <div class="bubble-info">
+              <span id="activeAgentCount">0</span> active agents
+              <span class="separator">•</span>
+              <span id="totalAgentCount">0</span> total
+            </div>
+            <div class="bubble-legend">
+              <div class="legend-item">
+                <span class="legend-color active"></span>
+                <span class="legend-label">Active</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color thinking"></span>
+                <span class="legend-label">Thinking</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color idle"></span>
+                <span class="legend-label">Idle</span>
+              </div>
+            </div>
+          </div>
+          <canvas id="bubbleCanvas"></canvas>
+        </div>
+        
+        <!-- List View (hidden by default) -->
+        <div class="agents-grid" id="agentsGrid" style="display: none;">
           <!-- Agent cards will be dynamically inserted here -->
         </div>
       </div>

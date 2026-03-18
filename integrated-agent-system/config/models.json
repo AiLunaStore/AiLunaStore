@@ -1,15 +1,40 @@
 {
   "version": "1.0.0",
   "models": {
-    "minimax-m2.5": {
-      "id": "minimax-m2.5",
-      "name": "MiniMax M2.5",
+    "minimax-m2.7": {
+      "id": "minimax-m2.7",
+      "name": "MiniMax M2.7",
       "provider": "MiniMax",
       "apiEndpoint": "minimax",
       "capabilities": {
         "coding": 10,
         "reasoning": 9,
         "planning": 8,
+        "research": 8,
+        "chat": 9
+      },
+      "pricing": {
+        "inputPer1M": 0.30,
+        "outputPer1M": 1.20,
+        "currency": "USD"
+      },
+      "performance": {
+        "sweBench": 82.5,
+        "speed": 8,
+        "contextWindow": 1000000
+      },
+      "bestFor": ["coding", "implementation", "debugging", "general"],
+      "fallbackTo": "minimax-m2.5"
+    },
+    "minimax-m2.5": {
+      "id": "minimax-m2.5",
+      "name": "MiniMax M2.5",
+      "provider": "MiniMax",
+      "apiEndpoint": "minimax",
+      "capabilities": {
+        "coding": 9,
+        "reasoning": 8,
+        "planning": 7,
         "research": 7,
         "chat": 8
       },
@@ -19,7 +44,7 @@
         "currency": "USD"
       },
       "performance": {
-        "sweBench": 80.2,
+        "sweBench": 78.2,
         "speed": 7,
         "contextWindow": 1000000
       },
@@ -114,8 +139,8 @@
         "chat": 8
       },
       "pricing": {
-        "inputPer1M": 0.10,
-        "outputPer1M": 0.40,
+        "inputPer1M": 0.075,
+        "outputPer1M": 0.30,
         "currency": "USD"
       },
       "performance": {

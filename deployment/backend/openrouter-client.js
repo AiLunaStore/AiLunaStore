@@ -1,15 +1,14 @@
 // OpenRouter API Client for Integrated Agent System
 // IMPORTANT: Never hardcode API keys. Use environment variables.
 // Set OPENROUTER_API_KEY in your .env file
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-if (!OPENROUTER_API_KEY) {
-  console.warn('⚠️ OPENROUTER_API_KEY not set in environment. Using simulation mode.');
-}
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1';
 
 class OpenRouterClient {
   constructor() {
-    this.apiKey = OPENROUTER_API_KEY;
+    this.apiKey = process.env.OPENROUTER_API_KEY;
+    if (!this.apiKey) {
+      console.warn('⚠️ OPENROUTER_API_KEY not set in environment. Using simulation mode.');
+    }
     this.hasValidKey = !!this.apiKey && !this.apiKey.includes('example') && this.apiKey.length > 20;
     
     this.headers = {
@@ -99,7 +98,7 @@ class OpenRouterClient {
     
     // Simple simulation for demo purposes
     const simulations = {
-      'minimax/minimax-m2.7': `# Python Fibonacci function (simulated - MiniMax M2.7)
+      'minimax/m2.7': `# Python Fibonacci function (simulated - MiniMax M2.7)
 def fibonacci(n):
     """Calculate Fibonacci sequence up to n."""
     if n <= 0:
@@ -115,7 +114,7 @@ def fibonacci(n):
 # Example usage
 print(fibonacci(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]`,
       
-      'google/gemini-2.5-flash-lite': `// JavaScript Fibonacci (simulated - Gemini Flash)
+      'google/gemini-flash-lite': `// JavaScript Fibonacci (simulated - Gemini Flash Lite)
 function fibonacci(n) {
   const seq = [0, 1];
   for (let i = 2; i < n; i++) {
@@ -123,6 +122,22 @@ function fibonacci(n) {
   }
   return seq.slice(0, n);
 }`,
+      
+      'minimax/m2.5': `# Python Fibonacci function (simulated - MiniMax M2.5)
+def fibonacci(n):
+    """Calculate Fibonacci sequence up to n."""
+    if n <= 0:
+        return []
+    elif n == 1:
+        return [0]
+    
+    sequence = [0, 1]
+    for i in range(2, n):
+        sequence.append(sequence[i-1] + sequence[i-2])
+    return sequence
+
+# Example usage
+print(fibonacci(10))  # [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]`,
       
       'deepseek/deepseek-v3.2': `// C++ Fibonacci (simulated - DeepSeek V3.2)
 #include <vector>
@@ -170,11 +185,14 @@ std::vector<int> fibonacci(int n) {
       
       // Return simulated models if API fails
       return [
-        { id: 'minimax/minimax-m2.7', name: 'MiniMax M2.7', context_length: 204800 },
-        { id: 'google/gemini-2.5-flash-lite', name: 'Gemini 2.5 Flash-Lite', context_length: 1000000 },
+        { id: 'minimax/m2.7', name: 'MiniMax M2.7', context_length: 204800 },
+        { id: 'minimax/m2.5', name: 'MiniMax M2.5', context_length: 204800 },
+        { id: 'google/gemini-flash-lite', name: 'Gemini Flash Lite', context_length: 1000000 },
         { id: 'deepseek/deepseek-v3.2', name: 'DeepSeek V3.2', context_length: 64000 },
-        { id: 'google/gemini-3.1-pro-preview', name: 'Gemini 3.1 Pro Preview', context_length: 1000000 },
-        { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet', context_length: 200000 }
+        { id: 'deepseek/deepseek-reasoner', name: 'DeepSeek Reasoner', context_length: 64000 },
+        { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet', context_length: 200000 },
+        { id: 'openai/gpt-5.1-codex', name: 'GPT-5.1 Codex', context_length: 128000 },
+        { id: 'openai/gpt-4o', name: 'GPT-4o', context_length: 128000 }
       ];
     }
   }
