@@ -16,6 +16,7 @@ import cron from 'node-cron';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { IntegratedAgentSystem } from './backend/integrated-agent-system.js';
+import OpenRouterClient from './backend/openrouter-client.js';
 
 // Load environment variables
 config();
