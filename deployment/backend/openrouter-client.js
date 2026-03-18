@@ -1,20 +1,36 @@
 // OpenRouter API Client for Integrated Agent System
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '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';
+// IMPORTANT: Never hardcode API keys. Use environment variables.
+// Set OPENROUTER_API_KEY in your .env file
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+if (!OPENROUTER_API_KEY) {
+  console.warn('⚠️ OPENROUTER_API_KEY not set in environment. Using simulation mode.');
+}
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1';
 
 class OpenRouterClient {
   constructor() {
     this.apiKey = OPENROUTER_API_KEY;
+    this.hasValidKey = !!this.apiKey && !this.apiKey.includes('example') && this.apiKey.length > 20;
+    
     this.headers = {
-      'Authorization': `Bearer ${this.apiKey}`,
       'Content-Type': 'application/json',
       'HTTP-Referer': 'https://mission-control.openclaw.ai',
       'X-Title': 'Mission Control Agent System'
     };
+    
+    if (this.hasValidKey) {
+      this.headers['Authorization'] = `Bearer ${this.apiKey}`;
+    }
   }
 
   async executeTask(task, model) {
     console.log(`🤖 Executing task with ${model}: ${task.description.substring(0, 50)}...`);
+    
+    // Check if we have a valid API key
+    if (!this.hasValidKey) {
+      console.log(`   ⚠️ No valid OpenRouter API key configured. Using simulation mode.`);
+      return this.simulateTask(task, model, 'No API key configured');
+    }
     
     const messages = [
       { role: 'system', content: 'You are a helpful AI assistant. Provide concise, accurate responses.' },
@@ -42,6 +58,14 @@ class OpenRouterClient {
       const duration = endTime - startTime;
 
       if (data.error) {
+        console.error(`❌ OpenRouter API error: ${data.error.message} (code: ${data.error.code})`);
+        
+        // If key is invalid/revoked, switch to simulation
+        if (data.error.code === 401) {
+          console.warn(`   🔒 API key appears invalid/revoked. Switching to simulation mode.`);
+          this.hasValidKey = false;
+        }
+        
         throw new Error(`OpenRouter API error: ${data.error.message}`);
       }
 
@@ -55,7 +79,8 @@ class OpenRouterClient {
         usage: data.usage || {},
         cost: data.usage?.cost || 0,
         duration: duration,
-        success: true
+        success: true,
+        realApi: true
       };
 
       console.log(`✅ Task completed in ${duration}ms, cost: $${result.cost.toFixed(8)}`);
