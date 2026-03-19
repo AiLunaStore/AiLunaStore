@@ -1,5 +1,0 @@
-{"timestamp": "2026-03-16T01:14:29.503445", "type": "safety_validation", "action": "input_validation", "result": "fail", "details": {"message": "Blocked pattern detected", "details": {"pattern": "rm\\s+-rf\\s+/"}}}
-{"timestamp": "2026-03-16T01:14:29.504449", "type": "safety_validation", "action": "input_validation", "result": "pass", "details": {"message": "Input validation passed", "details": {}}}
-{"timestamp": "2026-03-16T01:14:29.504564", "type": "safety_validation", "action": "permission", "result": "fail", "details": {"message": "Insufficient permissions", "details": {"operation": "write_file", "required": "L1_BASIC", "current": "L0_RESTRICTED"}}}
-{"timestamp": "2026-03-16T01:14:29.504660", "type": "safety_validation", "action": "permission", "result": "pass", "details": {"message": "Permission granted for write_file", "details": {"operation": "write_file", "level": "L1_BASIC"}}}
-{"timestamp": "2026-03-16T01:14:29.509024", "type": "safety_validation", "action": "phase3_scope", "result": "pass", "details": {"message": "Scope check passed", "details": {"allowed": true, "requires_approval": false, "source": "phase3_scope"}}}
