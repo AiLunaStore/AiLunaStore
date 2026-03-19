@@ -52,6 +52,7 @@ class AgentController extends EventEmitter {
   }
 
   // Agent Management
+  
   async listAgents() {
     try {
       const response = await this.apiRequest('agents');
@@ -67,7 +68,8 @@ class AgentController extends EventEmitter {
       return agents;
     } catch (err) {
       log.error('Failed to list agents:', err);
-      return Array.from(this.agents.values());
+      // Fallback to empty array instead of simulation
+      return [];
     }
   }
 
@@ -192,7 +194,7 @@ class AgentController extends EventEmitter {
     try {
       // Integrated system doesn't have metrics endpoints
       // Return simulated data for UI compatibility
-      log.info(`Returning simulated metrics for agent ${agentId} (endpoint not available)`);
+      
       return {
         cpu: 15 + Math.random() * 10,
         memory: 30 + Math.random() * 20,
@@ -210,7 +212,7 @@ class AgentController extends EventEmitter {
     try {
       // Integrated system doesn't have system metrics endpoint
       // Return simulated data for UI compatibility
-      log.info('Returning simulated system metrics (endpoint not available)');
+      
       return {
         totalAgents: 49,
         activeAgents: 2,

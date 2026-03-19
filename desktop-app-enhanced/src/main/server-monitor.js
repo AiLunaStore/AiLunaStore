@@ -229,6 +229,7 @@ class ServerMonitor extends EventEmitter {
     }
   }
 
+  
   connectWebSocket() {
     // WebSocket connection for real-time updates
     try {
@@ -238,13 +239,22 @@ class ServerMonitor extends EventEmitter {
       this.ws = new WebSocket(wsUrl);
       
       this.ws.on('open', () => {
-        log.info('WebSocket connected');
+        log.info('WebSocket connected to', wsUrl);
+        // Subscribe to agent updates
+        this.ws.send(JSON.stringify({ type: 'subscribe', topic: 'agents' }));
       });
       
       this.ws.on('message', (data) => {
         try {
           const message = JSON.parse(data);
           this.emit('ws-message', message);
+          
+          // Handle different message types
+          if (message.type === 'agent:update') {
+            this.emit('agent-update', message.data);
+          } else if (message.type === 'task:update') {
+            this.emit('task-update', message.data);
+          }
         } catch (err) {
           log.error('Failed to parse WebSocket message:', err);
         }

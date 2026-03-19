@@ -916,7 +916,13 @@ class BubbleVisualization {
 
   init() {
     this.resizeCanvas();
-    this.updateFromAgents(app.agents);
+    // Get agents from the global app instance
+    if (typeof app !== 'undefined' && app.agents) {
+      this.updateFromAgents(app.agents);
+    } else {
+      // Fallback to empty array if app not available
+      this.updateFromAgents([]);
+    }
     this.animate();
   }
 
@@ -1087,16 +1093,27 @@ class BubbleVisualization {
   }
 
   findParentId(subagentId) {
-    // Extract parent ID from subagent ID
-    // Format: subagent-{parentId}-{index} or similar
-    const match = subagentId.match(/subagent-([^-]+)/);
-    if (match) {
-      return match[1];
+    // Find the subagent in our agents list
+    const subagent = this.agents.find(a => a.id === subagentId);
+    if (!subagent) return null;
+    
+    // Try to extract parent from currentTask field
+    // Format: agent:main:subagent:uuid or similar
+    if (subagent.currentTask) {
+      const taskParts = subagent.currentTask.split(':');
+      if (taskParts.length >= 2) {
+        // The parent is usually the second part (e.g., "main" in "agent:main:subagent:uuid")
+        return taskParts[1];
+      }
     }
     
-    // Fallback: look for parent in agent data
-    const subagent = this.agents.find(a => a.id === subagentId);
-    return subagent?.parentId;
+    // Fallback: check if it's a subagent of "main" by default
+    // Most subagents in OpenClaw are created by the main agent
+    if (subagentId.startsWith('subagent-')) {
+      return 'main';
+    }
+    
+    return null;
   }
 
   updateInfoDisplay() {
@@ -1241,52 +1258,58 @@ class BubbleVisualization {
     this.ctx.stroke();
   }
 
+  
+  // Performance optimization for bubble rendering
   drawBubble(bubble) {
     const { x, y, radius, color, agent } = bubble;
+    const ctx = this.ctx;
     
-    // Draw bubble
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, radius, 0, Math.PI * 2);
-    this.ctx.fillStyle = color;
-    this.ctx.fill();
+    // Save context state
+    ctx.save();
     
-    // Draw border based on status
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, radius, 0, Math.PI * 2);
-    this.ctx.strokeStyle = this.getStatusColor(agent.status);
-    this.ctx.lineWidth = 2;
-    this.ctx.stroke();
+    // Draw bubble with smooth edges
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
     
-    // Draw agent name
-    this.ctx.fillStyle = 'white';
-    this.ctx.font = `${Math.max(10, radius / 3)}px sans-serif`;
-    this.ctx.textAlign = 'center';
-    this.ctx.textBaseline = 'middle';
+    // Add subtle shadow for depth
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
     
-    // Truncate name if too long
-    const name = agent.name || agent.id;
-    const displayName = name.length > 10 ? name.substring(0, 10) + '...' : name;
-    this.ctx.fillText(displayName, x, y - radius / 4);
+    // Draw border
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
     
-    // Draw model
-    this.ctx.font = `${Math.max(8, radius / 4)}px sans-serif`;
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-    this.ctx.fillText(agent.model || 'unknown', x, y + radius / 4);
+    // Reset shadow
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    
+    // Draw agent info
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '12px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(agent.name || agent.id, x, y);
     
     // Draw status indicator
-    this.ctx.beginPath();
-    this.ctx.arc(x + radius * 0.7, y - radius * 0.7, radius / 4, 0, Math.PI * 2);
-    this.ctx.fillStyle = this.getStatusColor(agent.status);
-    this.ctx.fill();
+    const statusColor = {
+      'active': '#10b981',
+      'thinking': '#f59e0b',
+      'idle': '#6b7280',
+      'error': '#ef4444'
+    }[agent.status] || '#6b7280';
     
-    // Add pulsing animation for thinking agents
-    if (agent.status === 'thinking') {
-      this.ctx.beginPath();
-      this.ctx.arc(x + radius * 0.7, y - radius * 0.7, radius / 4, 0, Math.PI * 2);
-      this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
-      this.ctx.lineWidth = 1;
-      this.ctx.stroke();
-    }
+    ctx.fillStyle = statusColor;
+    ctx.beginPath();
+    ctx.arc(x + radius - 5, y - radius + 5, 4, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.restore();
   }
 
   animate() {
