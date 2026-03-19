@@ -209,7 +209,7 @@ check_external_systems() {
     log "INFO" "Checking external systems..."
     
     # Check internet connectivity
-    if ping -c 1 -W 5 8.8.8.8 > /dev/null 2>&1; then
+    if /sbin/ping -c 1 -W 5 8.8.8.8 > /dev/null 2>&1; then
         log "INFO" "Internet connectivity OK"
     else
         log "WARNING" "Internet connectivity issue"
