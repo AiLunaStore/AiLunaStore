@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OR Surgery Nurse Circulator Checklist</title>
+<style>
+@page { size: 11in 8.5in landscape; margin: 0.25in; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Segoe UI", system-ui, sans-serif; font-size: 7pt; line-height: 1.2; color: #1a1a1a; background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.sheet { width: 10.5in; height: 8in; margin: 0 auto; display: flex; flex-direction: row; gap: 0.15in; padding: 0.1in; page-break-after: always; }
+.sheet:last-child { page-break-after: avoid; }
+.page-header { width: 10.5in; margin: 0 auto 0.05in; display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; background: #2c3e50; color: white; }
+.page-header h1 { font-size: 11pt; font-weight: 700; letter-spacing: 0.5px; }
+.page-header .date { font-size: 7pt; }
+.column { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.room-header { text-align: right; font-size: 8pt; font-weight: 600; padding: 2px 4px; border-bottom: 1.5px solid #2c3e50; background: #ecf0f1; }
+.room-header input { width: 1in; border: none; border-bottom: 1px solid #7f8c8d; font-size: 8pt; font-weight: 600; text-align: center; background: transparent; }
+.patient-top-row { display: flex; gap: 4px; margin-bottom: 3px; }
+.human-outline { flex: 0 0 1.8in; height: 1.8in; border: 1.5px solid #bdc3c7; border-radius: 3px; background: #fafbfc; padding: 2px; }
+.human-outline img { width: 100%; height: 100%; object-fit: contain; }
+.top-sections { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.section { border: 1.5px solid; border-radius: 3px; padding: 2px 4px; page-break-inside: avoid; background: white; }
+.section h4 { font-size: 6pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; color: white; padding: 2px 4px; border-radius: 1px; }
+
+/* Section Colors */
+.section-preop { border-color: #2980b9; } .section-preop h4 { background: #2980b9; }
+.section-safety { border-color: #e74c3c; } .section-safety h4 { background: #e74c3c; }
+.section-count { border-color: #f39c12; } .section-count h4 { background: #f39c12; }
+.section-intra { border-color: #27ae60; } .section-intra h4 { background: #27ae60; }
+.section-specimen { border-color: #8e44ad; } .section-specimen h4 { background: #8e44ad; }
+.section-turnover { border-color: #16a085; } .section-turnover h4 { background: #16a085; }
+.section-sbar { border-color: #d35400; } .section-sbar h4 { background: #d35400; }
+
+.checklist { display: flex; flex-wrap: wrap; gap: 2px 6px; }
+.checklist.compact { gap: 1px 3px; }
+.checklist.vertical { flex-direction: column; gap: 2px; }
+.check-item { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; font-size: 6.5pt; }
+.check-item.full { width: 100%; }
+.slash-options { display: inline; }
+.slash-options span { cursor: pointer; padding: 0 1px; display: inline-block; }
+.slash-options span:hover { background: #ecf0f1; border-radius: 2px; }
+.slash-options .selected { background: #2c3e50; color: white; border-radius: 2px; padding: 0 3px; }
+.text-input { border: none; border-bottom: 1px solid #95a5a6; background: transparent; font-size: 7pt; padding: 0 2px; font-family: inherit; }
+.text-input.wide { width: 1.2in; }
+.text-input.med { width: 0.8in; }
+.text-input.narrow { width: 0.4in; }
+.text-input.tiny { width: 0.25in; }
+.checkbox { width: 10px; height: 10px; border: 1px solid #7f8c8d; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 8pt; }
+.checkbox.checked { background: #27ae60; color: white; }
+.time-input { border: none; border-bottom: 1px solid #95a5a6; background: transparent; font-size: 7pt; width: 0.5in; text-align: center; }
+.initials-input { border: none; border-bottom: 1px solid #95a5a6; background: transparent; font-size: 7pt; width: 0.4in; text-align: center; }
+.small-label { font-size: 5.5pt; color: #7f8c8d; font-weight: 600; }
+.sub-section { border-left: 2px solid; padding-left: 4px; margin: 2px 0; }
+.sub-section.preop { border-color: #3498db; }
+.sub-section.count { border-color: #f39c12; }
+.sub-section.intra { border-color: #27ae60; }
+.sub-section.specimen { border-color: #8e44ad; }
+.sub-section h5 { font-size: 5.5pt; font-weight: 700; color: #2c3e50; margin-bottom: 1px; text-transform: uppercase; }
+.row { display: flex; gap: 4px; align-items: center; }
+.row.wrap { flex-wrap: wrap; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+.notes-area { width: 100%; height: 100%; min-height: 0.6in; border: none; background: transparent; font-size: 7pt; padding: 2px; resize: none; font-family: inherit; }
+.divider { height: 1px; background: #bdc3c7; margin: 2px 0; }
+.highlight-box { background: #fff3cd; border: 1px solid #f39c12; padding: 2px 4px; border-radius: 2px; font-size: 6pt; }
+.warning-box { background: #f8d7da; border: 1px solid #e74c3c; padding: 2px 4px; border-radius: 2px; font-size: 6pt; }
+@media print { body { margin: 0; } .sheet { page-break-after: always; } input, textarea { border-bottom: 1px solid #bdc3c7 !important; } }
+@media screen { body { background: #e8e8e8; padding: 10px; } .sheet { background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.15); } .page-header { width: 10.7in; border-radius: 3px 3px 0 0; } }
+</style>
+</head>
+<body>
+
+<!-- Page 1: Pre-Op & Safety -->
+<div class="page-header">
+<h1>🏥 OR Surgery Nurse Circulator Checklist</h1>
+<div class="date">Date: <input type="text" class="text-input" style="width: 0.8in; border-bottom: 1px solid white;"></div>
+</div>
+
+<div class="sheet">
+<!-- Column 1: Pre-Op Check-In -->
+<div class="column">
+<div class="room-header">Room: <input type="text"> | Case: <input type="text" style="width: 1.5in;"></div>
+<div class="patient-top-row">
+<div class="human-outline">
+<img src="IMG_2863.jpg" alt="Human Outline">
+</div>
+<div class="top-sections">
+<div class="section section-preop">
+<h4>📋 Pre-Op Check-In</h4>
+<div class="checklist vertical">
+<div class="check-item"><span class="checkbox"></span> <strong>Patient Verification:</strong></div>
+<div class="row" style="margin-left: 12px;">
+<span class="small-label">Name:</span><input type="text" class="text-input wide">
+</div>
+<div class="row" style="margin-left: 12px;">
+<span class="small-label">DOB:</span><input type="text" class="text-input narrow">
+<span class="small-label">DOB:</span><input type="text" class="text-input narrow">
+<span class="small-label">MR#:</span><input type="text" class="text-input narrow">
+</div>
+<div class="row" style="margin-left: 12px;">
+<span class="small-label">Allergies:</span><input type="text" class="text-input med" style="background: #fff3cd;">
+</div>
+<div class="divider"></div>
+<div class="check-item"><span class="checkbox"></span> <strong>Consent Review:</strong></div>
+<div class="row" style="margin-left: 12px; gap: 4px;">
+<span class="slash-options"><span>Surgical</span>/<span> anesthesia</span>/<span> blood</span></span>
+</div>
+<div class="row" style="margin-left: 12px;">
+<span class="checkbox"></span> Surgical <span class="checkbox"></span> Anesthesia <span class="checkbox"></span> Blood <span class="checkbox"></span> Implant
+</div>
+<div class="divider"></div>
+<div class="check-item"><span class="checkbox"></span> <strong>Surgical Site Marking</strong> - Verified & Correct</div>
+<div class="check-item"><span class="checkbox"></span> <strong>History & Physical</strong> Present in Chart</div>
+<div class="check-item"><span class="checkbox"></span> <strong>Advance Directives</strong> - <span class="slash-options"><span>Full Code</span>/<span>DNR</span>/<span>DNI</span></span></div>
+<div class="check-item"><span class="checkbox"></span> <strong>NPO Status</strong> - Last PO: <input type="text" class="time-input"> @ <input type="text" class="text-input narrow"> hrs</div>
+<div class="check-item"><span class="checkbox"></span> <strong>IV Access Confirmed</strong> - Site: <span class="slash-options"><span>L AC</span>/<span>R AC</span>/<span>Hand</span>/<span>Central</span></span> Gauge: <input type="text" class="text-input tiny">
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section section-safety">
+<h4>⚠️ Safety Verification</h4>
+<div class="checklist vertical">
+<div class="row">
+<span class="checkbox"></span> <strong>Fire Safety - "B.I.D."</strong>
+</div>
+<div class="row" style="margin-left: 12px;">
+<span class="small-label">Bovie:</span><span class="slash-options"><span>OK</span>/<span>✗</span></span>
+<span class="small-label">O2:</span><span class="slash-options"><span>Off</span>/<span>On</span></span>
+<span class="small-label">Drapes:</span><span class="slash-options"><span>Wet</span>/<span>Dry</span></span>
+</div>
+<div class="check-item"><span class="checkbox"></span> <strong>Latex Allergy</strong> - <span class="slash-options"><span>Yes</span>/<span>No</span></span> (If yes, alert team & use latex-free supplies)</div>
+<div class="check-item"><span class="checkbox"></span> <strong>DVT Prophylaxis</strong> - Timing: Pre-op <span class="checkbox"></span> Intra-op <span class="checkbox"></span></div>
+<div class="check-item"><span class="checkbox"></span> <strong>Antibiotic Prophylaxis</strong> - Given: <input type="text" class="time-input"> @ <input type="text" class="text-input narrow">hrs before incision</div>
+<div class="check-item" style="background: #fff3cd; padding: 2px; border-radius: 2px;">
+<span class="checkbox"></span> <strong>Timeout Verification</strong> - Team Stoppage Complete
+</div>
+</div>
+</div>
+
+<div class="section section-sbar">
+<h4>📞 SBAR Handoff - Pre-Op</h4>
+<div class="checklist vertical" style="gap: 3px;">
+<div class="check-item"><span class="small-label">S</span> <strong>Situation:</strong> <input type="text" class="text-input wide"></div>
+<div class="check-item"><span class="small-label">B</span> <strong>Background:</strong> <input type="text" class="text-input wide"></div>
+<div class="check-item"><span class="small-label">A</span> <strong>Assessment:</strong> <input type="text" class="text-input wide"></div>
+<div class="check-item"><span class="small-label">R</span> <strong>Recommendation:</strong> <input type="text" class="text-input wide"></div>
+</div>
+</div>
+</div>
+
+<!-- Column 2: Intra-Op Tracking -->
+<div class="column">
+<div class="section section-intra">
+<h4>💉 Intra-Op Tracking</h4>
+<div class="checklist vertical">
+<div class="sub-section intra">
+<h5>Patient Positioning</h5>
+<div class="row wrap">
+<span class="slash-options"><span>Supine</span>/<span>Prone</span>/<span>Lateral</span>/<span>Fowler's</span>/<span>Trendelenburg</span></span>
+<span class="checkbox"></span> Arms Secured <span class="checkbox"></span> Safety Straps <span class="checkbox"></span> Padding
+</div>
+<div class="row">
+Positioned by: <input type="text" class="initials-input"> @ <input type="text" class="time-input"> Time
+</div>
+</div>
+
+<div class="sub-section intra">
+<h5>Intra-Op Monitoring</h5>
+<div class="grid-2">
+<div class="check-item"><span class="small-label">Urinary Output:</span> <input type="text" class="text-input narrow"> mL</div>
+<div class="check-item"><span class="small-label">EBL:</span> <input type="text" class="text-input narrow"> mL</div>
+</div>
+<div class="check-item"><strong>Fluid I&O:</strong> In: <input type="text" class="text-input narrow"> mL | Out: <input type="text" class="text-input narrow"> mL</div>
+</div>
+
+<div class="sub-section intra">
+<h5>Medication Log</h5>
+<div class="row wrap" style="font-size: 6pt;">
+Med: <input type="text" class="text-input narrow"> Dose: <input type="text" class="text-input narrow"> Route: <input type="text" class="text-input narrow"> Time: <input type="text" class="time-input"> By: <input type="text" class="initials-input">
+</div>
+<div class="row wrap" style="font-size: 6pt;">
+Med: <input type="text" class="text-input narrow"> Dose: <input type="text" class="text-input narrow"> Route: <input type="text" class="text-input narrow"> Time: <input type="text" class="time-input"> By: <input type="text" class="initials-input">
+</div>
+<div class="row wrap" style="font-size: 6pt;">
+Med: <input type="text" class="text-input narrow"> Dose: <input type="text" class="text-input narrow"> Route: <input type="text" class="text-input narrow"> Time: <input type="text" class="time-input"> By: <input type="text" class="initials-input">
+</div>
+</div>
+
+<div class="sub-section intra">
+<h5>Specimen Handling</h5>
+<div class="row">
+<span class="checkbox"></span> Specimen Collected
+</div>
+<div class="row">
+Type: <span class="slash-options"><span>Frozen</span>/<span>Permanent</span>/<span>Culture</span>/<span>Disposable</span></span>
+</div>
+<div class="row">
+Labeled by: <input type="text" class="initials-input"> Verified by: <input type="text" class="initials-input">
+</div>
+</div>
+
+<div class="sub-section intra">
+<h5>Implant Tracking</h5>
+<div class="row wrap">
+<span class="checkbox"></span> Implant Used
+</div>
+<div class="row">
+Implant Type: <input type="text" class="text-input med"> Lot #: <input type="text" class="text-input narrow">
+</div>
+<div class="row">
+Implants rep present: <span class="checkbox"></span> Yes <span class="checkbox"></span> No
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Page 2: Counts, Specimens, Turnover -->
+<div class="page-header">
+<h1>🏥 OR Surgery Nurse Circulator Checklist (Cont.)</h1>
+<div class="date">Page 2 of 2</div>
+</div>
+
+<div class="sheet">
+<!-- Column 1: Instrument/Sponge Count -->
+<div class="column">
+<div class="room-header">Room: <input type="text"> | Procedure: <input type="text" style="width: 1.5in;"></div>
+
+<div class="section section-count">
+<h4>🔢 Instrument/Sponge Count</h4>
+<div class="checklist vertical">
+<div class="sub-section count">
+<h5>Pre-Procedure Count (Baseline)</h5>
+<div class="grid-3">
+<div class="check-item"><span class="small-label">Instruments:</span> <input type="text" class="text-input narrow"></div>
+<div class="check-item"><span class="small-label">Sponges:</span> <input type="text" class="text-input narrow"></div>
+<div class="check-item"><span class="small-label">Needles:</span> <input type="text" class="text-input narrow"></div>
+</div>
+<div class="check-item"><span class="small-label">Sharps:</span> <input type="text" class="text-input narrow"> | <span class="small-label">Blades:</span> <input type="text" class="text-input narrow"></div>
+<div class="row">
+Counted by: <input type="text" class="initials-input"> & <input type="text" class="initials-input"> @ <input type="text" class="time-input">
+</div>
+</div>
+
+<div class="sub-section count">
+<h5>Closing Count</h5>
+<div class="grid-3">
+<div class="check-item"><span class="small-label">Instruments:</span> <input type="text" class="text-input narrow"></div>
+<div class="check-item"><span class="small-label">Sponges:</span> <input type="text" class="text-input narrow"></div>
+<div class="check-item"><span class="small-label">Needles:</span> <input type="text" class="text-input narrow"></div>
+</div>
+<div class="check-item"><span class="small-label">Sharps:</span> <input type="text" class="text-input narrow"> | <span class="small-label">Blades:</span> <input type="text" class="text-input narrow"></div>
+<div class="row">
+Counted by: <input type="text" class="initials-input"> & <input type="text" class="initials-input"> @ <input type="text" class="time-input">
+</div>
+</div>
+
+<div class="sub-section count">
+<h5>Skin Count (if applicable)</h5>
+<div class="grid-3">
+<div class="check-item"><span class="small-label">Instruments:</span> <input type="text" class="text-input narrow"></div>
+<div class="check-item"><span class="small-label">Sponges:</span> <input type="text" class="text-input narrow"></div>
+<div class="check-item"><span class="small-label">Needles:</span> <input type="text" class="text-input narrow"></div>
+</div>
+</div>
+
+<div class="warning-box" style="margin-top: 3px;">
+<strong>⚠️ Count Discrepancy Protocol:</strong>
+<div class="check-item"><span class="checkbox"></span> Notify surgeon immediately</div>
+<div class="check-item"><span class="checkbox"></span> Do not close until resolved</div>
+<div class="check-item"><span class="checkbox"></span> Document discrepancy & resolution</div>
+<div class="check-item"><span class="checkbox"></span> Obtain X-ray if indicated</div>
+</div>
+</div>
+</div>
+
+<div class="section section-specimen">
+<h4>🧪 Specimen Management</h4>
+<div class="checklist vertical">
+<div class="row">
+<span class="checkbox"></span> <strong>Labels Complete</strong> - Patient name, DOB, MR#, Date/Time
+</div>
+<div class="row">
+<span class="checkbox"></span> <strong>Laterality Marked</strong> - <span class="slash-options"><span>Right</span>/<span>Left</span>/<span>NA</span></span>
+</div>
+<div class="row">
+<span class="checkbox"></span> <strong>Source/Tissue Type:</strong> <input type="text" class="text-input wide">
+</div>
+<div class="divider"></div>
+<div class="check-item"><strong>Cultures:</strong> <span class="checkbox"></span> Routine <span class="checkbox"></span> Aerobic <span class="checkbox"></span> Anaerobic <span class="checkbox"></span> Fungal <span class="checkbox"></span> AFB</div>
+<div class="check-item"><strong>Permanent:</strong> <span class="checkbox"></span> Formalin <span class="checkbox"></span> Paraffin <span class="checkbox"></span> Fresh</div>
+<div class="divider"></div>
+<div class="row">
+<strong>Chain of Custody:</strong>
+</div>
+<div class="row">
+Collected by: <input type="text" class="initials-input"> @ <input type="text" class="time-input">
+</div>
+<div class="row">
+Handed to: <input type="text" class="initials-input"> @ <input type="text" class="time-input"> (Pathology/Transplant/Research)
+</div>
+<div class="row">
+Sent via: <span class="slash-options"><span>Courier</span>/<span>Pneumatic Tube</span>/<span>Hand-delivered</span></span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Column 2: Turnover -->
+<div class="column">
+<div class="section section-turnover">
+<h4>🧹 Turnover Checklist</h4>
+<div class="checklist vertical">
+<div class="sub-section" style="border-color: #16a085;">
+<h5>Room Turnover Steps</h5>
+<div class="check-item"><span class="checkbox"></span> Previous case items removed from room</div>
+<div class="check-item"><span class="checkbox"></span> Linen discarded in proper receptacle</div>
+<div class="check-item"><span class="checkbox"></span> Trash discarded in red biohazard bags</div>
+<div class="check-item"><span class="checkbox"></span> Kick buckets & suction canisters emptied</div>
+<div class="check-item"><span class="checkbox"></span> Specimens properly labeled & dispatched</div>
+<div class="check-item"><span class="checkbox"></span> IMPACT/OROS logged</div>
+</div>
+
+<div class="sub-section" style="border-color: #16a085;">
+<h5>Terminal Cleaning</h5>
+<div class="check-item"><span class="checkbox"></span> OR table cleaned & disinfected</div>
+<div class="check-item"><span class="checkbox"></span> All surfaces wiped down ( Mayo, back table, poles)</div>
+<div class="check-item"><span class="checkbox"></span> Floors mopped - clean to dirty</div>
+<div class="check-item"><span class="checkbox"></span> Waste bags removed from room</div>
+<div class="check-item"><span class="checkbox"></span> Terminal cleaning checklist completed</div>
+</div>
+
+<div class="sub-section" style="border-color: #16a085;">
+<h5>Equipment Reset</h5>
+<div class="row wrap">
+<span class="checkbox"></span> Tables/trays restocked <span class="checkbox"></span> Suction set up
+</div>
+<div class="row wrap">
+<span class="checkbox"></span> Bovie/floor pad ready <span class="checkbox"></span> IV poles stocked
+</div>
+<div class="row wrap">
+<span class="checkbox"></span> Lights positioned <span class="checkbox"></span> Camera ready
+</div>
+<div class="check-item"><span class="checkbox"></span> Next case equipment verified</div>
+</div>
+
+<div class="highlight-box">
+<strong>Turnover Time Target:</strong> <input type="text" class="text-input narrow"> minutes | Actual: <input type="text" class="text-input narrow"> minutes
+</div>
+</div>
+</div>
+
+<div class="section section-sbar">
+<h4>📞 SBAR Handoff - Post-Op</h4>
+<div class="checklist vertical" style="gap: 3px;">
+<div class="check-item"><span class="small-label">S</span> <strong>Situation:</strong> Procedure completed in OR <input type="text" class="text-input narrow"></div>
+<div class="check-item"><span class="small-label">B</span> <strong>Background:</strong> <input type="text" class="text-input wide"></div>
+<div class="check-item"><span class="small-label">A</span> <strong>Assessment:</strong> <input type="text" class="text-input wide"></div>
+<div class="check-item"><span class="small-label">R</span> <strong>Recommendation:</strong> <input type="text" class="text-input wide"></div>
+</div>
+</div>
+
+<div class="section" style="border-color: #7f8c8d; flex: 1;">
+<h4 style="background: #7f8c8d;">📝 Circulator Notes</h4>
+<textarea class="notes-area" placeholder="Document any issues, incidents, or notable events during the procedure..."></textarea>
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>
