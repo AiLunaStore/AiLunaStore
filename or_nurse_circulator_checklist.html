@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OR Surgery Nurse Circulator Checklist</title>
+    <style>
+        @page {
+            size: landscape;
+            margin: 0.5in;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            font-size: 11px;
+        }
+        
+        .page {
+            width: 11in;
+            height: 8.5in;
+            background: white;
+            margin: 0 auto 0.5in;
+            padding: 0.4in;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .page:last-child {
+            page-break-after: avoid;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 0.3in;
+            padding-bottom: 0.2in;
+            border-bottom: 3px solid #2c5282;
+        }
+        
+        .header h1 {
+            font-size: 22px;
+            color: #1a365d;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 12px;
+            color: #4a5568;
+            margin-top: 5px;
+        }
+        
+        .content-row {
+            display: flex;
+            gap: 0.3in;
+            flex: 1;
+        }
+        
+        .section {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            padding: 12px 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-header .icon {
+            font-size: 18px;
+        }
+        
+        .section-content {
+            padding: 15px;
+            background: #fafafa;
+            min-height: 200px;
+        }
+        
+        /* Section Colors */
+        .pre-op .section-header { background: #2b6cb0; }
+        .pre-op { border: 2px solid #2b6cb0; }
+        
+        .safety .section-header { background: #c53030; }
+        .safety { border: 2px solid #c53030; }
+        
+        .instrument .section-header { background: #dd6b20; }
+        .instrument { border: 2px solid #dd6b20; }
+        
+        .intra-op .section-header { background: #2f855a; }
+        .intra-op { border: 2px solid #2f855a; }
+        
+        .specimen .section-header { background: #805ad5; }
+        .specimen { border: 2px solid #805ad5; }
+        
+        .turnover .section-header { background: #319795; }
+        .turnover { border: 2px solid #319795; }
+        
+        /* SBAR Format */
+        .sbar-item {
+            margin-bottom: 10px;
+            padding: 8px 10px;
+            background: white;
+            border-radius: 4px;
+            border-left: 4px solid;
+        }
+        
+        .sbar-label {
+            font-weight: 700;
+            font-size: 10px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        
+        .sbar-content {
+            font-size: 11px;
+            color: #2d3748;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 6px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+        
+        .checkbox {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #718096;
+            border-radius: 3px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .checkbox.checked {
+            background: #48bb78;
+            border-color: #48bb78;
+        }
+        
+        .checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            display: block;
+            text-align: center;
+            line-height: 12px;
+        }
+        
+        .item-text {
+            flex: 1;
+        }
+        
+        .item-label {
+            font-weight: 600;
+            font-size: 11px;
+            color: #1a202c;
+        }
+        
+        .item-value {
+            font-size: 10px;
+            color: #4a5568;
+            margin-top: 2px;
+        }
+        
+        /* Human Outline Container */
+        .human-outline-container {
+            position: relative;
+            width: 120px;
+            height: 280px;
+            margin: 0 auto;
+        }
+        
+        .human-outline {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .anatomy-marker {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.9);
+            border: 2px solid #e53e3e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: #c53030;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .warning-box {
+            background: #fff5f5;
+            border: 2px solid #fc8181;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .warning-box .title {
+            color: #c53030;
+            font-weight: 700;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+        
+        .warning-box .text {
+            color: #742a2a;
+            font-size: 10px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .info-box {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 8px;
+        }
+        
+        .info-box .label {
+            font-size: 9px;
+            text-transform: uppercase;
+            color: #718096;
+            font-weight: 600;
+        }
+        
+        .info-box .value {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-top: 3px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding-top: 0.2in;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.2in;
+            font-size: 9px;
+            color: #718096;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        @media print {
+            body { background: white; }
+            .page { box-shadow: none; margin: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- PAGE 1 -->
+    <div class="page">
+        <div class="header">
+            <h1>OR Surgery Nurse Circulator Checklist</h1>
+            <div class="subtitle">SBAR Format • Safe Patient Care • Professional Medical Documentation</div>
+        </div>
+        
+        <div class="content-row">
+            <!-- PRE-OP CHECK-IN -->
+            <div class="section pre-op">
+                <div class="section-header">
+                    <span class="icon">📋</span>
+                    1. Pre-Op Check-In
+                </div>
+                <div class="section-content">
+                    <div class="two-column">
+                        <div>
+                            <div class="section-title">Patient Verification</div>
+                            <div class="checklist-item">
+                                <div class="checkbox"></div>
+                                <div class="item-text">
+                                    <div class="item-label">Two Identifiers</div>
+                                    <div class="item-value">Name & DOB / MRN</div>
+                                </div>
+                            </div>
+                            <div class="checklist-item">
+                                <div class="checkbox"></div>
+                                <div class="item-text">
+                                    <div class="item-label">Wristband Applied</div>
+                                    <div class="item-value">Verified & secure</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="section-title">Consents</div>
+                            <div class="checklist-item">
+                                <div class="checkbox"></div>
+                                <div class="item-text">
+                                    <div class="item-label">Surgical Consent</div>
+                                    <div class="item-value">Signed, dated, timed</div>
+                                </div>
+                            </div>
+                            <div class="checklist-item">
+                                <div class="checkbox"></div>
+                                <div class="item-text">
+                                    <div class="item-label">Anesthesia Consent</div>
+                                    <div class="item-value">Signed & complete</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 10px;">Pre-Op Verification</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Site Marking</div>
+                            <div class="item-value">Surgeon marked • correct location</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">H&P Available</div>
+                            <div class="item-value">Within 30 days</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Advance Directives</div>
+                            <div class="item-value">Documented & on chart</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">NPO Status</div>
+                            <div class="item-value">NPO ≥ 8 hours verified</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">IV Access</div>
+                            <div class="item-value">Established & patent</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SAFETY VERIFICATION -->
+            <div class="section safety">
+                <div class="section-header">
+                    <span class="icon">⚠️</span>
+                    2. Safety Verification
+                </div>
+                <div class="section-content">
+                    <div class="section-title">Fire Safety B.I.D.</div>
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="label">B - Barrier</div>
+                            <div class="value">_________</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="label">I - Ignition</div>
+                            <div class="value">_________</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="label">D - Driver/Oxidizer</div>
+                            <div class="value">_________</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="label">Fire Zone</div>
+                            <div class="value">_________</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 12px;">Allergy Check</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Latex Allergy</div>
+                            <div class="item-value">Confirmed • latex-free equipment available</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Drug Allergies</div>
+                            <div class="item-value">Verified • band applied</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 10px;">Prophylaxis</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">DVT Prophylaxis</div>
+                            <div class="item-value">SCDs applied / Heparin given</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Antibiotic Prophylaxis</div>
+                            <div class="item-value">Given within 60 min • documented</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- INSTRUMENT/SPONGE COUNT -->
+            <div class="section instrument">
+                <div class="section-header">
+                    <span class="icon">🔬</span>
+                    3. Instrument/Sponge Count
+                </div>
+                <div class="section-content">
+                    <div class="human-outline-container">
+                        <img src="IMG_2863.jpg" alt="Human Outline" class="human-outline">
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 10px;">Counts</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Pre-Procedure Count</div>
+                            <div class="item-value">Instruments: ___ Sponges: ___ Needles: ___</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Closing Count</div>
+                            <div class="item-value">Verified before closure</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Skin Count</div>
+                            <div class="item-value">Final verification</div>
+                        </div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <div class="title">⚠️ COUNT DISCREPANCY</div>
+                        <div class="text">STOP procedure immediately. Notify surgeon & radiology. Document & investigate before closure.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Page 1 of 2 • OR Surgery Nurse Circulator Checklist • Document all items during procedure • Signature required for each phase
+        </div>
+    </div>
+    
+    <!-- PAGE 2 -->
+    <div class="page">
+        <div class="header">
+            <h1>OR Surgery Nurse Circulator Checklist</h1>
+            <div class="subtitle">Intra-Op & Post-Op Documentation • SBAR Format</div>
+        </div>
+        
+        <div class="content-row">
+            <!-- INTRA-OP TRACKING -->
+            <div class="section intra-op">
+                <div class="section-header">
+                    <span class="icon">💉</span>
+                    4. Intra-Op Tracking
+                </div>
+                <div class="section-content">
+                    <div class="section-title">Patient Positioning</div>
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="label">Position</div>
+                            <div class="value">_________</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="label">Safety Check</div>
+                            <div class="value">_________</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Pressure Points Protected</div>
+                            <div class="item-value">Padded & secured</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 12px;">Fluid & Output</div>
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="label">Urinary Output</div>
+                            <div class="value">______ mL</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="label">EBL</div>
+                            <div class="value">______ mL</div>
+                        </div>
+                    </div>
+                    <div class="info-grid" style="margin-top: 8px;">
+                        <div class="info-box">
+                            <div class="label">Fluid In</div>
+                            <div class="value">______ mL</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="label">Fluid Out</div>
+                            <div class="value">______ mL</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 12px;">Medication Log</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Time-Out Completed</div>
+                            <div class="item-value">Before incision</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Specimens Handled</div>
+                            <div class="item-value">Labeled correctly</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SPECIMEN MANAGEMENT -->
+            <div class="section specimen">
+                <div class="section-header">
+                    <span class="icon">🧬</span>
+                    5. Specimen Management
+                </div>
+                <div class="section-content">
+                    <div class="section-title">Labeling Requirements</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Patient Labels</div>
+                            <div class="item-value">2 identifiers on all containers</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Laterality Marked</div>
+                            <div class="item-value">R / L / NA (circle one)</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Date & Time Collected</div>
+                            <div class="item-value">Documented</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Surgeon Name</div>
+                            <div class="item-value">On label</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 12px;">Specimen Type</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Culture Specimen</div>
+                            <div class="item-value">Yellow top • transported immediately</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Permanent Specimen</div>
+                            <div class="item-value">Formalin added • 10:1 ratio</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 12px;">Chain of Custody</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Specimen Log</div>
+                            <div class="item-value">Signed in & out</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Pathology Requisition</div>
+                            <div class="item-value">Complete & attached</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TURNOVER CHECKLIST -->
+            <div class="section turnover">
+                <div class="section-header">
+                    <span class="icon">🧹</span>
+                    6. Turnover Checklist
+                </div>
+                <div class="section-content">
+                    <div class="section-title">Room Turnover Steps</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Debris Removed</div>
+                            <div class="item-value">From all surfaces</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Linens Disposed</div>
+                            <div class="item-value">In proper containers</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Sharps Disposed</div>
+                            <div class="item-value">In sharps containers</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Equipment Cleared</div>
+                            <div class="item-value">From OR table</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 12px;">Terminal Cleaning</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">High-Level Disinfection</div>
+                            <div class="item-value">All surfaces cleaned</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Floor Mopped</div>
+                            <div class="item-value">With disinfectant</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">UV Treatment</div>
+                            <div class="item-value">If applicable</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title" style="margin-top: 12px;">Equipment Reset</div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Table Reset</div>
+                            <div class="item-value">Clean sheets applied</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label"> Supplies Restocked</div>
+                            <div class="item-value">Standard inventory</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checkbox"></div>
+                        <div class="item-text">
+                            <div class="item-label">Room Ready</div>
+                            <div class="item-value">Next case ready</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Page 2 of 2 • OR Surgery Nurse Circulator Checklist • Complete all sections • Sign & date each phase • Maintain for medical records
+        </div>
+    </div>
+</body>
+</html>
