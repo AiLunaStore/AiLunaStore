@@ -1,0 +1,209 @@
+<!-- 
+  OR Nurse Circulator Checklist — Anatomical Body Diagrams
+  Anterior (Front) and Posterior (Back) Views
+  Professional medical illustration style for surgical site marking documentation
+  Public Domain / CC0 — Use freely for medical documentation
+-->
+<svg viewBox="0 0 240 400" xmlns="http://www.w3.org/2000/svg" id="anterior-body">
+  <!-- Skin fill color palette -->
+  <!-- #F5E6D3 = light warm skin, #E8D5C4 = shadow, #D4B896 = mid, #C4A882 = outline -->
+
+  <!-- HEAD — with cranial landmarks -->
+  <!-- Cranium -->
+  <ellipse cx="120" cy="30" rx="30" ry="32" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.8"/>
+  <!-- Face oval -->
+  <path d="M95 38 Q95 62 100 70 Q110 80 120 82 Q130 80 140 70 Q145 62 145 38 Q135 20 120 18 Q105 20 95 38 Z" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Hairline -->
+  <path d="M95 38 Q100 28 110 24 Q115 22 120 22 Q125 22 130 24 Q140 28 145 38" fill="none" stroke="#8B6914" stroke-width="1.2"/>
+  <!-- Eyebrows -->
+  <path d="M100 44 Q106 41 112 43" fill="none" stroke="#A07840" stroke-width="1.2"/>
+  <path d="M140 44 Q134 41 128 43" fill="none" stroke="#A07840" stroke-width="1.2"/>
+  <!-- Eyes (simple dots) -->
+  <circle cx="106" cy="50" r="3" fill="#8B6914"/>
+  <circle cx="134" cy="50" r="3" fill="#8B6914"/>
+  <!-- Nose -->
+  <path d="M120 52 L118 62 Q116 65 120 66 Q124 65 122 62 Z" fill="#E8D5C4" stroke="#A07840" stroke-width="0.8"/>
+  <!-- Lips -->
+  <path d="M114 72 Q117 74 120 73 Q123 74 126 72" fill="none" stroke="#C49070" stroke-width="1.2"/>
+  <!-- Chin -->
+  <path d="M112 76 Q116 82 120 83 Q124 82 128 76" fill="#F5E6D3" stroke="#A07840" stroke-width="0.8"/>
+  <!-- Ear left -->
+  <ellipse cx="89" cy="48" rx="5" ry="8" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.2"/>
+  <!-- Ear right -->
+  <ellipse cx="151" cy="48" rx="5" ry="8" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.2"/>
+
+  <!-- NECK — anterior -->
+  <path d="M106 78 L106 92 Q107 96 120 96 Q133 96 134 92 L134 78" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Thyroid cartilage notch hint -->
+  <path d="M115 86 Q120 88 125 86" fill="none" stroke="#C4A882" stroke-width="0.8"/>
+
+  <!-- CLAVICLES — bilateral -->
+  <path d="M60 108 Q80 100 107 104" fill="none" stroke="#8B6914" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M180 108 Q160 100 133 104" fill="none" stroke="#8B6914" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- Clavicle labels -->
+  <text x="82" y="96" text-anchor="middle" font-size="6" fill="#1565C0" font-family="sans-serif" font-weight="700">Clavicle</text>
+
+  <!-- THORAX / CHEST -->
+  <!-- Pectoral major outlines -->
+  <path d="M60 108 Q56 115 56 130 Q56 148 68 155 Q78 160 100 160 Q108 158 107 148" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <path d="M180 108 Q184 115 184 130 Q184 148 172 155 Q162 160 140 160 Q132 158 133 148" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Sternum line -->
+  <line x1="120" y1="108" x2="120" y2="195" stroke="#C4A882" stroke-width="1.2" stroke-dasharray="3,2"/>
+  <!-- Rib arcs left -->
+  <path d="M107 112 Q90 114 74 120 Q64 126 62 135 Q64 142 72 144" fill="none" stroke="#C4A882" stroke-width="1" stroke-dasharray="2,2"/>
+  <path d="M106 122 Q88 125 74 132 Q65 138 64 147 Q66 154 74 156" fill="none" stroke="#C4A882" stroke-width="1" stroke-dasharray="2,2"/>
+  <path d="M105 132 Q90 136 78 143 Q70 150 70 158 Q72 165 80 166" fill="none" stroke="#C4A882" stroke-width="1" stroke-dasharray="2,2"/>
+  <!-- Rib arcs right -->
+  <path d="M133 112 Q150 114 166 120 Q176 126 178 135 Q176 142 168 144" fill="none" stroke="#C4A882" stroke-width="1" stroke-dasharray="2,2"/>
+  <path d="M134 122 Q152 125 166 132 Q175 138 176 147 Q174 154 166 156" fill="none" stroke="#C4A882" stroke-width="1" stroke-dasharray="2,2"/>
+  <path d="M135 132 Q150 136 162 143 Q170 150 170 158 Q168 165 160 166" fill="none" stroke="#C4A882" stroke-width="1" stroke-dasharray="2,2"/>
+  <!-- Nipple line -->
+  <line x1="68" y1="140" x2="172" y2="140" stroke="#D4B896" stroke-width="0.8" stroke-dasharray="4,3"/>
+  <!-- Costal margin -->
+  <path d="M107 148 Q120 160 133 148" fill="none" stroke="#8B6914" stroke-width="1.2"/>
+  <!-- Sternum detail — suprasternal notch, body, xiphoid -->
+  <circle cx="120" cy="108" r="2" fill="#E8D5C4" stroke="#8B6914" stroke-width="0.8"/>
+  <line x1="120" y1="110" x2="120" y2="185" stroke="#C4A882" stroke-width="1.5"/>
+  <path d="M116 185 Q118 192 120 194 Q122 192 124 185" fill="#E8D5C4" stroke="#8B6914" stroke-width="1"/>
+  <!-- Chest region label -->
+  <text x="85" y="138" text-anchor="middle" font-size="6.5" fill="#1565C0" font-family="sans-serif" font-weight="700">CHEST</text>
+
+  <!-- ABDOMEN -->
+  <!-- Abdominal outline -->
+  <path d="M68 155 Q60 165 58 185 Q57 210 68 225 Q82 238 100 240 Q110 240 113 228" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <path d="M172 155 Q180 165 182 185 Q183 210 172 225 Q158 238 140 240 Q130 240 127 228" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Umbilicus -->
+  <ellipse cx="120" cy="200" rx="4" ry="3" fill="#D4B896" stroke="#8B6914" stroke-width="0.8"/>
+  <!-- Abdominal midline -->
+  <line x1="120" y1="108" x2="120" y2="240" stroke="#D4B896" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <!-- Abdominal quadrant lines -->
+  <line x1="68" y1="195" x2="172" y2="195" stroke="#D4B896" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <line x1="120" y1="148" x2="120" y2="240" stroke="#D4B896" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <!-- ASIS landmarks -->
+  <circle cx="74" cy="238" r="2.5" fill="#E8D5C4" stroke="#8B6914" stroke-width="1"/>
+  <circle cx="166" cy="238" r="2.5" fill="#E8D5C4" stroke="#8B6914" stroke-width="1"/>
+  <!-- Inguinal ligament lines -->
+  <path d="M74 238 Q88 248 108 250" fill="none" stroke="#C4A882" stroke-width="0.8" stroke-dasharray="2,2"/>
+  <path d="M166 238 Q152 248 132 250" fill="none" stroke="#C4A882" stroke-width="0.8" stroke-dasharray="2,2"/>
+  <!-- Pubic region -->
+  <path d="M68 240 Q80 252 100 252 Q110 250 113 240" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <path d="M172 240 Q160 252 140 252 Q130 250 127 240" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Abdomen label -->
+  <text x="82" y="190" text-anchor="middle" font-size="6.5" fill="#1565C0" font-family="sans-serif" font-weight="700">ABD</text>
+  <!-- Pubic/Genital label -->
+  <text x="120" y="260" text-anchor="middle" font-size="5.5" fill="#1565C0" font-family="sans-serif" font-weight="700">PUBIC</text>
+
+  <!-- LEFT ARM — lateral view of arm hanging -->
+  <!-- Shoulder joint -->
+  <circle cx="58" cy="108" r="6" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.2"/>
+  <!-- Deltoid -->
+  <path d="M58 108 Q50 110 46 120 Q44 130 48 140 Q52 145 56 142 Q60 136 60 125" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Upper arm -->
+  <path d="M46 140 Q42 158 40 180 Q39 200 44 210 Q48 214 52 210 L56 180" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Elbow -->
+  <circle cx="48" cy="212" r="5" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.2"/>
+  <!-- Forearm -->
+  <path d="M48 214 Q44 230 42 250 Q41 262 45 270 Q50 274 54 270 L52 248" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Wrist -->
+  <path d="M45 270 Q44 278 48 282 Q52 285 54 280 L54 272" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.2"/>
+  <!-- Hand / palm anterior -->
+  <path d="M40 280 Q38 290 40 298 Q44 308 50 308 Q56 308 58 298 Q60 290 58 280 Q54 275 50 275 Q44 275 40 280 Z" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Finger lines -->
+  <line x1="44" y1="282" x2="44" y2="308" stroke="#C4A882" stroke-width="0.7"/>
+  <line x1="50" y1="280" x2="50" y2="308" stroke="#C4A882" stroke-width="0.7"/>
+  <line x1="56" y1="282" x2="56" y2="308" stroke="#C4A882" stroke-width="0.7"/>
+  <!-- Left arm label -->
+  <text x="30" y="190" text-anchor="middle" font-size="6" fill="#8B6914" font-family="sans-serif" font-weight="700">L ARM</text>
+  <text x="30" y="260" text-anchor="middle" font-size="6" fill="#8B6914" font-family="sans-serif" font-weight="700">L HAND</text>
+
+  <!-- RIGHT ARM -->
+  <circle cx="182" cy="108" r="6" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.2"/>
+  <path d="M182 108 Q190 110 194 120 Q196 130 192 140 Q188 145 184 142 Q180 136 180 125" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <path d="M194 140 Q198 158 200 180 Q201 200 196 210 Q192 214 188 210 L184 180" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <circle cx="192" cy="212" r="5" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.2"/>
+  <path d="M192 214 Q196 230 198 250 Q199 262 195 270 Q190 274 186 270 L188 248" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <path d="M195 270 Q196 278 192 282 Q188 285 186 280 L186 272" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.2"/>
+  <path d="M200 280 Q202 290 200 298 Q196 308 190 308 Q184 308 182 298 Q180 290 182 280 Q186 275 190 275 Q196 275 200 280 Z" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <line x1="196" y1="282" x2="196" y2="308" stroke="#C4A882" stroke-width="0.7"/>
+  <line x1="190" y1="280" x2="190" y2="308" stroke="#C4A882" stroke-width="0.7"/>
+  <line x1="184" y1="282" x2="184" y2="308" stroke="#C4A882" stroke-width="0.7"/>
+  <text x="210" y="190" text-anchor="middle" font-size="6" fill="#8B6914" font-family="sans-serif" font-weight="700">R ARM</text>
+  <text x="210" y="260" text-anchor="middle" font-size="6" fill="#8B6914" font-family="sans-serif" font-weight="700">R HAND</text>
+
+  <!-- LEFT LEG — anterior -->
+  <!-- Hip joint -->
+  <circle cx="82" cy="250" r="7" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.2"/>
+  <!-- Thigh anterior -->
+  <path d="M76 255 Q68 270 65 295 Q63 320 68 340 Q72 350 80 350 L110 350" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Quadriceps midline -->
+  <line x1="90" y1="260" x2="88" y2="350" stroke="#D4B896" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <!-- Knee -->
+  <path d="M68 340 Q65 352 68 358 Q74 362 82 362 Q90 362 94 358 Q96 352 92 340" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Patella hint -->
+  <ellipse cx="80" cy="352" rx="8" ry="5" fill="#E8D5C4" stroke="#8B6914" stroke-width="0.8"/>
+  <!-- Lower leg anterior -->
+  <path d="M68 358 Q62 375 60 395 Q59 408 64 415 Q70 420 78 418 L96 418" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Tibial crest -->
+  <line x1="78" y1="360" x2="76" y2="418" stroke="#D4B896" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <!-- Ankle -->
+  <path d="M62 415 Q60 422 64 426 Q70 428 76 428 Q82 428 86 424 Q88 420 84 415" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Foot dorsal -->
+  <path d="M64 424 Q60 430 62 438 Q66 445 76 446 Q88 446 96 440 Q102 435 102 428 Q100 422 94 422 Q86 424 80 424 Q74 424 70 422 Q66 422 64 424 Z" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <!-- Toes hint -->
+  <line x1="72" y1="440" x2="72" y2="446" stroke="#8B6914" stroke-width="1"/>
+  <line x1="80" y1="440" x2="80" y2="446" stroke="#8B6914" stroke-width="1"/>
+  <line x1="88" y1="440" x2="88" y2="446" stroke="#8B6914" stroke-width="1"/>
+  <!-- Left leg labels -->
+  <text x="50" y="290" text-anchor="middle" font-size="6" fill="#8B6914" font-family="sans-serif" font-weight="700">L THIGH</text>
+  <text x="50" y="380" text-anchor="middle" font-size="6" fill="#8B6914" font-family="sans-serif" font-weight="700">L LEG</text>
+  <text x="55" y="430" text-anchor="middle" font-size="6" fill="#8B6914" font-family="sans-serif" font-weight="700">L FOOT</text>
+
+  <!-- RIGHT LEG -->
+  <circle cx="158" cy="250" r="7" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.2"/>
+  <path d="M164 255 Q172 270 175 295 Q177 320 172 340 Q168 350 160 350 L130 350" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <line x1="150" y1="260" x2="152" y2="350" stroke="#D4B896" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <path d="M172 340 Q175 352 172 358 Q166 362 158 362 Q150 362 146 358 Q144 352 148 340" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <ellipse cx="160" cy="352" rx="8" ry="5" fill="#E8D5C4" stroke="#8B6914" stroke-width="0.8"/>
+  <path d="M172 358 Q178 375 180 395 Q181 408 176 415 Q170 420 162 418 L144 418" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <line x1="162" y1="360" x2="164" y2="418" stroke="#D4B896" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <path d="M178 415 Q180 422 176 426 Q170 428 164 428 Q158 428 154 424 Q152 420 156 415" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <path d="M176 424 Q180 430 178 438 Q174 445 164 446 Q152 446 144 440 Q138 435 138 428 Q140 422 146 422 Q154 424 160 424 Q166 424 170 422 Q174 422 176 424 Z" fill="#F5E6D3" stroke="#8B6914" stroke-width="1.5"/>
+  <line x1="168" y1="440" x2="168" y2="446" stroke="#8B6914" stroke-width="1"/>
+  <line x1="160" y1="440" x2="160" y2="446" stroke="#8B6914" stroke-width="1"/>
+  <line x1="152" y1="440" x2="152" y2="446" stroke="#8B6914" stroke-width="1"/>
+  <text x="190" y="290" text-anchor="middle" font-size="6" fill="#8B6914" font-family="sans-serif" font-weight="700">R THIGH</text>
+  <text x="190" y="380" text-anchor="middle" font-size="6" fill="#8B6914" font-family="sans-serif" font-weight="700">R LEG</text>
+  <text x="185" y="430" text-anchor="middle" font-size="6" fill="#8B6914" font-family="sans-serif" font-weight="700">R FOOT</text>
+
+  <!-- SURGICAL SITE MARKING OVERLAYS — semi-transparent zones nurses can circle -->
+  <!-- Left chest zone -->
+  <rect x="60" y="105" width="45" height="55" fill="#1565C0" fill-opacity="0.06" stroke="#1565C0" stroke-width="0.8" stroke-dasharray="3,2" rx="3"/>
+  <!-- Right chest zone -->
+  <rect x="135" y="105" width="45" height="55" fill="#1565C0" fill-opacity="0.06" stroke="#1565C0" stroke-width="0.8" stroke-dasharray="3,2" rx="3"/>
+  <!-- Abdomen zone -->
+  <rect x="64" y="150" width="112" height="90" fill="#2E7D32" fill-opacity="0.05" stroke="#2E7D32" stroke-width="0.8" stroke-dasharray="3,2" rx="3"/>
+  <!-- Pubic zone -->
+  <rect x="68" y="238" width="104" height="22" fill="#E65100" fill-opacity="0.06" stroke="#E65100" stroke-width="0.8" stroke-dasharray="3,2" rx="2"/>
+  <!-- Left arm zone -->
+  <rect x="38" y="106" width="20" height="175" fill="#1565C0" fill-opacity="0.05" stroke="#1565C0" stroke-width="0.7" stroke-dasharray="2,2" rx="2"/>
+  <!-- Right arm zone -->
+  <rect x="182" y="106" width="20" height="175" fill="#1565C0" fill-opacity="0.05" stroke="#1565C0" stroke-width="0.7" stroke-dasharray="2,2" rx="2"/>
+  <!-- Left leg zone -->
+  <rect x="62" y="248" width="32" height="170" fill="#1565C0" fill-opacity="0.05" stroke="#1565C0" stroke-width="0.7" stroke-dasharray="2,2" rx="2"/>
+  <!-- Right leg zone -->
+  <rect x="146" y="248" width="32" height="170" fill="#1565C0" fill-opacity="0.05" stroke="#1565C0" stroke-width="0.7" stroke-dasharray="2,2" rx="2"/>
+
+  <!-- VIEW LABEL -->
+  <text x="120" y="14" text-anchor="middle" font-size="10" fill="#0d2b4e" font-family="sans-serif" font-weight="800" letter-spacing="1">ANTERIOR VIEW</text>
+
+  <!-- LEFT / RIGHT markers -->
+  <text x="22" y="230" text-anchor="middle" font-size="11" fill="#6a1b9a" font-family="sans-serif" font-weight="800">L</text>
+  <text x="218" y="230" text-anchor="middle" font-size="11" fill="#6a1b9a" font-family="sans-serif" font-weight="800">R</text>
+
+  <!-- INSTRUCTION TEXT -->
+  <text x="120" y="460" text-anchor="middle" font-size="7" fill="#5a6a7a" font-family="sans-serif" font-style="italic">Circle operative site(s) · Label L or R · Arrow for incision direction · Mark level if applicable</text>
+
+  <!-- GRIDLINES — very subtle for surgical documentation -->
+  <line x1="120" y1="18" x2="120" y2="455" stroke="#D4B896" stroke-width="0.4" stroke-dasharray="1,4"/>
+  <line x1="20" y1="230" x2="220" y2="230" stroke="#D4B896" stroke-width="0.4" stroke-dasharray="1,4"/>
+</svg>
