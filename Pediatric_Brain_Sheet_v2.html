@@ -1,486 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pediatric Brain Sheet — v2</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pediatric Brain Sheet v2 - Nursing Assessment</title>
 <style>
-@page { size: letter; margin: 0.4in; }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:8px;background:#fff;color:#1a2e1a;line-height:1.3}
-.page{width:100%;height:100%;display:flex;flex-direction:column;page-break-after:always;overflow:hidden}
-.header{background:#145214;color:#fff;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;border-radius:4px;margin-bottom:4px;flex-shrink:0}
-.header h1{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
-.header .subtitle{font-size:7px;opacity:.8;margin-top:1px}
-.header-right{text-align:right;font-size:6.5px;opacity:.75;line-height:1.5}
-.patient-bar{background:#eef5ee;border:1.5px solid #a8c8a8;border-radius:4px;padding:4px 8px;display:flex;flex-wrap:wrap;gap:4px 12px;margin-bottom:4px;align-items:center;flex-shrink:0}
-.p-field{display:flex;align-items:center;gap:3px;white-space:nowrap}
-.p-field label{font-size:7px;font-weight:700;color:#2d5a2d;text-transform:uppercase;letter-spacing:.3px}
-.p-field input{border:none;border-bottom:1.5px solid #5a8a5a;background:0 0;font-size:8px;padding:1px 2px;width:65px;color:#1a2e1a}
-.p-field input:focus{outline:none;border-bottom-color:#145214}
-.p-field input.lg{width:85px}.p-field input.xl{width:105px}
-.allergy-badge{background:#b71c1c;color:#fff;padding:2px 6px;border-radius:3px;font-size:7px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;display:flex;align-items:center;gap:4px;border:1.5px solid #8b1515}
-.allergy-badge input{border:none;border-bottom:1.5px solid rgba(255,255,255,.7);background:0 0;color:#fff;font-size:7px;padding:1px 2px;width:110px}
-.allergy-badge input::placeholder{color:rgba(255,255,255,.6)}
-.content{flex:1;display:flex;flex-direction:column;gap:4px;overflow:hidden;min-height:0}
-.section{border-radius:4px;overflow:hidden;display:flex;flex-direction:column;border:1px solid #d0e0d0;min-height:0;min-width:0}
-.section-head{padding:3px 6px;color:#fff;font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:4px;flex-shrink:0}
-.section-head .num{background:rgba(255,255,255,.2);border-radius:50%;width:14px;height:14px;display:flex;align-items:center;justify-content:center;font-size:7px;flex-shrink:0}
-.section-body{padding:4px 6px;background:#fff;flex:1;display:flex;flex-direction:column;gap:3px;min-height:0;overflow:hidden}
-.weight-accent{background:#145214;color:#fff;padding:4px 8px;border-radius:4px;flex-shrink:0}
-.weight-accent .big-wt{font-size:22px;font-weight:900;line-height:1}
-.weight-accent .wt-label{font-size:7px;text-transform:uppercase;letter-spacing:.5px;opacity:.85}
-.dosage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
-.dosage-cell{background:#f0f8f0;border:1px solid #c8e0c8;border-radius:3px;padding:3px 5px;text-align:center}
-.dosage-cell .dc-label{font-size:6px;text-transform:uppercase;color:#2d5a2d;font-weight:700}
-.dosage-cell .dc-calc{display:flex;align-items:center;justify-content:center;gap:2px}
-.dosage-cell input{width:38px;border:none;border-bottom:1px solid #5a8a5a;background:0 0;font-size:7.5px;text-align:center;padding:1px;color:#1a2e1a}
-.dosage-cell .dc-unit{font-size:6.5px;color:#2d5a2d}
-.row{flex:1;display:flex;gap:4px;min-height:0;overflow:hidden}
-.col{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
-.checklist{display:grid;grid-template-columns:repeat(2,1fr);gap:2px 8px}
-.checklist.triple{grid-template-columns:repeat(3,1fr)}
-.checklist label{display:flex;align-items:center;gap:3px;font-size:7.5px;cursor:pointer;white-space:nowrap;padding:1px 0;border-radius:2px;user-select:none}
-.checklist label:hover{background:#f0f8f0}
-.checklist input[type=checkbox]{width:10px;height:10px;accent-color:#145214;cursor:pointer;flex-shrink:0}
-.checklist label:has(input:checked){color:#145214;font-weight:600}
-table{width:100%;border-collapse:collapse;font-size:7px;border-radius:3px;overflow:hidden}
-th,td{padding:2px 4px;text-align:left;border:1px solid #d0e0d0}
-th{background:#e8f0e8;color:#145214;font-weight:700;font-size:6.5px;text-transform:uppercase;letter-spacing:.3px}
-td{background:#fff;color:#1a2e1a}
-td input{width:100%;border:none;border-bottom:1px solid #c0d8c0;background:0 0;font-size:7px;padding:1px;color:#1a2e1a}
-td input:focus{outline:none;border-bottom-color:#145214}
-.vitals-table td{padding:2px 4px;font-size:7px}
-.vitals-table td:nth-child(odd){font-weight:600;background:#f4faf4;color:#145214}
-.scale-table td{padding:2px 4px;font-size:6.5px;text-align:center}
-.scale-table td:nth-child(1){text-align:left;font-weight:600}
-.emerg-box{background:#fff3e0;border:1px solid #e0a000;border-left:3px solid #e65100;border-radius:3px;padding:4px 6px;flex:1}
-.emerg-box .eb-title{color:#bf360c;font-weight:800;font-size:7.5px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px}
-.emerg-box .eb-title::before{content:"▶ ";font-size:8px}
-.med-ref{background:#f0f8f0;border:1px solid #c8e0c8;border-radius:3px;padding:3px 5px;font-size:6.5px;display:flex;flex-direction:column;gap:2px}
-.med-ref .mr-title{font-weight:800;color:#145214;font-size:7px;text-transform:uppercase;margin-bottom:1px}
-.inline-fields{display:flex;flex-wrap:wrap;gap:4px 10px;flex-shrink:0}
-.inline-field{display:flex;align-items:center;gap:3px;font-size:7.5px}
-.inline-field label{font-weight:700;color:#2d5a2d;font-size:6.5px;text-transform:uppercase;white-space:nowrap}
-.inline-field input{border:none;border-bottom:1px solid #5a8a5a;background:0 0;font-size:7.5px;padding:1px 2px;width:55px;color:#1a2e1a}
-.inline-field input:focus{outline:none;border-bottom-color:#145214}
-.field-row{display:flex;gap:4px;margin-bottom:2px;flex-shrink:0}
-.fg{flex:1;min-width:0}
-.fg label{display:block;font-size:6.5px;font-weight:700;color:#3a5a3a;text-transform:uppercase;letter-spacing:.2px;margin-bottom:1px}
-.fg input,.fg select{width:100%;border:none;border-bottom:1px solid #8aba8a;background:0 0;font-size:7.5px;padding:1px 2px;color:#1a2e1a}
-.fg input:focus,.fg select:focus{outline:none;border-bottom-color:#145214}
-.fg textarea{width:100%;border:1px solid #c8e0c8;border-radius:2px;font-size:7.5px;font-family:inherit;resize:none;background:#fafef8;padding:3px;line-height:1.35}
-.fg select{cursor:pointer}
-.alert-box{background:#fff3f3;border:1.5px solid #c0392b;border-radius:3px;padding:3px 5px;text-align:center}
-.alert-box .alert-title{color:#c0392b;font-weight:800;font-size:7px;text-transform:uppercase;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:3px}
-.alert-box .alert-title::before{content:"⚠";font-size:9px}
-.alert-box .alert-body{color:#7b241c;font-size:6.5px;margin-top:1px;line-height:1.3}
-.notes-area{background:#fafef8;border:1px solid #c8e0c8;border-radius:3px;padding:4px;min-height:40px;flex:1}
-.notes-area textarea{width:100%;height:100%;border:none;background:0 0;font-size:7.5px;font-family:inherit;resize:none;color:#1a2e1a;line-height:1.35}
-.notes-area textarea:focus{outline:none}
-.footer{text-align:center;padding:2px;font-size:6px;color:#7a9a7a;margin-top:3px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center}
-.footer .ver{font-weight:600;color:#145214}
-.develop-table td{padding:2px 4px;font-size:6.5px}
-.develop-table td:nth-child(1){font-weight:700;background:#e8f0e8;color:#145214;width:22%}
-.develop-table td:nth-child(2){background:#fafef8}
-.med-mini{font-size:6px;line-height:1.4}
-.med-mini strong{color:#145214}
-@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.section{break-inside:avoid}.page{overflow:visible}}
+:root {
+--green: #2d6a4f;
+--green-light: #40916c;
+--green-dark: #1b4332;
+--paper: #ffffff;
+--paper-alt: #f0fdf4;
+--ink-primary: #1a1a2e;
+--ink-secondary: #4a4a5a;
+--line-primary: #2c3e50;
+--line-secondary: #b5c9b7;
+--line-light: #d8e4dc;
+--checkbox-border: #6a9e7f;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@page { size: 8.5in 11in portrait; margin: 0.2in; }
+body {
+font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+font-size: 7.5pt;
+line-height: 1.2;
+color: var(--ink-primary);
+background: white;
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+}
+.sheet {
+width: 8in;
+min-height: 10.5in;
+margin: 0 auto;
+padding: 0;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+/* Header */
+.header {
+display: grid;
+grid-template-columns: 1.5fr 1fr 0.8fr;
+gap: 6px;
+padding: 6px 8px;
+background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+border: 2px solid var(--green-dark);
+border-radius: 5px;
+color: white;
+}
+.header-section h3 {
+font-size: 7pt;
+text-transform: uppercase;
+letter-spacing: 0.8px;
+color: #a8d5ba;
+border-bottom: 1px solid rgba(255,255,255,0.3);
+padding-bottom: 2px;
+margin-bottom: 3px;
+}
+.field-row { display: flex; align-items: baseline; gap: 3px; }
+.field-label { font-weight: 600; font-size: 6.5pt; color: #a8d5ba; min-width: 42px; }
+.field-value { flex: 1; border-bottom: 1px solid rgba(255,255,255,0.5); min-height: 16px; font-size: 8pt; background: rgba(255,255,255,0.9); color: #1a1a2e; border-radius: 2px; padding: 2px 4px; }
+.field-value.large { min-height: 18px; font-size: 9pt; font-weight: 600; }
+.header-right { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.sheet-title { font-size: 14pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.sheet-subtitle { font-size: 8pt; letter-spacing: 0.5px; opacity: 0.9; }
+/* Sections */
+.section { border: 1.5px solid var(--line-secondary); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; }
+.section-header {
+display: flex; align-items: center; justify-content: space-between;
+padding: 4px 8px; font-weight: 700; font-size: 8pt;
+text-transform: uppercase; letter-spacing: 0.5px;
+background: var(--green);
+color: white;
+}
+.section-content { padding: 5px; flex: 1; background: var(--paper); }
+/* Checkbox */
+.checkbox {
+display: inline-flex; align-items: center; gap: 2px;
+font-size: 7pt; cursor: pointer;
+}
+.checkbox-box {
+width: 10px; height: 10px; border: 1px solid var(--checkbox-border);
+border-radius: 2px; display: inline-block;
+}
+/* Fill lines */
+.fill-line { border-bottom: 1px solid var(--line-primary); min-height: 20px; flex: 1; }
+.fill-line-sm { border-bottom: 1px solid var(--line-primary); min-height: 16px; flex: 1; }
+/* Grid layouts */
+.grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.grid-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+/* Vitals by age */
+.vitals-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+.vital-col {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 3px;
+text-align: center;
+background: var(--paper-alt);
+}
+.vital-col h4 { font-size: 6.5pt; font-weight: 700; color: var(--green); margin-bottom: 2px; }
+.vital-row { display: flex; justify-content: space-between; font-size: 6pt; padding: 1px 2px; }
+.vital-row .label { color: var(--ink-secondary); }
+.vital-row .value { font-weight: 600; }
+/* Weight dosing */
+.weight-box {
+border: 2px solid var(--green);
+border-radius: 4px;
+padding: 6px;
+background: var(--paper-alt);
+margin-bottom: 4px;
+}
+.weight-box h4 { font-size: 7pt; font-weight: 700; color: var(--green); margin-bottom: 3px; }
+.weight-calc { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.weight-item { text-align: center; }
+.weight-item .label { font-size: 6pt; color: var(--ink-secondary); }
+.weight-item .value { font-size: 8pt; font-weight: 700; border-bottom: 1px solid var(--line-primary); min-height: 16px; }
+/* Emergency refs */
+.emerg-box {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 4px;
+margin-bottom: 3px;
+background: var(--paper-alt);
+}
+.emerg-box h4 { font-size: 7pt; font-weight: 700; color: #c53030; margin-bottom: 2px; }
+.emerg-item { font-size: 6.5pt; padding: 1px 0; display: flex; gap: 4px; }
+.emerg-item .label { font-weight: 600; min-width: 60px; }
+/* Development */
+.dev-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+.dev-col {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 3px;
+text-align: center;
+background: var(--paper-alt);
+}
+.dev-col h4 { font-size: 6pt; font-weight: 700; color: var(--green); margin-bottom: 2px; }
+.dev-milestone { font-size: 5.5pt; padding: 1px 0; color: var(--ink-secondary); }
+/* Meds reference */
+.meds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.med-item {
+border: 1px solid var(--line-light);
+border-radius: 3px;
+padding: 3px;
+background: var(--paper-alt);
+}
+.med-item h4 { font-size: 6.5pt; font-weight: 700; color: var(--green); margin-bottom: 2px; }
+.med-dose { font-size: 6pt; padding: 1px 0; }
+/* Notes */
+.notes-area { width: 100%; min-height: 80px; border: 1px solid var(--line-secondary); border-radius: 3px; padding: 4px; font-size: 7.5pt; background: white; }
+/* Handoff - big box */
+.handoff-box {
+width: 100%;
+min-height: 100px;
+border: 2px solid var(--green);
+border-radius: 4px;
+padding: 6px;
+background: white;
+font-size: 7.5pt;
+line-height: 1.4;
+}
+/* 2-column layout */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.two-col-left { display: flex; flex-direction: column; gap: 4px; }
+.two-col-right { display: flex; flex-direction: column; gap: 4px; }
+/* Footer */
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; border-top: 1px dashed var(--line-secondary); margin-top: 4px; font-size: 6.5pt; color: var(--ink-secondary); }
+.signature-box { border-bottom: 1px solid var(--ink-primary); width: 110px; height: 14px; }
+/* Page break */
+.page-break { page-break-before: always; }
+@media print {
+body { font-size: 7.5pt; }
+.sheet { width: 100%; height: 100%; margin: 0; padding: 0; }
+.section { break-inside: avoid; }
+}
 </style>
 </head>
 <body>
-<div class="page">
+<div class="sheet">
 <!-- HEADER -->
 <div class="header">
-<div>
-<h1>Pediatric Brain Sheet</h1>
-<div class="subtitle">NICU · Peds · ED · Urgent Care Nursing Reference</div>
+<div class="header-section">
+<h3>Patient Information</h3>
+<div class="field-row"><span class="field-label">Name:</span><span class="field-value large"></span></div>
+<div class="field-row"><span class="field-label">DOB:</span><span class="field-value"></span><span class="field-label">Age:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">MRN:</span><span class="field-value"></span><span class="field-label">Weight:</span><span class="field-value">______kg</span></div>
+<div class="field-row"><span class="field-label">Allergies:</span><span class="field-value" style="color: #c53030;"></span></div>
+</div>
+<div class="header-section">
+<h3>Unit Information</h3>
+<div class="field-row"><span class="field-label">Unit:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Bed:</span><span class="field-value"></span><span class="field-label">Room:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Date:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Nurse:</span><span class="field-value"></span></div>
 </div>
 <div class="header-right">
-<span>v2.0 — Clinical Reference</span><br>
-<span style="opacity:.6">Print: Letter · 1-2 Pages</span>
+<div class="sheet-title">Pediatric Brain Sheet</div>
+<div class="sheet-subtitle">Age-Appropriate Nursing</div>
 </div>
 </div>
 
-<!-- PATIENT BAR -->
-<div class="patient-bar">
-<div class="p-field"><label>Patient:</label><input class="xl" type="text" placeholder="Name"></div>
-<div class="p-field"><label>DOB:</label><input type="text" placeholder="MM/DD/YYYY"></div>
-<div class="p-field"><label>MR#:</label><input type="text"></div>
-<div class="p-field"><label>Age:</label><input type="text" placeholder="Y/M/D"></div>
-<div class="allergy-badge"><span>⚠ ALLERGY</span><input type="text" placeholder="List allergies"></div>
-<div class="p-field" style="margin-left:auto"><label>Date:</label><input type="text"></div>
-<div class="p-field"><label>RN:</label><input type="text"></div>
+<!-- WEIGHT + VITALS BY AGE -->
+<div class="grid-2col">
+<div class="section">
+<div class="section-header"><span>Weight & Medication Dosing</span></div>
+<div class="section-content">
+<div class="weight-box">
+<h4>Weight-Based Calculations</h4>
+<div style="display: flex; gap: 8px; align-items: center;">
+<div style="flex: 1;">
+<div style="font-size: 7pt; margin-bottom: 2px;">Weight: ________ kg</div>
+<div style="font-size: 7pt; margin-bottom: 2px;">Height: ________ cm</div>
+<div style="font-size: 7pt;">BSA: ________ m²</div>
 </div>
-
-<!-- ROW 1: Weight + GCS + Febrile Neonate -->
-<div class="row">
-<!-- WEIGHT / DOSAGE CALC -->
-<div class="col" style="flex:1.2">
-<div class="section" style="border-left:3px solid #145214">
-<div class="section-head" style="background:#145214"><span class="num">1</span>Weight &amp; Dosage Quick-Calc</div>
-<div class="section-body">
-<div style="display:flex;gap:6px;align-items:stretch">
-<div class="weight-accent">
-<div class="wt-label">Weight</div>
-<div class="big-wt"><input type="text" style="width:50px;background:0;border:none;border-bottom:2px solid rgba(255,255,255,.6);color:#fff;font-size:22px;font-weight:900;text-align:center"> <span style="font-size:12px">kg</span></div>
-<div style="display:flex;gap:6px;margin-top:3px">
-<div><span style="font-size:6px;text-transform:uppercase;opacity:.7">lb</span> <input type="text" style="width:35px;background:0;border:none;border-bottom:1px solid rgba(255,255,255,.5);color:#fff;font-size:9px;text-align:center"></div>
-<div><span style="font-size:6px;text-transform:uppercase;opacity:.7">oz</span> <input type="text" style="width:35px;background:0;border:none;border-bottom:1px solid rgba(255,255,255,.5);color:#fff;font-size:9px;text-align:center"></div>
-</div>
-</div>
-<div style="flex:1;display:flex;flex-direction:column;gap:3px">
-<div style="font-size:6.5px;font-weight:700;color:#2d5a2d;text-transform:uppercase;margin-bottom:1px">Dose Calculations</div>
-<div class="dosage-grid" style="grid-template-columns:repeat(2,1fr)">
-<div class="dosage-cell">
-<div class="dc-label">mL/kg</div>
-<div class="dc-calc"><input type="text"><span class="dc-unit">mL</span></div>
-</div>
-<div class="dosage-cell">
-<div class="dc-label">mcg/kg/min</div>
-<div class="dc-calc"><input type="text"><span class="dc-unit">mcg</span></div>
-</div>
-<div class="dosage-cell">
-<div class="dc-label">mg/kg</div>
-<div class="dc-calc"><input type="text"><span class="dc-unit">mg</span></div>
-</div>
-<div class="dosage-cell">
-<div class="dc-label">units/kg/hr</div>
-<div class="dc-calc"><input type="text"><span class="dc-unit">u</span></div>
-</div>
-</div>
-<div style="display:flex;gap:3px;margin-top:1px">
-<div class="fg" style="flex:1"><label>BSA (m²)</label><input type="text" style="font-size:7.5px"></div>
-<div class="fg" style="flex:1"><label>eGFR</label><input type="text" style="font-size:7.5px"></div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px;">
+<div class="weight-item"><div class="label">ml/kg</div><div class="value"></div></div>
+<div class="weight-item"><div class="label">mcg/kg</div><div class="value"></div></div>
+<div class="weight-item"><div class="label">mg/kg</div><div class="value"></div></div>
+<div class="weight-item"><div class="label">units/kg</div><div class="value"></div></div>
 </div>
 </div>
 </div>
 </div>
+<div class="section">
+<div class="section-header"><span>Pediatric Vital Signs by Age</span></div>
+<div class="section-content">
+<div class="vitals-grid">
+<div class="vital-col">
+<h4>Neonate</h4>
+<div class="vital-row"><span class="label">HR:</span><span class="value">120-160</span></div>
+<div class="vital-row"><span class="label">RR:</span><span class="value">30-60</span></div>
+<div class="vital-row"><span class="label">SBP:</span><span class="value">60-90</span></div>
+<div class="vital-row"><span class="label">Temp:</span><span class="value">36.5-37.5</span></div>
+</div>
+<div class="vital-col">
+<h4>Infant</h4>
+<div class="vital-row"><span class="label">HR:</span><span class="value">80-140</span></div>
+<div class="vital-row"><span class="label">RR:</span><span class="value">20-30</span></div>
+<div class="vital-row"><span class="label">SBP:</span><span class="value">70-100</span></div>
+<div class="vital-row"><span class="label">Temp:</span><span class="value">36.5-37.5</span></div>
+</div>
+<div class="vital-col">
+<h4>Toddler</h4>
+<div class="vital-row"><span class="label">HR:</span><span class="value">80-130</span></div>
+<div class="vital-row"><span class="label">RR:</span><span class="value">20-30</span></div>
+<div class="vital-row"><span class="label">SBP:</span><span class="value">80-110</span></div>
+<div class="vital-row"><span class="label">Temp:</span><span class="value">36.5-37.5</span></div>
+</div>
+<div class="vital-col">
+<h4>School Age</h4>
+<div class="vital-row"><span class="label">HR:</span><span class="value">70-110</span></div>
+<div class="vital-row"><span class="label">RR:</span><span class="value">16-22</span></div>
+<div class="vital-row"><span class="label">SBP:</span><span class="value">90-120</span></div>
+<div class="vital-row"><span class="label">Temp:</span><span class="value">36.5-37.5</span></div>
+</div>
+<div class="vital-col">
+<h4>Adolescent</h4>
+<div class="vital-row"><span class="label">HR:</span><span class="value">60-100</span></div>
+<div class="vital-row"><span class="label">RR:</span><span class="value">12-20</span></div>
+<div class="vital-row"><span class="label">SBP:</span><span class="value">100-120</span></div>
+<div class="vital-row"><span class="label">Temp:</span><span class="value">36.5-37.5</span></div>
 </div>
 </div>
-
-<!-- PEDIATRIC GCS -->
-<div class="col" style="flex:1">
-<div class="section" style="border-left:3px solid #1a6b1a">
-<div class="section-head" style="background:#1a6b1a"><span class="num">2</span>Pediatric Glasgow Coma Scale</div>
-<div class="section-body" style="padding:3px 5px">
-<table class="scale-table" style="margin-bottom:2px">
-<tr><td style="font-weight:700;background:#e8f0e8;color:#145214;text-align:center;font-size:6px" colspan="3">Age &lt; 2 Years — Use Pediatric Modifications</td></tr>
-<tr><td><strong>Eye</strong></td><td>4 = Spontaneous</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>3 = To voice</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>2 = To pain</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>1 = None</td><td><input type="checkbox"></td></tr>
-<tr><td><strong>Verbal</strong></td><td>5 = Coos, babbles</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>4 = Irritable cry</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>3 = Cries to pain</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>2 = Moans</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>1 = None</td><td><input type="checkbox"></td></tr>
-<tr><td><strong>Motor</strong></td><td>6 = Spontaneous</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>5 = Localizes pain</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>4 = Withdraws</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>3 = Flexion</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>2 = Extension</td><td><input type="checkbox"></td></tr>
-<tr><td></td><td>1 = None</td><td><input type="checkbox"></td></tr>
-</table>
-<div style="display:flex;gap:6px;align-items:center;padding:2px;background:#e8f0e8;border-radius:3px">
-<div style="flex:1"><span style="font-size:6.5px;font-weight:700;color:#145214;text-transform:uppercase">Total GCS:</span></div>
-<div style="display:flex;gap:4px">
-<div class="fg" style="flex:0 0 35px;text-align:center"><label>E</label><input type="text" style="text-align:center"></div>
-<div class="fg" style="flex:0 0 35px;text-align:center"><label>V</label><input type="text" style="text-align:center"></div>
-<div class="fg" style="flex:0 0 35px;text-align:center"><label>M</label><input type="text" style="text-align:center"></div>
-<div class="fg" style="flex:0 0 40px;text-align:center"><label>= </label><input type="text" style="text-align:center;font-weight:800;color:#145214"></div>
-</div>
+<div style="margin-top: 4px; font-size: 6pt; color: var(--ink-secondary);">
+<span>BP Formula (child): (age × 2) + 90 = systolic | MAP: (2×diastolic + systolic) ÷ 3</span>
 </div>
 </div>
 </div>
 </div>
 
-<!-- FEBRILE NEONATE -->
-<div class="col" style="flex:1">
-<div class="section" style="border-left:3px solid #8b1515">
-<div class="section-head" style="background:#8b1515"><span class="num">3</span>Febrile Neonate &lt;30 Days</div>
-<div class="section-body">
-<div class="alert-box" style="margin-bottom:3px">
-<div class="alert-title">SEIZURE RISK · BABIES &lt;30 DAYS</div>
-<div class="alert-body">Fever &gt;38°C (100.4°F) = FULL SEIZURE WORKUP</div>
-</div>
-<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:3px">
-<div class="fg" style="background:#fff3f3;border:1px solid #ffcdd2;border-radius:3px;padding:3px">
-<label style="color:#8b1515">Temp Range</label>
-<div style="font-size:7px;line-height:1.5">
-38.0–38.5°C: <input type="text" style="width:40px;border:none;border-bottom:1px solid #e0a0a0;background:0;font-size:7px"><br>
-&gt;38.5°C: <input type="text" style="width:40px;border:none;border-bottom:1px solid #e0a0a0;background:0;font-size:7px">
-</div>
-</div>
-<div class="fg" style="background:#fff3f3;border:1px solid #ffcdd2;border-radius:3px;padding:3px">
-<label style="color:#8b1515">Workup</label>
-<div style="font-size:6.5px;line-height:1.5">
-☐ CBC, BCx2<br>
-☐ UA, UCx2<br>
-☐ LP (if &gt;21 days)<br>
-☐ CXR if indicated
-</div>
-</div>
-<div class="fg" style="background:#f9f9ff;border:1px solid #c8c8e8;border-radius:3px;padding:3px;grid-column:span 2">
-<label style="color:#1a1a6b">Antibiotics REMINDER</label>
-<div style="display:flex;gap:6px;font-size:6.5px;line-height:1.5">
-<div>
-<strong style="color:#1a1a6b">Ampicillin</strong> 75–100 mg/kg<br>
-<strong style="color:#1a1a6b">+ Cefotaxime</strong> 50 mg/kg<br>
-<strong style="color:#1a1a6b">OR Gentamicin</strong> 2.5 mg/kg
-</div>
-<div>
-<strong style="color:#8b1515">ADD:</strong><br>
-<strong style="color:#8b1515">Acyclovir</strong> 20 mg/kg if HSV risk
-</div>
-</div>
-</div>
-</div>
-<div class="inline-fields" style="margin-top:2px">
-<div class="inline-field"><label>WBC:</label><input type="text"></div>
-<div class="inline-field"><label>ANC:</label><input type="text"></div>
-<div class="inline-field"><label>Bands:</label><input type="text"></div>
-<div class="inline-field"><label>CRP:</label><input type="text"></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- ROW 2: Dev Milestones + Vitals + Meds -->
-<div class="row" style="flex:1.5">
-<!-- DEV MILESTONES -->
-<div class="col" style="flex:1.3">
-<div class="section" style="border-left:3px solid #5a8a5a">
-<div class="section-head" style="background:#2d6a2d"><span class="num">4</span>Developmental Milestones</div>
-<div class="section-body" style="padding:3px 4px">
-<table class="develop-table" style="width:100%">
-<tr><th>Age</th><th>Motor</th><th>Social/Cognitive</th></tr>
-<tr><td><strong>Infant</strong><br>0–12 mo</td>
-<td>Head control 2-3mo, rolls 4mo, sits 6mo, crawls 8mo, walks 12mo</td>
-<td>Social smile 2mo, stranger anxiety 6-8mo, waves bye 9mo, mama/dada 12mo</td></tr>
-<tr><td><strong>Toddler</strong><br>1–3 yr</td>
-<td>Runs 18mo, kicks ball 2yr, climbs stairs 2yr, jumps 3yr</td>
-<td>Parallel play 2yr, uses spoon 2yr, toilet training 2-3yr, follows 2-step commands</td></tr>
-<tr><td><strong>Preschool</strong><br>3–5 yr</td>
-<td>Hops 3yr, rides tricycle 4yr, skips 5yr, draws circle 3yr, square 4yr</td>
-<td>Plays cooperatively 4yr, knows first/last name 3yr, knows gender 4yr, counts 4yr</td></tr>
-<tr><td><strong>School-age</strong><br>6–12 yr</td>
-<td>Refines coordination, plays sports, writes fluidly 7yr</td>
-<td>Concrete operations, understands rules, friendships important, 8-10hr sleep needed</td></tr>
-<tr><td><strong>Adolescent</strong><br>12–18 yr</td>
-<td>Pubertal growth spurt, adult body proportions, fine motor adult-like</td>
-<td>Abstract thinking emerges 12+, identity formation, peer relationships primary, risk-taking</td></tr>
-</table>
-</div>
-</div>
-</div>
-
-<!-- PEDS VITAL SIGNS -->
-<div class="col" style="flex:1.2">
-<div class="section" style="border-left:3px solid #1a4a6b">
-<div class="section-head" style="background:#1a4a6b"><span class="num">5</span>Pediatric Vital Signs by Age</div>
-<div class="section-body" style="padding:3px 4px">
-<table class="vitals-table" style="width:100%">
-<tr><th>Age</th><th>HR (bpm)</th><th>RR (/min)</th><th>SBP (mmHg)</th><th>Temp (°C)</th></tr>
-<tr><td>Neonate 0-28d</td><td>100-160</td><td>30-60</td><td>60-90</td><td>36.5-37.4</td></tr>
-<tr><td>Infant 1-12mo</td><td>80-150</td><td>25-45</td><td>70-100</td><td>36.5-37.4</td></tr>
-<tr><td>Toddler 1-3yr</td><td>70-130</td><td>20-35</td><td>80-110</td><td>36.5-37.4</td></tr>
-<tr><td>Preschool 3-5yr</td><td>60-120</td><td>18-28</td><td>85-115</td><td>36.5-37.4</td></tr>
-<tr><td>School 6-12yr</td><td>55-100</td><td>16-24</td><td>90-120</td><td>36.5-37.4</td></tr>
-<tr><td>Adolescent 12+</td><td>50-90</td><td>14-20</td><td>100-130</td><td>36.5-37.4</td></tr>
-</table>
-<div style="margin-top:3px;padding:2px 4px;background:#e8f0e8;border-radius:3px;font-size:6.5px">
-<strong style="color:#145214">PEDIATRIC SBP FORMULA:</strong> Lower limit SBP = 70 + (2 × age in years) mmHg<br>
-<strong style="color:#145214">MAP:</strong> DBP + 1/3(SBP - DBP) | <strong style="color:#145214">PULSE OX:</strong> ≥94% (≥92% if neonate)
-</div>
-<div class="inline-fields" style="margin-top:3px;gap:3px 8px">
-<div class="inline-field"><label>Current HR:</label><input type="text" style="width:45px"></div>
-<div class="inline-field"><label>RR:</label><input type="text" style="width:40px"></div>
-<div class="inline-field"><label>BP:</label><input type="text" style="width:55px"></div>
-<div class="inline-field"><label>T:</label><input type="text" style="width:40px"></div>
-<div class="inline-field"><label>SpO₂:</label><input type="text" style="width:40px"></div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- COMMON MEDS REFERENCE -->
-<div class="col" style="flex:1">
-<div class="section" style="border-left:3px solid #6a4a8b">
-<div class="section-head" style="background:#6a4a8b"><span class="num">6</span>Common Meds Quick Reference</div>
-<div class="section-body" style="padding:3px 4px">
-<div class="med-mini">
-<div style="background:#f5f0fa;border:1px solid #d8c8e8;border-radius:3px;padding:3px;margin-bottom:2px">
-<strong>Acetaminophen</strong> (Tylenol)<br>
-10-15 mg/kg/dose PO/PR q4-6h<br>
-<strong>MAX:</strong> 75 mg/kg/day (children)<br>
-<strong>Neonates:</strong> 10-12 mg/kg/dose q6-8h
-</div>
-<div style="background:#f0f5fa;border:1px solid #c8d8e8;border-radius:3px;padding:3px;margin-bottom:2px">
-<strong>Amoxicillin</strong> 20-40 mg/kg/day ÷ 3<br>
-<strong>AUGMENTIN:</strong> 25-45 mg/kg/day ÷ 2<br>
-<strong>Azithromycin</strong> 10 mg/kg Day 1, then 5 mg/kg Days 2-5<br>
-<strong>Ceftriaxone</strong> 50-75 mg/kg/day ÷ 1-2
-</div>
-<div style="background:#f5faf0;border:1px solid #c8e0c8;border-radius:3px;padding:3px;margin-bottom:2px">
-<strong>Ibuprofen</strong> 5-10 mg/kg/dose q6-8h<br>
-<strong>MAX:</strong> 40 mg/kg/day<br>
-<strong>Avoid if:</strong> &lt;6mo, dehydration, renal dz
-</div>
-<div style="background:#faf5f0;border:1px solid #e8d8c8;border-radius:3px;padding:3px">
-<strong>Ondansetron</strong> 0.1 mg/kg/dose (min 2mg)<br>
-<strong>Methylprednisolone</strong> 1-2 mg/kg/dose<br>
-<strong>Dexamethasone</strong> 0.6 mg/kg (croup)
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- ROW 3: CODE EMERGENCIES -->
-<div class="row" style="flex:1.8">
-<!-- RESPIRATORY -->
-<div class="col" style="flex:1">
+<!-- EMERGENCY REFS -->
+<div class="section">
+<div class="section-header"><span>Pediatric Emergency Quick Reference</span></div>
+<div class="section-content">
+<div class="grid-2col">
+<div class="two-col-left">
 <div class="emerg-box">
-<div class="eb-title" style="color:#bf360c">Respiratory Distress</div>
-<div style="display:flex;flex-direction:column;gap:3px">
-<div style="background:#fff8f0;border:1px solid #ffe0b2;border-radius:3px;padding:3px">
-<div style="font-size:7px;font-weight:800;color:#e65100;margin-bottom:2px">CROUP (Laryngotracheobronchitis)</div>
-<div style="font-size:6.5px;line-height:1.4">
-<strong>Dx:</strong> Barky cough, stridor, URI prodrome<br>
-<strong>Mild:</strong> Intermittent stridor at rest<br>
-<strong>Mod:</strong> Stridor + retractions, agitated<br>
-<strong>Severe:</strong> Tripod, silent child, cyanosis<br>
-<strong>Rx:</strong> Dexamethasone 0.6 mg/kg PO/IM<br>
-Nebulized EPI (1:1000) if severe<br>
-Keep calm → cold mist, HOB elevated
+<h4>Febrile Neonate (&lt;30 days)</h4>
+<div class="emerg-item"><span class="label">Temp:</span> ≥38.0°C / 100.4°F</div>
+<div class="emerg-item"><span class="label">Workup:</span> CBC, LP, UA, BCx, Cx</div>
+<div class="emerg-item"><span class="label">Abx:</span> Ampicillin + Cefotaxime</div>
+</div>
+<div class="emerg-box">
+<h4>Respiratory Distress</h4>
+<div class="emerg-item"><span class="label">Signs:</span> RR↑, retracciones, nasal flaring</div>
+<div class="emerg-item"><span class="label">Croup:</span> Dexamethasone, nebulized epi</div>
+<div class="emerg-item"><span class="label">Asthma:</span> Albuterol, steroids</div>
 </div>
 </div>
-<div style="background:#f0f8ff;border:1px solid #b3d9ff;border-radius:3px;padding:3px">
-<div style="font-size:7px;font-weight:800;color:#1565c0;margin-bottom:2px">BRONCHIOLITIS (RSV)</div>
-<div style="font-size:6.5px;line-height:1.4">
-<strong>Age:</strong> &lt;2 years (peak 2-6mo)<br>
-<strong>S/S:</strong> Wheeze, cough, tachypnea, retractions<br>
-<strong>Mild:</strong> SpO₂ ≥92%, no/mild retractions<br>
-<strong>Mod:</strong> SpO₂ 88-92%, moderate WOB<br>
-<strong>Severe:</strong> SpO₂ &lt;88%, severe WOB, apnea<br>
-<strong>Rx:</strong> Suctioning, O₂, hydration<br>
-<strong>NO:</strong> Albuterol routine, steroids, antibiotics
+<div class="two-col-right">
+<div class="emerg-box">
+<h4>Seizures</h4>
+<div class="emerg-item"><span class="label">Duration:</span> ______</div>
+<div class="emerg-item"><span class="label">Type:</span> ______</div>
+<div class="emerg-item"><span class="label">BZP:</span> Versed / Ativan</div>
+<div class="emerg-item"><span class="label">Glucose:</span> ______</div>
 </div>
-</div>
-<div style="background:#f0fff0;border:1px solid #b3e6b3;border-radius:3px;padding:3px">
-<div style="font-size:7px;font-weight:800;color:#2e7d32;margin-bottom:2px">ASTHMA SEVERITY</div>
-<div style="font-size:6.5px;line-height:1.4">
-<strong>Mild:</strong> SpO₂ ≥92%, talks in sentences<br>
-<strong>Mod:</strong> SpO₂ 88-92%, talks in phrases<br>
-<strong>Severe:</strong> SpO₂ &lt;88%, can't complete sentences<br>
-<strong>Rx:</strong> MDI Albuterol q20min × 3, then q1-4h PRN<br>
-Ipratropium q20min × 3 (first hour)<br>
-Oral Steroids: Prednisolone 2 mg/kg<br>
-<strong>EF:</strong> Magnesium sulfate if refractory
+<div class="emerg-box">
+<h4>DKA / Dehydration</h4>
+<div class="emerg-item"><span class="label">Glucose:</span> ______ | pH: ______</div>
+<div class="emerg-item"><span class="label">Dehydration:</span> _____%</div>
+<div class="emerg-item"><span class="label">Fluid:</span> ______ bolus</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 
-<!-- SEIZURE + DKA -->
-<div class="col" style="flex:1">
-<div style="display:flex;flex-direction:column;gap:4px;height:100%">
-<div class="emerg-box" style="flex:1">
-<div class="eb-title">Seizure Management</div>
-<div style="font-size:6.5px;line-height:1.45">
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px">
-<div style="background:#fff8f8;border:1px solid #ffcdd2;border-radius:3px;padding:3px">
-<strong style="color:#8b1515">STATUS EPILEPTICUS</strong><br>
-≥5 min continuous seizure OR ≥2 in 24hr<br>
-<strong>0-5 min:</strong> ABCs, O₂, Glucose check<br>
-<strong>5-10 min:</strong> Lorazepam 0.1 mg/kg IV<br>
-<span style="color:#8b1515;font-weight:700">OR</span> Midazolam 0.2 mg/kg IN<br>
-<strong>10-20 min:</strong> Fosphenytoin 20 mg/kg<br>
-<strong>&gt;20 min:</strong> Phenobarbital 20 mg/kg<br>
-<strong>&gt;40 min:</strong> Anesthesia / ICU
+<!-- DEVELOPMENTAL MILESTONES + HANDOFF -->
+<div class="grid-2col">
+<div class="section">
+<div class="section-header"><span>Developmental Milestones</span></div>
+<div class="section-content">
+<div class="dev-grid">
+<div class="dev-col">
+<h4>Infant</h4>
+<div class="dev-milestone">Social smile (2mo)</div>
+<div class="dev-milestone">Head control (4mo)</div>
+<div class="dev-milestone">Sits (6mo)</div>
+<div class="dev-milestone">Crawls (9mo)</div>
+<div class="dev-milestone">Walks (12mo)</div>
 </div>
-<div style="background:#f8fff8;border:1px solid #c8e8c8;border-radius:3px;padding:3px">
-<strong style="color:#2e7d32">SEIZURE SAFETY</strong><br>
-☐ Time the seizure<br>
-☐ Position on side<br>
-☐ Clear area of hazards<br>
-☐ Do NOT restrain<br>
-☐ Do NOT put anything in mouth<br>
-☐ Check glucose<br>
-☐ O₂ via NC<br>
-<span style="color:#8b1515;font-weight:700">FEBRILE SZN:</span> Tx fever &gt;38°C
+<div class="dev-col">
+<h4>Toddler</h4>
+<div class="dev-milestone">Runs (18mo)</div>
+<div class="dev-milestone">20 words (18mo)</div>
+<div class="dev-milestone">2-word phrases (24mo)</div>
+<div class="dev-milestone">Tower of 4 cubes</div>
+<div class="dev-milestone">Parallel play</div>
 </div>
+<div class="dev-col">
+<h4>Preschool</h4>
+<div class="dev-milestone">Tower of 8 cubes</div>
+<div class="dev-milestone">Draws person</div>
+<div class="dev-milestone">Knows age/gender</div>
+<div class="dev-milestone">Counts 10</div>
+<div class="dev-milestone">Cooperative play</div>
 </div>
-<div style="margin-top:2px;padding:2px;background:#fffde7;border-radius:2px;font-size:6px">
-<strong style="color:#e65100">BEFORE DISCHARGE:</strong> Neuro exam normal, eating/drinking, parents taught seizure safety
+<div class="dev-col">
+<h4>School Age</h4>
+<div class="dev-milestone">Reads/writes</div>
+<div class="dev-milestone">Ball catch</div>
+<div class="dev-milestone">Rule games</div>
+<div class="dev-milestone">3-step commands</div>
+<div class="dev-milestone">Concrete logic</div>
 </div>
-</div>
-</div>
-<div class="emerg-box" style="flex:1">
-<div class="eb-title">Diabetic Ketoacidosis (DKA)</div>
-<div style="font-size:6.5px;line-height:1.4">
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px">
-<div>
-<strong style="color:#bf360c">DIAGNOSIS</strong><br>
-Glucose &gt;200 + pH &lt;7.3 + HCO₃ &lt;18<br>
-Anion gap elevated, + ketones<br>
-<span style="color:#8b1515;font-weight:700">Serum K may be NORMAL or HIGH</span>
-</div>
-<div>
-<strong style="color:#2e7d32">FLUIDS</strong><br>
-0.9% NS 10-20 mL/kg bolus<br>
-Then D5 0.45% NS + 20 mEq/L KCl<br>
-<b>Insulin drip 0.05-0.1 u/kg/hr</b><br>
-<strong>Goal:</strong> Dec BG 50-75 mg/dL/hr<br>
-Correct over 48-72hr <b>SLOWLY</b>
+<div class="dev-col">
+<h4>Adolescent</h4>
+<div class="dev-milestone">Abstract thought</div>
+<div class="dev-milestone">Future planning</div>
+<div class="dev-milestone">Identity formation</div>
+<div class="dev-milestone">Puberty changes</div>
+<div class="dev-milestone">Peer relationships</div>
 </div>
 </div>
-<div style="margin-top:2px;padding:2px;background:#f0f8ff;border-radius:2px;font-size:6px">
-<strong style="color:#1565c0">CEREBRAL EDEMA WARNING:</strong> HA, AMS, bradycardia, ↓LOC → Mannitol 0.5-1 g/kg, hold fluids, head up
 </div>
 </div>
+<div class="section">
+<div class="section-header"><span>Shift Handoff Notes</span></div>
+<div class="section-content">
+<textarea class="handoff-box" placeholder="S - Situation:&#10;A - Assessment:&#10;B - Background:&#10;R - Recommendation:"></textarea>
 </div>
 </div>
 </div>
 
-<!-- DEHYDRATION SCALE + NOTES -->
-<div class="col" style="flex:1">
-<div style="display:flex;flex-direction:column;gap:4px;height:100%">
-<div class="emerg-box" style="flex:1">
-<div class="eb-title">Dehydration Assessment</div>
-<div style="font-size:6.5px;line-height:1.4">
-<table style="width:100%;border-collapse:collapse;font-size:6.5px">
-<tr style="background:#c8e8c8"><th>Sign</th><th>Mild 3-5%</th><th>Mod 6-9%</th><th>Severe ≥10%</th></tr>
-<tr><td style="font-weight:700">HR</td><td>N</td><td>↑</td><td>↑↑ / ↓</td></tr>
-<tr style="background:#f4faf4"><td style="font-weight:700">BP</td><td>N</td><td>N to ↓</td><td>↓↓</td></tr>
-<tr><td style="font-weight:700">Mucosa</td><td>Moist</td><td>Dry</td><td>Parched</td></tr>
-<tr style="background:#f4faf4"><td style="font-weight:700">Tears</td><td>N</td><td>↓↓</td><td>Absent</td></tr>
-<tr><td style="font-weight:700">Fontanelle</td><td>N</td><td>↓</td><td>Sunken</td></tr>
-<tr style="background:#f4faf4"><td style="font-weight:700">Skin</td><td>Snaps back</td><td>Slow</td><td>Very slow</td></tr>
-<tr><td style="font-weight:700">Cap refill</td><td>&lt;2 sec</td><td>2-3 sec</td><td>&gt;3 sec</td></tr>
-<tr style="background:#f4faf4"><td style="font-weight:700">Urine</td><td>Dark</td><td>&lt;1mL/kg/hr</td><td>Minimal</td></tr>
-<tr style="background:#fff3e0"><td style="font-weight:700" colspan=4>Replace: Mild=ORS 50mL/kg, Mod=ORS 100mL/kg, Severe=IV bolus 20mL/kg then D5 0.45%NS</td></tr>
-</table>
+<!-- COMMON MEDICATIONS + PEDS GCS + NOTES -->
+<div class="section">
+<div class="section-header"><span>Pediatric Glasgow Coma Scale (Pediatric GCS)</span></div>
+<div class="section-content">
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+<div>
+<div style="font-weight: 700; font-size: 7pt; margin-bottom: 2px; color: var(--green);">Eye Opening (E)</div>
+<div class="emerg-item"><span class="label">4:</span> Spontaneous</div>
+<div class="emerg-item"><span class="label">3:</span> To speech</div>
+<div class="emerg-item"><span class="label">2:</span> To pain</div>
+<div class="emerg-item"><span class="label">1:</span> None</div>
+</div>
+<div>
+<div style="font-weight: 700; font-size: 7pt; margin-bottom: 2px; color: var(--green);">Verbal (V)</div>
+<div class="emerg-item"><span class="label">5:</span> Coos, babbles</div>
+<div class="emerg-item"><span class="label">4:</span> Irritable cry</div>
+<div class="emerg-item"><span class="label">3:</span> Inappropriate words</div>
+<div class="emerg-item"><span class="label">2:</span> Incomprehensible</div>
+<div class="emerg-item"><span class="label">1:</span> None</div>
+</div>
+<div>
+<div style="font-weight: 700; font-size: 7pt; margin-bottom: 2px; color: var(--green);">Motor (M)</div>
+<div class="emerg-item"><span class="label">6:</span> Normal spontaneous</div>
+<div class="emerg-item"><span class="label">5:</span> Localizes pain</div>
+<div class="emerg-item"><span class="label">4:</span> Withdraws from pain</div>
+<div class="emerg-item"><span class="label">3:</span> Abnormal flexion</div>
+<div class="emerg-item"><span class="label">2:</span> Extension</div>
+<div class="emerg-item"><span class="label">1:</span> None</div>
 </div>
 </div>
-<div class="notes-area">
-<div style="font-size:6.5px;font-weight:700;color:#2d5a2d;text-transform:uppercase;margin-bottom:2px">Nursing Notes</div>
-<textarea placeholder="Assessment, interventions, family communication..."></textarea>
+<div style="margin-top: 4px; text-align: center; font-size: 8pt;">
+<strong>Total GCS: ___ (Min 3, Max 15)</strong> | <strong>Infant Modifier:</strong> Use criteria above (verbal differs for &lt;2 years)
 </div>
+</div>
+</div>
+
+<!-- COMMON MEDS REFERENCE + NURSING NOTES -->
+<div class="grid-2col">
+<div class="section">
+<div class="section-header"><span>Common Medication Reference</span></div>
+<div class="section-content">
+<div class="meds-grid">
+<div class="med-item">
+<h4>Acetaminophen</h4>
+<div class="med-dose">10-15 mg/kg/dose q4-6h</div>
+<div class="med-dose">Max: 75 mg/kg/day</div>
+</div>
+<div class="med-item">
+<h4>Ibuprofen</h4>
+<div class="med-dose">5-10 mg/kg/dose q6-8h</div>
+<div class="med-dose">Use if >6 months</div>
+</div>
+<div class="med-item">
+<h4>Amoxicillin</h4>
+<div class="med-dose">20-40 mg/kg/day ÷ doses</div>
+</div>
+<div class="med-item">
+<h4>Azithromycin</h4>
+<div class="med-dose">10 mg/kg day 1, then 5 mg/kg</div>
+</div>
+<div class="med-item">
+<h4>Ondansetron</h4>
+<div class="med-dose">0.1 mg/kg (antiemetic)</div>
+</div>
+<div class="med-item">
+<h4>Albuterol</h4>
+<div class="med-dose">2.5 mg nebulized q20min</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Nursing Notes</span></div>
+<div class="section-content">
+<textarea class="notes-area" placeholder="Shift notes, concerns, family communication..."></textarea>
 </div>
 </div>
 </div>
 
 <!-- FOOTER -->
 <div class="footer">
-<span class="ver">Pediatric Brain Sheet v2.0</span>
-<span style="color:#2d5a2d;font-weight:600">Forest Green Aesthetic · Clinical Reference · Print on Letter</span>
-<span>For educational use · Verify dosing with primary sources</span>
+<div>Nurse Signature: <span class="signature-box"></span></div>
+<div>Rev. 2 - Pediatric Brain Sheet</div>
 </div>
 </div>
 </body>
