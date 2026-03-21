@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ICU Brain Sheet v2 - 24 Hour Patient Flow</title>
+<style>
+:root {
+--navy: #0a1628;
+--navy-light: #1a2d4a;
+--ink-primary: #1a1a2e;
+--ink-secondary: #4a4a5a;
+--paper: #ffffff;
+--paper-alt: #f8f9fa;
+--line-primary: #2c3e50;
+--line-secondary: #bdc3c7;
+--line-light: #e8e8e8;
+--hemo-bg: #fff5f5;
+--hemo-border: #c53030;
+--hemo-header: #e53e3e;
+--resp-bg: #ebf8ff;
+--resp-border: #2b6cb0;
+--resp-header: #3182ce;
+--neuro-bg: #f0fff4;
+--neuro-border: #276749;
+--neuro-header: #38a169;
+--io-bg: #fffbeb;
+--io-border: #d69e2e;
+--io-header: #d69e2e;
+--labs-bg: #faf5ff;
+--labs-border: #805ad5;
+--labs-header: #9f7aea;
+--notes-bg: #f7fafc;
+--notes-border: #718096;
+--notes-header: #a0aec0;
+--pressor-bg: #fff5f5;
+--pressor-border: #c53030;
+--pressor-header: #991b1b;
+--critical: #e53e3e;
+--warning: #dd6b20;
+--stable: #38a169;
+--info: #3182ce;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@page { size: 8.5in 11in portrait; margin: 0.2in; }
+body {
+font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+font-size: 6.5pt;
+line-height: 1.1;
+color: var(--ink-primary);
+background: white;
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+}
+.sheet {
+width: 8in;
+min-height: 10.5in;
+margin: 0 auto;
+padding: 0;
+display: flex;
+flex-direction: column;
+gap: 3px;
+}
+/* NAVY HEADER */
+.header-navy {
+background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+border: 2px solid #2c4a6e;
+border-radius: 4px;
+padding: 6px 8px;
+display: grid;
+grid-template-columns: 1.5fr 1fr 1fr 1fr;
+gap: 8px;
+}
+.header-navy .header-section { display: flex; flex-direction: column; gap: 2px; }
+.header-navy .header-section h3 {
+font-size: 6pt;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+color: #8ba4c7;
+border-bottom: 1px solid #2c4a6e;
+padding-bottom: 1px;
+margin-bottom: 2px;
+}
+.header-navy .field-row { display: flex; align-items: baseline; gap: 3px; }
+.header-navy .field-label { font-weight: 600; font-size: 6pt; color: #8ba4c7; min-width: 40px; }
+.header-navy .field-value { flex: 1; border-bottom: 1px solid #3d5a80; min-height: 10px; font-size: 7pt; color: white; }
+.header-navy .field-value.large { min-height: 13px; font-size: 7.5pt; font-weight: 600; color: white; }
+.header-navy .family-password {
+background: rgba(255,255,255,0.1);
+border: 1px dashed #4a7ab0;
+border-radius: 3px;
+padding: 3px 6px;
+margin-top: 2px;
+}
+.header-navy .family-password .label { color: #a8c4e0; font-size: 5.5pt; text-transform: uppercase; }
+.header-navy .family-password .value { color: #ffd700; font-weight: 700; font-size: 9pt; letter-spacing: 2px; }
+.code-status { display: inline-block; padding: 1px 5px; border-radius: 3px; font-weight: 700; font-size: 6pt; }
+.code-full { background: #c6f6d5; color: #22543d; }
+.code-dnr { background: #fed7d7; color: #742a2a; }
+.code-dni { background: #feebc8; color: #744210; }
+.section { border: 1.5px solid; border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; }
+.section-header {
+display: flex; align-items: center; justify-content: space-between;
+padding: 3px 5px; font-weight: 700; font-size: 7pt;
+text-transform: uppercase; letter-spacing: 0.5px;
+}
+.section-header .icon { font-size: 8pt; margin-right: 3px; }
+.section-content { padding: 3px; flex: 1; }
+.section-hemo { background: var(--hemo-bg); border-color: var(--hemo-border); }
+.section-hemo .section-header { background: var(--hemo-header); color: white; }
+.section-resp { background: var(--resp-bg); border-color: var(--resp-border); }
+.section-resp .section-header { background: var(--resp-header); color: white; }
+.section-neuro { background: var(--neuro-bg); border-color: var(--neuro-border); }
+.section-neuro .section-header { background: var(--neuro-header); color: white; }
+.section-io { background: var(--io-bg); border-color: var(--io-border); }
+.section-io .section-header { background: var(--io-header); color: white; }
+.section-labs { background: var(--labs-bg); border-color: var(--labs-border); }
+.section-labs .section-header { background: var(--labs-header); color: white; }
+.section-notes { background: var(--notes-bg); border-color: var(--notes-border); }
+.section-notes .section-header { background: var(--notes-header); color: var(--ink-primary); }
+.section-pressor { background: var(--pressor-bg); border-color: var(--pressor-border); }
+.section-pressor .section-header { background: var(--pressor-header); color: white; }
+.section-insulin { background: #fffbeb; border-color: #d69e2e; }
+.section-insulin .section-header { background: #b7791f; color: white; }
+.section-lines { background: #f0fff4; border-color: #276749; }
+.section-lines .section-header { background: #276749; color: white; }
+.section-abg { background: #faf5ff; border-color: #805ad5; }
+.section-abg .section-header { background: #6b46c1; color: white; }
+/* GRID STYLES */
+.hourly-grid { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 6pt; }
+.hourly-grid th, .hourly-grid td {
+border: 0.5px solid var(--line-secondary); text-align: center; vertical-align: middle; padding: 1px 0;
+}
+.hourly-grid th { background: var(--paper-alt); font-weight: 600; font-size: 5.5pt; height: 12px; }
+.hourly-grid td { height: 14px; min-width: 18px; }
+.hourly-grid .param-label { text-align: left; padding-left: 3px; font-weight: 600; background: rgba(0,0,0,0.03); white-space: nowrap; width: 58px; }
+.hour-even { background: rgba(0,0,0,0.03); }
+.hour-odd { background: transparent; }
+.flowsheet { width: 100%; border-collapse: collapse; font-size: 6pt; margin-top: 2px; }
+.flowsheet th, .flowsheet td { border: 0.5px solid var(--line-secondary); padding: 2px 3px; text-align: left; }
+.flowsheet th { background: rgba(0,0,0,0.05); font-weight: 600; font-size: 5.5pt; }
+.flowsheet td { height: 14px; }
+.flowsheet .col-drug { width: 18%; }
+.flowsheet .col-rate { width: 14%; }
+.flowsheet .col-titration { width: 22%; }
+.flowsheet .col-dose { width: 12%; }
+.flowsheet .col-goal { width: 20%; }
+.flowsheet .col-time { width: 14%; }
+.checklist-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px 6px; }
+.check-item { display: flex; align-items: center; gap: 2px; font-size: 6pt; padding: 1px 0; }
+.check-box { width: 9px; height: 9px; border: 1.5px solid var(--ink-secondary); border-radius: 2px; flex-shrink: 0; }
+.neuro-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+.neuro-box { background: rgba(255,255,255,0.6); border: 1px solid var(--line-secondary); border-radius: 2px; padding: 3px; }
+.neuro-box h4 { font-size: 5.5pt; text-transform: uppercase; color: var(--ink-secondary); margin-bottom: 2px; border-bottom: 1px solid var(--line-light); padding-bottom: 1px; }
+.gcs-row { display: flex; justify-content: space-between; font-size: 6pt; margin: 1px 0; }
+.gcs-total { font-weight: 700; font-size: 9pt; text-align: center; padding: 3px; background: var(--neuro-header); color: white; border-radius: 2px; margin-top: 2px; }
+.gcs-breakdown { display: flex; justify-content: space-around; text-align: center; font-size: 5.5pt; }
+.gcs-breakdown .subscore { background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 2px; }
+.gcs-breakdown .subscore span { display: block; font-size: 7pt; font-weight: 700; color: var(--neuro-header); }
+.labs-table { width: 100%; border-collapse: collapse; font-size: 6pt; }
+.labs-table th, .labs-table td { border: 0.5px solid var(--line-secondary); padding: 2px 3px; text-align: center; }
+.labs-table th { background: rgba(0,0,0,0.05); font-weight: 600; font-size: 5.5pt; }
+.labs-table .param-name { text-align: left; font-weight: 600; }
+.labs-table .ref-range { font-size: 5pt; color: var(--ink-secondary); }
+.notes-area { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; height: 100%; }
+.notes-box { border: 1px solid var(--line-secondary); border-radius: 2px; padding: 3px; background: white; }
+.notes-box h4 { font-size: 6pt; text-transform: uppercase; color: var(--ink-secondary); margin-bottom: 2px; }
+.notes-lines { display: flex; flex-direction: column; gap: 0; }
+.note-line { border-bottom: 1px dotted var(--line-secondary); height: 12px; }
+/* VENTILATOR MODES SECTION */
+.vent-modes { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; margin-bottom: 3px; }
+.vent-mode { background: rgba(255,255,255,0.7); border: 1px solid var(--line-secondary); border-radius: 2px; padding: 2px 4px; text-align: center; }
+.vent-mode .mode-name { font-size: 6pt; font-weight: 700; color: var(--resp-header); display: block; }
+.vent-mode .mode-desc { font-size: 5pt; color: var(--ink-secondary); display: block; }
+.vent-settings { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; margin-bottom: 2px; }
+.vent-param { background: rgba(255,255,255,0.6); border: 1px solid var(--line-secondary); border-radius: 2px; padding: 2px 3px; text-align: center; }
+.vent-param .label { font-size: 5pt; text-transform: uppercase; color: var(--ink-secondary); display: block; }
+.vent-param .value { font-size: 7pt; font-weight: 700; display: block; margin-top: 1px; }
+/* PRESSOR DRIP TRACKING */
+.pressor-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.pressor-card { background: white; border: 1px solid var(--pressor-border); border-radius: 3px; padding: 3px; }
+.pressor-card h4 { font-size: 6pt; font-weight: 700; color: var(--pressor-header); text-transform: uppercase; border-bottom: 1px solid var(--line-light); padding-bottom: 2px; margin-bottom: 2px; }
+.pressor-row { display: flex; justify-content: space-between; font-size: 5.5pt; margin: 1px 0; }
+.pressor-row .label { color: var(--ink-secondary); }
+.pressor-row .value { font-weight: 600; }
+/* INSULIN SECTION */
+.insulin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.insulin-card { background: white; border: 1px solid #d69e2e; border-radius: 3px; padding: 3px; }
+.insulin-card h4 { font-size: 6pt; font-weight: 700; color: #744210; text-transform: uppercase; border-bottom: 1px solid var(--line-light); padding-bottom: 2px; margin-bottom: 2px; }
+.sliding-scale { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; font-size: 5.5pt; }
+.scale-row { display: flex; justify-content: space-between; padding: 1px 3px; background: rgba(0,0,0,0.03); border-radius: 2px; }
+.scale-row .range { font-weight: 600; }
+.scale-row .dose { color: var(--info); font-weight: 700; }
+/* ABG SECTION */
+.abg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.abg-values { background: white; border: 1px solid #805ad5; border-radius: 3px; padding: 3px; }
+.abg-values h4 { font-size: 6pt; font-weight: 700; color: #6b46c1; text-transform: uppercase; border-bottom: 1px solid var(--line-light); padding-bottom: 2px; margin-bottom: 2px; }
+.abg-row { display: flex; justify-content: space-between; font-size: 5.5pt; margin: 1px 0; padding: 1px 3px; background: rgba(0,0,0,0.02); border-radius: 2px; }
+.abg-row .param { font-weight: 600; }
+.abg-row .normal { color: var(--stable); font-weight: 700; }
+.abg-row .value { min-width: 45px; text-align: right; }
+.interpretation-box { background: #faf5ff; border: 1px solid #805ad5; border-radius: 3px; padding: 3px; }
+.interpretation-box h4 { font-size: 6pt; font-weight: 700; color: #6b46c1; text-transform: uppercase; margin-bottom: 2px; }
+.interp-row { display: flex; justify-content: space-between; font-size: 5.5pt; margin: 1px 0; }
+.interp-row .condition { font-weight: 600; }
+.interp-row.acidotic { background: #fed7d7; }
+.interp-row.alkalotic { background: #e9d8fd; }
+/* LINES/CATHS SECTION */
+.lines-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+.line-item { background: white; border: 1px solid var(--neuro-border); border-radius: 3px; padding: 3px; text-align: center; }
+.line-item h4 { font-size: 5.5pt; font-weight: 700; color: var(--neuro-header); text-transform: uppercase; border-bottom: 1px solid var(--line-light); padding-bottom: 2px; margin-bottom: 2px; }
+.line-item .line-data { font-size: 5.5pt; text-align: left; }
+.line-item .line-row { display: flex; justify-content: space-between; margin: 1px 0; }
+.line-item .line-label { color: var(--ink-secondary); }
+.line-item .line-value { font-weight: 600; }
+/* I/O PROMINENT SECTION */
+.io-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 3px; }
+.io-box { background: white; border: 2px solid var(--io-border); border-radius: 3px; padding: 4px; text-align: center; }
+.io-box.intake { border-color: var(--info); }
+.io-box.output { border-color: var(--hemo-header); }
+.io-box.balance { border-color: var(--neuro-header); }
+.io-box h4 { font-size: 5.5pt; font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+.io-box.intake h4 { color: var(--info); }
+.io-box.output h4 { color: var(--hemo-header); }
+.io-box.balance h4 { color: var(--neuro-header); }
+.io-box .value { font-size: 12pt; font-weight: 700; }
+.io-box .unit { font-size: 6pt; color: var(--ink-secondary); }
+.io-running { display: flex; justify-content: space-around; font-size: 5.5pt; margin-top: 2px; padding-top: 2px; border-top: 1px dashed var(--line-secondary); }
+.io-running .label { color: var(--ink-secondary); }
+.io-running .value { font-weight: 700; color: var(--neuro-header); }
+/* MED TIMES COLUMN */
+.med-times { display: flex; gap: 2px; margin-bottom: 3px; }
+.med-time-slot { flex: 1; background: rgba(255,255,255,0.7); border: 1px solid var(--line-secondary); border-radius: 2px; padding: 2px 3px; text-align: center; }
+.med-time-slot .time { font-size: 7pt; font-weight: 700; color: var(--navy); }
+.med-time-slot .label { font-size: 5pt; color: var(--ink-secondary); text-transform: uppercase; }
+/* ACTIVE DRIPS TABLE */
+.drips-table { width: 100%; border-collapse: collapse; font-size: 6pt; margin-top: 2px; }
+.drips-table th, .drips-table td { border: 0.5px solid var(--line-secondary); padding: 2px 3px; text-align: left; }
+.drips-table th { background: rgba(0,0,0,0.05); font-weight: 600; font-size: 5.5pt; }
+.drips-table td { height: 14px; }
+.drips-table .col-drip { width: 20%; }
+.drips-table .col-conc { width: 12%; }
+.drips-table .col-rate { width: 10%; }
+.drips-table .col-dose { width: 12%; }
+.drips-table .col-titrate { width: 18%; }
+.drips-table .col-goal { width: 18%; }
+.drips-table .col-time { width: 10%; }
+/* FOOTER */
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 3px 6px; border-top: 1px dashed var(--line-secondary); margin-top: 2px; font-size: 5.5pt; color: var(--ink-secondary); }
+.legend { display: flex; gap: 8px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 2px; }
+.legend-color { width: 7px; height: 7px; border-radius: 2px; border: 0.5px solid rgba(0,0,0,0.2); }
+.signature-line { display: flex; align-items: center; gap: 3px; }
+.signature-box { border-bottom: 1px solid var(--ink-primary); width: 90px; height: 9px; }
+/* TWO COLUMN LAYOUT */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.two-col-left { display: flex; flex-direction: column; gap: 3px; }
+.two-col-right { display: flex; flex-direction: column; gap: 3px; }
+/* ROW SPANS */
+.row-span-2 { grid-row: span 2; }
+.row-span-3 { grid-row: span 3; }
+/* PAGE BREAK */
+.page-break { page-break-after: always; }
+@media print {
+body { font-size: 6.5pt; }
+.sheet { width: 100%; height: 100%; margin: 0; padding: 0; }
+.section { break-inside: avoid; }
+.section-hemo, .section-resp, .section-neuro, .section-io, .section-labs, .section-notes, .section-pressor, .section-insulin, .section-lines, .section-abg {
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+}
+.page-break { page-break-after: always; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<!-- NAVY HEADER -->
+<div class="header-navy">
+<div class="header-section">
+<h3>Patient Information</h3>
+<div class="field-row"><span class="field-label">Name:</span><span class="field-value large">________________________________</span></div>
+<div class="field-row"><span class="field-label">MRN:</span><span class="field-value">_______________</span></div>
+<div class="field-row"><span class="field-label">DOB:</span><span class="field-value">____________</span><span class="field-label">Age:</span><span class="field-value" style="flex: 0.5;">____</span></div>
+<div class="field-row"><span class="field-label">Allergies:</span><span class="field-value" style="color: #ff6b6b; font-weight: 700;">________________________________</span></div>
+<div class="family-password">
+<div class="label">Family Password / Verification Code:</div>
+<div class="value">________________________</div>
+</div>
+</div>
+<div class="header-section">
+<h3>Location & Status</h3>
+<div class="field-row"><span class="field-label">Unit:</span><span class="field-value">ICU _______</span></div>
+<div class="field-row"><span class="field-label">Bed:</span><span class="field-value">____</span><span class="field-label">Room:</span><span class="field-value">____</span></div>
+<div class="field-row"><span class="field-label">Admit Dx:</span><span class="field-value">________________</span></div>
+<div class="field-row"><span class="field-label">Day #:</span><span class="field-value">____</span><span class="field-label">IIDay:</span><span class="field-value">____</span></div>
+<div class="field-row"><span class="field-label">Code:</span><span class="field-value"><span class="code-status code-full">FULL</span> <span class="code-status code-dnr">DNR</span> <span class="code-status code-dni">DNI</span></span></div>
+</div>
+<div class="header-section">
+<h3>Shift Information</h3>
+<div class="field-row"><span class="field-label">Date:</span><span class="field-value">____________</span></div>
+<div class="field-row"><span class="field-label">Shift:</span><span class="field-value" style="font-size: 6pt;"><span style="border: 1px solid #3d5a80; padding: 0 4px; border-radius: 2px; color: white;">Day</span> <span style="border: 1px solid #3d5a80; padding: 0 4px; border-radius: 2px; color: white;">Night</span></span></div>
+<div class="field-row"><span class="field-label">Nurse:</span><span class="field-value">____________________</span></div>
+<div class="field-row"><span class="field-label">RN Ext:</span><span class="field-value">________</span><span class="field-label">MD:</span><span class="field-value">____________</span></div>
+</div>
+<div class="header-section">
+<h3>Primary Problem</h3>
+<div class="field-row"><span class="field-label"></span><span class="field-value" style="min-height: 35px; border: 1px solid #3d5a80; border-radius: 2px;"></span></div>
+<div class="field-row" style="margin-top: 4px;"><span class="field-label">Weight:</span><span class="field-value">____kg</span><span class="field-label">Height:</span><span class="field-value">____cm</span></div>
+<div class="field-row"><span class="field-label">BMI:</span><span class="field-value">________</span></div>
+<div class="field-row"><span class="field-label">BSA:</span><span class="field-value">________</span></div>
+</div>
+</div>
+
+<!-- MED TIMES ROW -->
+<div class="med-times">
+<div class="med-time-slot"><div class="time">0000</div><div class="label">Midnight</div></div>
+<div class="med-time-slot"><div class="time">0400</div><div class="label">Night</div></div>
+<div class="med-time-slot"><div class="time">0600</div><div class="label">Morning</div></div>
+<div class="med-time-slot"><div class="time">0800</div><div class="label">Breakfast</div></div>
+<div class="med-time-slot"><div class="time">0900</div><div class="label">AM Care</div></div>
+<div class="med-time-slot"><div class="time">1000</div><div class="label">Rounds</div></div>
+<div class="med-time-slot"><div class="time">1200</div><div class="label">Noon</div></div>
+<div class="med-time-slot"><div class="time">1400</div><div class="label">Afternoon</div></div>
+<div class="med-time-slot"><div class="time">1600</div><div class="label">PM Care</div></div>
+<div class="med-time-slot"><div class="time">1800</div><div class="label">Evening</div></div>
+<div class="med-time-slot"><div class="time">2000</div><div class="label">Night Med</div></div>
+<div class="med-time-slot"><div class="time">2200</div><div class="label">HS</div></div>
+</div>
+
+<!-- MAIN CONTENT: 2 COLUMNS -->
+<div class="two-col">
+<div class="two-col-left">
+
+<!-- HEMODYNAMICS -->
+<div class="section section-hemo">
+<div class="section-header"><span><span class="icon">&#10084;&#65039;</span> Hemodynamics & Active Drips</span><span style="font-size: 5.5pt; font-weight: 400;">Target MAP: ______ | SVO₂: ______%</span></div>
+<div class="section-content">
+<table class="hourly-grid">
+<thead><tr><th class="param-label">Parameter</th><th class="hour-even">00</th><th>01</th><th class="hour-even">02</th><th>03</th><th class="hour-even">04</th><th>05</th><th class="hour-even">06</th><th>07</th><th class="hour-even">08</th><th>09</th><th class="hour-even">10</th><th>11</th><th class="hour-even">12</th><th>13</th><th class="hour-even">14</th><th>15</th><th class="hour-even">16</th><th>17</th><th class="hour-even">18</th><th>19</th><th class="hour-even">20</th><th>21</th><th class="hour-even">22</th><th>23</th></tr></thead>
+<tbody>
+<tr><td class="param-label">BP (mmHg)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">HR (bpm)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">MAP (mmHg)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">CVP (mmHg)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">SpO&#8322; (%)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">Temp (&#176;C)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">RR (/min)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+</tbody>
+</table>
+<table class="drips-table">
+<thead><tr><th class="col-drip">Medication</th><th class="col-conc">Conc.</th><th class="col-rate">Rate</th><th class="col-dose">Dose</th><th class="col-titrate">Titration</th><th class="col-goal">Goal</th><th class="col-time">Time</th></tr></thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- RESPIRATORY / VENTILATOR -->
+<div class="section section-resp">
+<div class="section-header"><span><span class="icon">&#129504;</span> Respiratory / Ventilator</span><span style="font-size: 5.5pt; font-weight: 400;">SpO&#8322; Goal: ____ | Weaning: Y / N</span></div>
+<div class="section-content">
+<div class="vent-modes">
+<div class="vent-mode"><span class="mode-name">AC</span><span class="mode-desc">Assist-Control</span></div>
+<div class="vent-mode"><span class="mode-name">SIMV</span><span class="mode-desc">Sync Intermittent</span></div>
+<div class="vent-mode"><span class="mode-name">PS</span><span class="mode-desc">Pressure Support</span></div>
+<div class="vent-mode"><span class="mode-name">CPAP</span><span class="mode-desc">Cont. Positive</span></div>
+<div class="vent-mode"><span class="mode-name">PEEP</span><span class="mode-desc">Positive EEP</span></div>
+<div class="vent-mode"><span class="mode-name">APRV</span><span class="mode-desc">Airway Press. Release</span></div>
+</div>
+<div class="vent-settings">
+<div class="vent-param"><span class="label">Mode</span><span class="value">____</span></div>
+<div class="vent-param"><span class="label">VT (mL)</span><span class="value">____</span></div>
+<div class="vent-param"><span class="label">RR (set)</span><span class="value">____</span></div>
+<div class="vent-param"><span class="label">FiO&#8322; (%)</span><span class="value">____</span></div>
+<div class="vent-param"><span class="label">PEEP</span><span class="value">____</span></div>
+<div class="vent-param"><span class="label">PS</span><span class="value">____</span></div>
+<div class="vent-param"><span class="label">PIP</span><span class="value">____</span></div>
+<div class="vent-param"><span class="label">Plat</span><span class="value">____</span></div>
+</div>
+<table class="hourly-grid">
+<thead><tr><th class="param-label">Parameter</th><th class="hour-even">00</th><th>01</th><th class="hour-even">02</th><th>03</th><th class="hour-even">04</th><th>05</th><th class="hour-even">06</th><th>07</th><th class="hour-even">08</th><th>09</th><th class="hour-even">10</th><th>11</th><th class="hour-even">12</th><th>13</th><th class="hour-even">14</th><th>15</th><th class="hour-even">16</th><th>17</th><th class="hour-even">18</th><th>19</th><th class="hour-even">20</th><th>21</th><th class="hour-even">22</th><th>23</th></tr></thead>
+<tbody>
+<tr><td class="param-label">FiO&#8322; (%)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">PEEP</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">TV (mL)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">PIP</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- LINES / CATHETERS -->
+<div class="section section-lines">
+<div class="section-header"><span><span class="icon">&#128204;</span> Lines & Catheters</span><span style="font-size: 5.5pt; font-weight: 400;">Site: ____ | Days in: ____</span></div>
+<div class="section-content">
+<div class="lines-grid">
+<div class="line-item">
+<h4>Art Line</h4>
+<div class="line-data">
+<div class="line-row"><span class="line-label">Site:</span><span class="line-value">________</span></div>
+<div class="line-row"><span class="line-label">Size:</span><span class="line-value">________</span></div>
+<div class="line-row"><span class="line-label">Waveform:</span><span class="line-value">________</span></div>
+<div class="line-row"><span class="line-label">Transducer:</span><span class="line-value">____</span></div>
+</div>
+</div>
+<div class="line-item">
+<h4>CVC</h4>
+<div class="line-data">
+<div class="line-row"><span class="line-label">Site:</span><span class="line-value">________</span></div>
+<div class="line-row"><span class="line-label">Type:</span><span class="line-value">________</span></div>
+<div class="line-row"><span class="line-label">Lumens:</span><span class="line-value">____</span></div>
+<div class="line-row"><span class="line-label">CVP:</span><span class="line-value">____mmHg</span></div>
+</div>
+</div>
+<div class="line-item">
+<h4>PICC</h4>
+<div class="line-data">
+<div class="line-row"><span class="line-label">Site:</span><span class="line-value">________</span></div>
+<div class="line-row"><span class="line-label">Size:</span><span class="line-value">________</span></div>
+<div class="line-row"><span class="line-label">Lumens:</span><span class="line-value">____</span></div>
+<div class="line-row"><span class="line-label">Tip Loc:</span><span class="line-value">________</span></div>
+</div>
+</div>
+<div class="line-item">
+<h4>Foley</h4>
+<div class="line-data">
+<div class="line-row"><span class="line-label">Size:</span><span class="line-value">____Fr</span></div>
+<div class="line-row"><span class="line-label"> balloonsize:</span><span class="line-value">____mL</span></div>
+<div class="line-row"><span class="line-label">Urine:</span><span class="line-value">________</span></div>
+<div class="line-row"><span class="line-label">Cloudy:</span><span class="line-value">Y / N</span></div>
+</div>
+</div>
+<div class="line-item">
+<h4>ET Tube</h4>
+<div class="line-data">
+<div class="line-row"><span class="line-label">Size:</span><span class="line-value">____mm</span></div>
+<div class="line-row"><span class="line-label">Type:</span><span class="line-value">________</span></div>
+<div class="line-row"><span class="line-label">Mark:</span><span class="line-value">____cm</span></div>
+<div class="line-row"><span class="line-label">Secured:</span><span class="line-value">____</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- NEUROLOGICAL -->
+<div class="section section-neuro">
+<div class="section-header"><span><span class="icon">&#129504;</span> Neurological / Neuro Checks</span><span style="font-size: 5.5pt; font-weight: 400;">Frequency: ____ | Sedation Protocol: ____</span></div>
+<div class="section-content">
+<div class="neuro-grid">
+<div class="neuro-box">
+<h4>Glasgow Coma Scale</h4>
+<div class="gcs-breakdown">
+<div class="subscore">Eye (E)<span>___/4</span></div>
+<div class="subscore">Verbal (V)<span>___/5</span></div>
+<div class="subscore">Motor (M)<span>___/6</span></div>
+</div>
+<div class="gcs-total">GCS Total: ___/15</div>
+<div style="margin-top: 3px; font-size: 5pt; color: var(--ink-secondary);">
+<div>E: 4-Spont, 3-Command, 2-Pain, 1-None</div>
+<div>V: 5-Oriented, 4-Confused, 3-Words, 2-Sounds, 1-None</div>
+<div>M: 6-Obeys, 5-Localizes, 4-Withdrawal, 3-Flexion, 2-Extension, 1-None</div>
+</div>
+</div>
+<div class="neuro-box">
+<h4>Pupil Assessment</h4>
+<div class="gcs-row"><span>Left:</span><span>___mm / __(R/S/SL/SLUR)</span></div>
+<div class="gcs-row"><span>Right:</span><span>___mm / __(R/S/SL/SLUR)</span></div>
+<div class="gcs-row" style="margin-top: 3px;"><span>Lethargy:</span><span>Y / N</span></div>
+<div class="gcs-row"><span>Agitation:</span><span>Y / N</span></div>
+<div class="gcs-row"><span>Coma:</span><span>Y / N</span></div>
+</div>
+<div class="neuro-box">
+<h4>Sedation & Pain</h4>
+<div class="gcs-row"><span>RASS Target:</span><span>____</span></div>
+<div class="gcs-row"><span>RASS Actual:</span><span>____</span></div>
+<div class="gcs-row"><span>CPOT:</span><span>____/8</span></div>
+<div class="gcs-row"><span>Pain (0-10):</span><span>____</span></div>
+<div style="margin-top: 3px; font-size: 5.5pt; color: var(--ink-secondary);">RASS: +4=Combative, +1=Alert, 0=Calm, -1=Drowsy, -4=Unrousable</div>
+</div>
+</div>
+<table class="hourly-grid">
+<thead><tr><th class="param-label">Parameter</th><th class="hour-even">00</th><th>01</th><th class="hour-even">02</th><th>03</th><th class="hour-even">04</th><th>05</th><th class="hour-even">06</th><th>07</th><th class="hour-even">08</th><th>09</th><th class="hour-even">10</th><th>11</th><th class="hour-even">12</th><th>13</th><th class="hour-even">14</th><th>15</th><th class="hour-even">16</th><th>17</th><th class="hour-even">18</th><th>19</th><th class="hour-even">20</th><th>21</th><th class="hour-even">22</th><th>23</th></tr></thead>
+<tbody>
+<tr><td class="param-label">GCS (E+V+M)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">RASS</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">Pupils</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+<div class="two-col-right">
+
+<!-- I/O PROMINENT -->
+<div class="section section-io">
+<div class="section-header"><span><span class="icon">&#128167;</span> Intake & Output</span><span style="font-size: 5.5pt; font-weight: 400;">24hr Goal: ____ | Restrictions: ____</span></div>
+<div class="section-content">
+<div class="io-summary">
+<div class="io-box intake">
+<h4>Total Intake (mL)</h4>
+<div class="value">________</div>
+<div class="unit">mL</div>
+<div class="io-running"><span class="hrly">Hrly:</span><span class="value">____</span></div>
+</div>
+<div class="io-box output">
+<h4>Total Output (mL)</h4>
+<div class="value">________</div>
+<div class="unit">mL</div>
+<div class="io-running"><span class="hrly">Hrly:</span><span class="value">____</span></div>
+</div>
+<div class="io-box balance">
+<h4>Balance (mL)</h4>
+<div class="value">________</div>
+<div class="unit">mL</div>
+<div class="io-running"><span class="hrly">Target:</span><span class="value">____</span></div>
+</div>
+</div>
+<table class="hourly-grid">
+<thead><tr><th class="param-label">Parameter</th><th class="hour-even">00</th><th>01</th><th class="hour-even">02</th><th>03</th><th class="hour-even">04</th><th>05</th><th class="hour-even">06</th><th>07</th><th class="hour-even">08</th><th>09</th><th class="hour-even">10</th><th>11</th><th class="hour-even">12</th><th>13</th><th class="hour-even">14</th><th>15</th><th class="hour-even">16</th><th>17</th><th class="hour-even">18</th><th>19</th><th class="hour-even">20</th><th>21</th><th class="hour-even">22</th><th>23</th></tr></thead>
+<tbody>
+<tr><td class="param-label">IV Fluids (mL)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">PO/Enteral (mL)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">Meds/Flushes (mL)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">Urine (mL)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">Other Output (mL)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+<tr><td class="param-label">Balance (mL)</td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td><td class="hour-even"></td><td></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- PRESSOR DRIP TRACKING -->
+<div class="section section-pressor">
+<div class="section-header"><span><span class="icon">&#9888;&#65039;</span> Vasopressor / Inotrope Tracking</span><span style="font-size: 5.5pt; font-weight: 400;">Patient Weight: ____kg | Titration Protocol: ____</span></div>
+<div class="section-content">
+<div class="pressor-grid">
+<div class="pressor-card">
+<h4>Norepinephrine (Levophed)</h4>
+<div class="pressor-row"><span class="label">Concentration:</span><span class="value">____ mcg/mL</span></div>
+<div class="pressor-row"><span class="label">Starting Dose:</span><span class="value">____ mcg/min</span></div>
+<div class="pressor-row"><span class="label">Current Dose:</span><span class="value">____ mcg/min</span></div>
+<div class="pressor-row"><span class="label">Rate (mL/hr):</span><span class="value">____</span></div>
+<div class="pressor-row"><span class="label">Weight-based:</span><span class="value">____ mcg/kg/min</span></div>
+<div class="pressor-row"><span class="label">MAP Goal:</span><span class="value">____ mmHg</span></div>
+<div class="pressor-row"><span class="label">Titration:</span><span class="value">____ mcg/min q___min</span></div>
+</div>
+<div class="pressor-card">
+<h4>Epinephrine</h4>
+<div class="pressor-row"><span class="label">Concentration:</span><span class="value">____ mcg/mL</span></div>
+<div class="pressor-row"><span class="label">Starting Dose:</span><span class="value">____ mcg/min</span></div>
+<div class="pressor-row"><span class="label">Current Dose:</span><span class="value">____ mcg/min</span></div>
+<div class="pressor-row"><span class="label">Rate (mL/hr):</span><span class="value">____</span></div>
+<div class="pressor-row"><span class="label">Weight-based:</span><span class="value">____ mcg/kg/min</span></div>
+<div class="pressor-row"><span class="label">MAP Goal:</span><span class="value">____ mmHg</span></div>
+<div class="pressor-row"><span class="label">Titration:</span><span class="value">____ mcg/min q___min</span></div>
+</div>
+<div class="pressor-card">
+<h4>Vasopressin</h4>
+<div class="pressor-row"><span class="label">Concentration:</span><span class="value">____ units/mL</span></div>
+<div class="pressor-row"><span class="label">Dose:</span><span class="value">____ units/hr</span></div>
+<div class="pressor-row"><span class="label">Rate (mL/hr):</span><span class="value">____</span></div>
+<div class="pressor-row"><span class="label">Fixed vs Titrate:</span><span class="value">____</span></div>
+<div class="pressor-row"><span class="label">MAP Goal:</span><span class="value">____ mmHg</span></div>
+<div class="pressor-row"><span class="label">Max Dose:</span><span class="value">____ units/min</span></div>
+</div>
+<div class="pressor-card">
+<h4>Dopamine</h4>
+<div class="pressor-row"><span class="label">Concentration:</span><span class="value">____ mcg/mL</span></div>
+<div class="pressor-row"><span class="label">Dose Range:</span><span class="value">____ mcg/kg/min</span></div>
+<div class="pressor-row"><span class="label">Current Dose:</span><span class="value">____ mcg/kg/min</span></div>
+<div class="pressor-row"><span class="label">Rate (mL/hr):</span><span class="value">____</span></div>
+<div class="pressor-row"><span class="label">Effect:</span><span class="value">DA / &#946; / &#945;</span></div>
+<div class="pressor-row"><span class="label">UOP Goal:</span><span class="value">____ mL/hr</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- INSULIN DRIP -->
+<div class="section section-insulin">
+<div class="section-header"><span><span class="icon">&#127973;</span> Insulin Drip Protocol</span><span style="font-size: 5.5pt; font-weight: 400;">Glucometer: ____ | Sliding Scale: ____</span></div>
+<div class="section-content">
+<div class="insulin-grid">
+<div class="insulin-card">
+<h4>Insulin Drip Settings</h4>
+<div class="pressor-row"><span class="label">Concentration:</span><span class="value">____ units in ____mL NS</span></div>
+<div class="pressor-row"><span class="label">Starting Rate:</span><span class="value">____ units/hr</span></div>
+<div class="pressor-row"><span class="label">Current Rate:</span><span class="value">____ units/hr</span></div>
+<div class="pressor-row"><span class="label">Blood Glucose:</span><span class="value">____ mg/dL</span></div>
+<div class="pressor-row"><span class="label">Glucose Check:</span><span class="value">q____hr</span></div>
+<div class="pressor-row"><span class="label">Target Range:</span><span class="value">____ - ____ mg/dL</span></div>
+<div class="pressor-row"><span class="label">Titration:</span><span class="value">____ units/hr per ____ mg/dL</span></div>
+</div>
+<div class="insulin-card">
+<h4>Sliding Scale Reference</h4>
+<div class="sliding-scale">
+<div class="scale-row"><span class="range">&lt; 70</span><span class="dose">D/C + D50</span></div>
+<div class="scale-row"><span class="range">70-99</span><span class="dose">Hold / -2</span></div>
+<div class="scale-row"><span class="range">100-139</span><span class="dose">0 (no change)</span></div>
+<div class="scale-row"><span class="range">140-179</span><span class="dose">+1 unit/hr</span></div>
+<div class="scale-row"><span class="range">180-219</span><span class="dose">+2 units/hr</span></div>
+<div class="scale-row"><span class="range">220-259</span><span class="dose">+3 units/hr</span></div>
+<div class="scale-row"><span class="range">260-299</span><span class="dose">+4 units/hr</span></div>
+<div class="scale-row"><span class="range">300-339</span><span class="dose">+5 units/hr + call MD</span></div>
+<div class="scale-row"><span class="range">&gt; 340</span><span class="dose">+6 + call MD</span></div>
+</div>
+<div style="margin-top: 3px; font-size: 5pt; color: var(--ink-secondary);">*Adjust per facility protocol</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ABG INTERPRETATION -->
+<div class="section section-abg">
+<div class="section-header"><span><span class="icon">&#129656;</span> ABG Interpretation</span><span style="font-size: 5.5pt; font-weight: 400;">Last ABG: ____ | Next: ____</span></div>
+<div class="section-content">
+<div class="abg-grid">
+<div class="abg-values">
+<h4>Normal Values Reference</h4>
+<div class="abg-row"><span class="param">pH</span><span class="normal">7.35-7.45</span><span class="value">______</span></div>
+<div class="abg-row"><span class="param">pCO&#8322;</span><span class="normal">35-45 mmHg</span><span class="value">______</span></div>
+<div class="abg-row"><span class="param">HCO&#8323;&#8315;</span><span class="normal">22-26 mEq/L</span><span class="value">______</span></div>
+<div class="abg-row"><span class="param">PaO&#8322;</span><span class="normal">80-100 mmHg</span><span class="value">______</span></div>
+<div class="abg-row"><span class="param">PaO&#8322;/FiO&#8322;</span><span class="normal">&gt; 300</span><span class="value">______</span></div>
+<div class="abg-row"><span class="param">Base Excess</span><span class="normal">-2 to +2</span><span class="value">______</span></div>
+<div class="abg-row"><span class="param">Lactate</span><span class="normal">0.5-2.2 mmol/L</span><span class="value">______</span></div>
+</div>
+<div class="interpretation-box">
+<h4>Acid-Base Interpretation</h4>
+<div class="interp-row acidotic"><span class="condition">Acidemia:</span><span>pH &lt; 7.35</span></div>
+<div class="interp-row alkalotic"><span class="condition">Alkalemia:</span><span>pH &gt; 7.45</span></div>
+<div style="margin: 3px 0; font-size: 5.5pt; border-top: 1px dashed var(--line-secondary); border-bottom: 1px dashed var(--line-secondary); padding: 2px 0;">
+<div><strong>Compensation:</strong></div>
+<div style="color: var(--ink-secondary);">Resp Acidosis: HCO&#8323;&#8593; = 1 mEq/L per 10 pCO&#8322;&#8593;</div>
+<div style="color: var(--ink-secondary);">Resp Alkalosis: HCO&#8323;&#8595; = 2 mEq/L per 10 pCO&#8322;&#8595;</div>
+<div style="color: var(--ink-secondary);">Met Acidosis: pCO&#8322;&#8595; = 1.2 mmHg per 1 HCO&#8323;&#8595;</div>
+<div style="color: var(--ink-secondary);">Met Alkalosis: pCO&#8322;&#8593; = 0.7 mmHg per 1 HCO&#8323;&#8593;</div>
+</div>
+<div style="font-size: 5.5pt;">
+<div><strong>Step 1:</strong> Is pH normal? (7.35-7.45)</div>
+<div><strong>Step 2:</strong> What's the primary disorder?</div>
+<div><strong>Step 3:</strong> Is compensation appropriate?</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- NOTES & CHECKLIST -->
+<div class="section section-notes">
+<div class="section-header"><span><span class="icon">&#128221;</span> Notes, Plan & Checklist</span></div>
+<div class="section-content">
+<div class="notes-area">
+<div class="notes-box" style="flex: 1.2;">
+<h4>Plan / Priority Actions / MD Communications</h4>
+<div class="notes-lines">
+<div class="note-line"></div>
+<div class="note-line"></div>
+<div class="note-line"></div>
+<div class="note-line"></div>
+<div class="note-line"></div>
+<div class="note-line"></div>
+<div class="note-line"></div>
+</div>
+</div>
+<div class="notes-box" style="flex: 0.8;">
+<h4>Shift Checklist</h4>
+<div class="checklist-grid" style="grid-template-columns: repeat(2, 1fr);">
+<div class="check-item"><div class="check-box"></div><span>Handoff Complete</span></div>
+<div class="check-item"><div class="check-box"></div><span>Rounds Done</span></div>
+<div class="check-item"><div class="check-box"></div><span>Family Updated</span></div>
+<div class="check-item"><div class="check-box"></div><span>Code Status Confirmed</span></div>
+<div class="check-item"><div class="check-box"></div><span>Lines/Tubes OK</span></div>
+<div class="check-item"><div class="check-box"></div><span>Skin Assessment</span></div>
+<div class="check-item"><div class="check-box"></div><span>VAP Bundle</span></div>
+<div class="check-item"><div class="check-box"></div><span>CAUTI Bundle</span></div>
+<div class="check-item"><div class="check-box"></div><span>CLABSI Bundle</span></div>
+<div class="check-item"><div class="check-box"></div><span>Sepsis Bundle</span></div>
+<div class="check-item"><div class="check-box"></div><span>DVT Prophylaxis</span></div>
+<div class="check-item"><div class="check-box"></div><span>Sedation Vacation</span></div>
+<div class="check-item"><div class="check-box"></div><span>ABC Assessment</span></div>
+<div class="check-item"><div class="check-box"></div><span>Med Reconciliation</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<div class="legend">
+<div class="legend-item"><div class="legend-color" style="background: var(--hemo-header);"></div><span>Hemo</span></div>
+<div class="legend-item"><div class="legend-color" style="background: var(--resp-header);"></div><span>Resp</span></div>
+<div class="legend-item"><div class="legend-color" style="background: var(--neuro-header);"></div><span>Neuro</span></div>
+<div class="legend-item"><div class="legend-color" style="background: var(--io-header);"></div><span>I&O</span></div>
+<div class="legend-item"><div class="legend-color" style="background: var(--pressor-header);"></div><span>Pressors</span></div>
+<div class="legend-item"><div class="legend-color" style="background: #b7791f;"></div><span>Insulin</span></div>
+<div class="legend-item"><div class="legend-color" style="background: #6b46c1;"></div><span>ABG</span></div>
+<div class="legend-item"><div class="legend-color" style="background: var(--notes-header);"></div><span>Notes</span></div>
+</div>
+<div class="signature-line">
+<span>RN Signature:</span><div class="signature-box"></div>
+<span style="margin-left: 8px;">Time:</span><div class="signature-box" style="width: 50px;"></div>
+</div>
+</div>
+</div>
+</body>
+</html>
