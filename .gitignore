@@ -1,95 +1,88 @@
-# Environment variables
+# Sensitive files - ALWAYS BLOCK
 .env
-.env.local
-.env.*.local
-
-# API keys and secrets
-*.key
+*.env
+.env.*
+credentials/
+secrets/
+tokens/
+keys/
 *.pem
-*.p12
-*.crt
-*.cert
+*.key
+*secret*
+*credential*
 
-# Dependency directories
-node_modules/
-vendor/
-bower_components/
-
-# Build outputs
-dist/
-build/
-.out/
-.next/
-
-# Runtime data
-*.log
-logs/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# Coverage directory
-coverage/
-.nyc_output/
-
-# IDE files
+# System files
+.DS_Store
+.Trash/
 .vscode/
 .idea/
-*.swp
-*.swo
 
-# OS files
-.DS_Store
-Thumbs.db
+# OpenClaw system files
+.openclaw/
+.clawhub/
+.cwpm.json
 
-# Temporary files
+# Agent and deployment scaffolding (not Etsy products)
+agent-collaboration-framework-cost-optimized/
+autonomy/
+deployment/
+desktop-app-enhanced/
+integrated-agent-system/
+mission-control-live/
+
+# Memory and agent configs
+memory/
+agents/
+workspace-coding/
+workspace-planner/
+workspace-automation/
+workspace-research/
+
+# Config files with API keys/tokens
+openclaw.json*
+exec-approvals.json
+
+# Logs and temporary files
+*.log
+logs/
+*.tmp
 tmp/
-temp/
 
-# Test outputs
-test-results/
+# Obsidian notes (personal)
+.obsidian/
 
-# Mission Control deployment
-deployment/logs/
+# HTML/template files not in AiLunaStore
+*.html
+*.htm
+index.html
 
-# Desktop app builds
-desktop-app-enhanced/dist/
-desktop-app-enhanced/release/
+# Images not in AiLunaStore
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+!AiLunaStore/**/*
 
-# Local database files
-*.db
-*.sqlite
-*.sqlite3
+# Markdown docs (only keep specific ones)
+HEARTBEAT.md
+SECOND-BRAIN-SETUP.md
+INTEGRATION_*.md
+CLAUDE.md
 
-# Certificate files
-*.cer
-*.pfx
+# Root-level markdown (personal notes - block these)
+HEARTBEAT.md
+IDENTITY.md
+SOUL.md
+TOOLS.md
+USER.md
+AGENTS.md
+MEMORY.md
+.canva-*/
 
-# Backup files
-*.bak
-*.backup
-
-# Sensitive configuration
-config/api-keys.json
-config/secrets.json
-
-# OpenClaw workspace
-.openclaw-local/
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-
-# Node.js
-.npm
-.eslintcache
-
-# Project specific
-*.dmg
-*.exe
-*.app
-*.msi
+# Keep these specific files
+!AiLunaStore/**
+!images/**
+!etsy-*.md
+!er_trauma_cover_etsy.jpg
+!canva-bundle/**

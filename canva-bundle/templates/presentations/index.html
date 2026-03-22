@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach Bundle - Presentation Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Montserrat', sans-serif; background: #111; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 40px; }
+.template { width: 1920px; height: 1080px; position: relative; overflow: hidden; box-shadow: 0 20px 80px rgba(0,0,0,0.6); border-radius: 8px; }
+
+/* PRES-MG-01: Title Slide - Dark Gold */
+.pres-title { background: #0D0D0D; padding: 120px 160px; display: flex; flex-direction: column; justify-content: center; }
+.pres-title .tag { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 600; color: #D4AF37; letter-spacing: 8px; text-transform: uppercase; margin-bottom: 40px; }
+.pres-title .main-title { font-family: 'Montserrat', sans-serif; font-size: 96px; font-weight: 900; color: #FFFFFF; line-height: 1.0; margin-bottom: 24px; letter-spacing: -4px; }
+.pres-title .main-title span { color: #D4AF37; }
+.pres-title .subtitle { font-family: 'Open Sans', sans-serif; font-size: 28px; color: rgba(255,255,255,0.5); margin-bottom: 60px; max-width: 900px; }
+.pres-title .bottom { display: flex; align-items: center; justify-content: space-between; }
+.pres-title .presenter { display: flex; align-items: center; gap: 20px; }
+.pres-title .presenter-avatar { width: 70px; height: 70px; background: linear-gradient(135deg, #D4AF37, #8B6914); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.pres-title .presenter-name { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 700; color: #FFFFFF; }
+.pres-title .presenter-title { font-family: 'Open Sans', sans-serif; font-size: 16px; color: rgba(255,255,255,0.4); }
+.pres-title .decorative { position: absolute; top: 0; right: 0; width: 600px; height: 600px; background: radial-gradient(circle at top right, rgba(212,175,55,0.08) 0%, transparent 60%); }
+.pres-title .corner-accent { position: absolute; bottom: 60px; right: 160px; font-family: 'Playfair Display', serif; font-size: 400px; color: #D4AF37; opacity: 0.03; line-height: 1; }
+
+/* PRES-SS-02: Section Divider - Sage */
+.pres-section { background: #4A6741; padding: 120px 160px; display: flex; flex-direction: column; justify-content: center; }
+.pres-section .section-num { font-family: 'Montserrat', sans-serif; font-size: 120px; font-weight: 900; color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: -30px; }
+.pres-section .section-title { font-family: 'Montserrat', sans-serif; font-size: 80px; font-weight: 900; color: #FFFFFF; line-height: 1.0; letter-spacing: -3px; margin-bottom: 24px; }
+.pres-section .section-title span { color: #C9A96E; }
+.pres-section .section-sub { font-family: 'Open Sans', sans-serif; font-size: 26px; color: rgba(255,255,255,0.55); max-width: 800px; line-height: 1.5; }
+.pres-section .gold-bar { width: 100px; height: 6px; background: #C9A96E; margin-bottom: 30px; }
+
+/* PRES-OD-03: Content Slide - Stats */
+.pres-stats { background: linear-gradient(135deg, #1A365D 0%, #2B4C7E 100%); padding: 100px 160px; position: relative; overflow: hidden; }
+.pres-stats::before { content: ''; position: absolute; top: 0; right: 0; width: 800px; height: 800px; background: radial-gradient(circle, rgba(66,153,225,0.08) 0%, transparent 70%); }
+.pres-stats .header { margin-bottom: 80px; }
+.pres-stats .slide-label { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; color: #4299E1; margin-bottom: 16px; }
+.pres-stats .slide-title { font-family: 'Montserrat', sans-serif; font-size: 60px; font-weight: 900; color: #FFFFFF; letter-spacing: -2px; line-height: 1.1; }
+.pres-stats .stats-grid { display: flex; gap: 60px; }
+.pres-stats .stat-card { flex: 1; background: rgba(255,255,255,0.06); border-radius: 20px; padding: 50px 40px; text-align: center; border-top: 4px solid #4299E1; }
+.pres-stats .stat-card.highlight { border-top-color: #C9A96E; background: rgba(66,153,225,0.15); }
+.pres-stats .stat-num { font-family: 'Montserrat', sans-serif; font-size: 96px; font-weight: 900; color: #FFFFFF; line-height: 1; margin-bottom: 12px; }
+.pres-stats .stat-card.highlight .stat-num { color: #C9A96E; }
+.pres-stats .stat-label { font-family: 'Open Sans', sans-serif; font-size: 20px; color: rgba(255,255,255,0.6); }
+.pres-stats .watermark { position: absolute; bottom: 40px; right: 160px; font-size: 12px; color: rgba(255,255,255,0.15); letter-spacing: 3px; }
+
+/* PRES-MG-04: Quote Slide */
+.pres-quote { background: #0D0D0D; padding: 120px 160px; display: flex; flex-direction: column; justify-content: center; }
+.pres-quote .big-quote-mark { font-family: 'Playfair Display', serif; font-size: 300px; color: #D4AF37; opacity: 0.15; line-height: 1; position: absolute; top: 40px; left: 100px; }
+.pres-quote .quote-content { position: relative; z-index: 1; padding-left: 120px; }
+.pres-quote .quote-text { font-family: 'Playfair Display', serif; font-size: 56px; font-style: italic; color: #FFFFFF; line-height: 1.5; margin-bottom: 50px; max-width: 1300px; }
+.pres-quote .quote-text strong { color: #D4AF37; font-style: normal; }
+.pres-quote .divider { width: 80px; height: 3px; background: #D4AF37; margin-bottom: 30px; }
+.pres-quote .quote-attr { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 600; color: #D4AF37; letter-spacing: 4px; text-transform: uppercase; }
+
+/* PRES-SS-05: Process Steps */
+.pres-process { background: #4A6741; padding: 100px 160px; }
+.pres-process .header { margin-bottom: 70px; }
+.pres-process .slide-label { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; color: #C9A96E; margin-bottom: 16px; }
+.pres-process .slide-title { font-family: 'Montserrat', sans-serif; font-size: 60px; font-weight: 900; color: #FFFFFF; letter-spacing: -2px; line-height: 1.1; }
+.pres-process .steps { display: flex; gap: 30px; }
+.pres-process .step { flex: 1; background: rgba(255,255,255,0.07); border-radius: 20px; padding: 50px 40px; border-left: 6px solid rgba(255,255,255,0.2); }
+.pres-process .step.main { background: rgba(201,169,110,0.15); border-left-color: #C9A96E; }
+.pres-process .step-num { font-family: 'Montserrat', sans-serif; font-size: 48px; font-weight: 900; color: rgba(255,255,255,0.2); margin-bottom: 16px; }
+.pres-process .step.main .step-num { color: #C9A96E; }
+.pres-process .step-title { font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 700; color: #FFFFFF; margin-bottom: 14px; }
+.pres-process .step-desc { font-family: 'Open Sans', sans-serif; font-size: 18px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<!-- PRES-MG-01: Title Slide -->
+<div class="template pres-title">
+  <div class="decorative"></div>
+  <div class="corner-accent">"</div>
+  <p class="tag">Free Training · 60 Minutes</p>
+  <h1 class="main-title">How to Build a<br><span>6-Figure</span> Coaching<br>Practice</h1>
+  <p class="subtitle">The exact system I used to go from $0 to $120K in 12 months — without burning out or selling your soul.</p>
+  <div class="bottom">
+    <div class="presenter">
+      <div class="presenter-avatar">👩‍💼</div>
+      <div>
+        <p class="presenter-name">Sarah Kim</p>
+        <p class="presenter-title">Certified Business Coach</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRES-SS-02: Section Divider -->
+<div class="template pres-section">
+  <div class="section-num">01</div>
+  <div class="gold-bar"></div>
+  <h1 class="section-title">Finding Your <span>Ideal</span><br>Client</h1>
+  <p class="section-sub">Before you can attract clients, you need to know exactly who you're serving and what problem you're solving — specifically.</p>
+</div>
+
+<!-- PRES-OD-03: Stats Slide -->
+<div class="template pres-stats">
+  <div class="header">
+    <p class="slide-label">The Numbers Don't Lie</p>
+    <h1 class="slide-title">What Coaching Actually Delivers</h1>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-num">3.5x</div>
+      <p class="stat-label">Average ROI for coaching clients</p>
+    </div>
+    <div class="stat-card highlight">
+      <div class="stat-num">$100K</div>
+      <p class="stat-label">Median income of professional coaches</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">80%</div>
+      <p class="stat-label">Report improved self-confidence</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">70%</div>
+      <p class="stat-label">See improvement in business performance</p>
+    </div>
+  </div>
+  <div class="watermark">Source: ICF Global Coaching Study 2024</div>
+</div>
+
+<!-- PRES-MG-04: Quote Slide -->
+<div class="template pres-quote">
+  <div class="big-quote-mark">"</div>
+  <div class="quote-content">
+    <p class="quote-text">The greatest investment you'll ever make is in <strong>your own development</strong>. The skills and mindset you build become the foundation for every area of your life and business.</p>
+    <div class="divider"></div>
+    <p class="quote-attr">Brian Tracy</p>
+  </div>
+</div>
+
+<!-- PRES-SS-05: Process Steps -->
+<div class="template pres-process">
+  <div class="header">
+    <p class="slide-label">The 4-Step System</p>
+    <h1 class="slide-title">From Zero to Profitable Practice</h1>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3 class="step-title">Niche Down</h3>
+      <p class="step-desc">Define your ideal client, their #1 pain point, and the transformation you deliver.</p>
+    </div>
+    <div class="step main">
+      <div class="step-num">02</div>
+      <h3 class="step-title">Build the Bridge</h3>
+      <p class="step-desc">Create content that educates and attracts your ideal client — not just any follower.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3 class="step-title">Automate Outreach</h3>
+      <p class="step-desc">Build systems that bring leads to you daily, so you're not chasing every opportunity.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3 class="step-title">Convert with Care</h3>
+      <p class="step-desc">Master consultative selling that feels natural — helping people, not pressuring them.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach Bundle - Instagram Story Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Montserrat', sans-serif; background: #111; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 40px; }
+.template { width: 540px; height: 960px; position: relative; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border-radius: 8px; }
+
+/* Story 1: Coaching Offer - Midnight Gold */
+.story-mg-offer { background: #0D0D0D; padding: 50px 40px; display: flex; flex-direction: column; }
+.story-mg-offer .top-badge { background: #D4AF37; color: #0D0D0D; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 8px 20px; border-radius: 50px; display: inline-block; margin-bottom: 60px; width: fit-content; }
+.story-mg-offer .main-headline { font-family: 'Montserrat', sans-serif; font-size: 52px; font-weight: 900; color: #FFFFFF; line-height: 1.1; margin-bottom: 20px; letter-spacing: -2px; }
+.story-mg-offer .main-headline span { color: #D4AF37; }
+.story-mg-offer .sub-text { font-family: 'Open Sans', sans-serif; font-size: 22px; color: rgba(255,255,255,0.65); line-height: 1.5; margin-bottom: 50px; }
+.story-mg-offer .benefits { list-style: none; margin-bottom: 50px; }
+.story-mg-offer .benefits li { display: flex; align-items: center; gap: 16px; padding: 12px 0; font-family: 'Open Sans', sans-serif; font-size: 20px; color: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(255,255,255,0.08); }
+.story-mg-offer .benefits li:last-child { border-bottom: none; }
+.story-mg-offer .benefits li::before { content: '→'; color: #D4AF37; font-weight: 700; font-size: 18px; }
+.story-mg-offer .cta-btn { background: #D4AF37; color: #0D0D0D; font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700; padding: 20px; border-radius: 8px; text-align: center; letter-spacing: 1px; text-transform: uppercase; }
+.story-mg-offer .watermark { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-size: 10px; color: rgba(255,255,255,0.15); letter-spacing: 2px; }
+
+/* Story 2: Quote Slider - Sage Serenity */
+.story-ss-quote { background: #4A6741; padding: 50px 40px; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+.story-ss-quote .big-quote { font-family: 'Playfair Display', serif; font-size: 56px; font-style: italic; color: #FFFFFF; line-height: 1.4; margin-bottom: 30px; }
+.story-ss-quote .big-quote strong { color: #C9A96E; font-style: normal; }
+.story-ss-quote .divider { width: 60px; height: 2px; background: #C9A96E; margin: 0 auto 20px; }
+.story-ss-quote .attr { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; color: #C9A96E; letter-spacing: 3px; text-transform: uppercase; }
+.story-ss-quote .dots { display: flex; gap: 8px; justify-content: center; margin-top: 60px; }
+.story-ss-quote .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+.story-ss-quote .dot.active { background: #C9A96E; width: 24px; border-radius: 4px; }
+
+/* Story 3: Testimonial - Ocean Depth */
+.story-od-test { background: linear-gradient(180deg, #1A365D 0%, #2B4C7E 100%); padding: 50px 40px; display: flex; flex-direction: column; }
+.story-od-test .header { display: flex; align-items: center; gap: 16px; margin-bottom: 50px; }
+.story-od-test .avatar { width: 70px; height: 70px; background: linear-gradient(135deg, #4299E1, #2C5282); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; color: white; font-weight: 700; flex-shrink: 0; }
+.story-od-test .name-block h3 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; color: #FFFFFF; margin-bottom: 4px; }
+.story-od-test .name-block p { font-family: 'Open Sans', sans-serif; font-size: 14px; color: rgba(255,255,255,0.6); }
+.story-od-test .quote-body { font-family: 'Playfair Display', serif; font-size: 30px; font-style: italic; color: #FFFFFF; line-height: 1.55; margin-bottom: 40px; flex-grow: 1; }
+.story-od-test .stars { display: flex; gap: 6px; margin-bottom: 30px; }
+.story-od-test .stars svg { width: 24px; height: 24px; fill: #C9A96E; }
+.story-od-test .swipe-hint { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: auto; }
+.story-od-test .swipe-hint span { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.4); letter-spacing: 2px; text-transform: uppercase; }
+.story-od-test .swipe-hint .arrow { width: 20px; height: 20px; border-right: 2px solid rgba(255,255,255,0.4); border-bottom: 2px solid rgba(255,255,255,0.4); transform: rotate(-45deg); }
+
+/* Story 4: Coaching Program Promo - Midnight Gold */
+.story-mg-promo { background: #0D0D0D; padding: 50px 40px; display: flex; flex-direction: column; text-align: center; justify-content: center; }
+.story-mg-promo .discount-tag { background: #D4AF37; color: #0D0D0D; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 900; padding: 10px 28px; border-radius: 50px; display: inline-block; margin-bottom: 30px; letter-spacing: 1px; }
+.story-mg-promo .program-name { font-family: 'Montserrat', sans-serif; font-size: 64px; font-weight: 900; color: #FFFFFF; line-height: 1; margin-bottom: 10px; letter-spacing: -3px; }
+.story-mg-promo .program-name span { color: #D4AF37; }
+.story-mg-promo .price-tag { font-family: 'Montserrat', sans-serif; font-size: 80px; font-weight: 900; color: #D4AF37; line-height: 1; margin-bottom: 8px; }
+.story-mg-promo .price-tag span { font-size: 24px; color: rgba(255,255,255,0.4); vertical-align: super; }
+.story-mg-promo .was { font-family: 'Open Sans', sans-serif; font-size: 20px; color: rgba(255,255,255,0.35); text-decoration: line-through; margin-bottom: 30px; }
+.story-mg-promo .perks { list-style: none; margin-bottom: 40px; }
+.story-mg-promo .perks li { font-family: 'Open Sans', sans-serif; font-size: 18px; color: rgba(255,255,255,0.7); padding: 8px 0; }
+.story-mg-promo .cta { background: #D4AF37; color: #0D0D0D; font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700; padding: 20px; border-radius: 8px; letter-spacing: 1px; text-transform: uppercase; }
+.story-mg-promo .timer { font-family: 'Open Sans', sans-serif; font-size: 14px; color: rgba(255,255,255,0.3); margin-top: 16px; }
+
+/* Story 5: Poll / Engagement - Sage */
+.story-ss-poll { background: #4A6741; padding: 50px 40px; display: flex; flex-direction: column; }
+.story-ss-poll .poll-question { font-family: 'Montserrat', sans-serif; font-size: 36px; font-weight: 900; color: #FFFFFF; margin-bottom: 40px; line-height: 1.2; }
+.story-ss-poll .poll-options { list-style: none; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+.story-ss-poll .poll-opt { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; }
+.story-ss-poll .poll-opt-text { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 600; color: #FFFFFF; }
+.story-ss-poll .poll-opt-pct { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 700; color: #C9A96E; }
+.story-ss-poll .poll-label { font-family: 'Open Sans', sans-serif; font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 30px; text-align: center; letter-spacing: 1px; }
+
+/* Story 6: Meet the Coach - Ocean */
+.story-od-meet { background: linear-gradient(135deg, #1A365D, #2B4C7E); padding: 50px 40px; display: flex; flex-direction: column; }
+.story-od-meet .top-label { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #4299E1; margin-bottom: 30px; }
+.story-od-meet .portrait { width: 180px; height: 180px; background: linear-gradient(135deg, #4299E1, #1A365D); border-radius: 50%; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; font-size: 72px; color: white; border: 4px solid rgba(255,255,255,0.2); }
+.story-od-meet .name { font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 900; color: #FFFFFF; text-align: center; margin-bottom: 8px; }
+.story-od-meet .title { font-family: 'Open Sans', sans-serif; font-size: 18px; color: #4299E1; text-align: center; margin-bottom: 24px; font-weight: 600; }
+.story-od-meet .bio { font-family: 'Open Sans', sans-serif; font-size: 17px; color: rgba(255,255,255,0.7); text-align: center; line-height: 1.6; margin-bottom: 30px; }
+.story-od-meet .stats { display: flex; justify-content: space-around; text-align: center; }
+.story-od-meet .stat { display: flex; flex-direction: column; }
+.story-od-meet .stat-num { font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 900; color: #FFFFFF; }
+.story-od-meet .stat-label { font-family: 'Open Sans', sans-serif; font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; }
+
+/* Story 7: Tip Carousel - Midnight Gold */
+.story-mg-tip { background: #0D0D0D; padding: 50px 40px; display: flex; flex-direction: column; }
+.story-mg-tip .step-indicator { display: flex; gap: 8px; margin-bottom: 50px; }
+.story-mg-tip .step-dot { height: 4px; flex-grow: 1; border-radius: 2px; background: rgba(255,255,255,0.15); }
+.story-mg-tip .step-dot.done { background: #D4AF37; }
+.story-mg-tip .step-dot.active { background: #D4AF37; }
+.story-mg-tip .tip-num { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: #D4AF37; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
+.story-mg-tip .tip-headline { font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 900; color: #FFFFFF; line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; }
+.story-mg-tip .tip-body { font-family: 'Open Sans', sans-serif; font-size: 20px; color: rgba(255,255,255,0.6); line-height: 1.6; flex-grow: 1; }
+.story-mg-tip .progress-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 40px; overflow: hidden; }
+.story-mg-tip .progress-fill { height: 100%; width: 35%; background: #D4AF37; border-radius: 2px; }
+
+/* Story 8: Waitlist / Launch - Sage */
+.story-ss-launch { background: #4A6741; padding: 50px 40px; display: flex; flex-direction: column; text-align: center; justify-content: center; }
+.story-ss-launch .coming-badge { background: #C9A96E; color: #2C2C2C; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 8px 20px; border-radius: 50px; display: inline-block; margin-bottom: 30px; }
+.story-ss-launch .launch-title { font-family: 'Montserrat', sans-serif; font-size: 54px; font-weight: 900; color: #FFFFFF; line-height: 1.1; margin-bottom: 16px; }
+.story-ss-launch .launch-sub { font-family: 'Open Sans', sans-serif; font-size: 20px; color: rgba(255,255,255,0.65); margin-bottom: 40px; line-height: 1.5; }
+.story-ss-launch .email-field { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 18px 24px; font-family: 'Montserrat', sans-serif; font-size: 16px; color: rgba(255,255,255,0.5); margin-bottom: 16px; text-align: center; }
+.story-ss-launch .email-cta { background: #C9A96E; color: #4A6741; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; padding: 18px; border-radius: 8px; letter-spacing: 1px; text-transform: uppercase; }
+.story-ss-launch .privacy { font-family: 'Open Sans', sans-serif; font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 12px; }
+
+/* Story 9: Result/Transformation - Ocean */
+.story-od-result { background: linear-gradient(180deg, #1A365D, #0F2744); padding: 50px 40px; display: flex; flex-direction: column; justify-content: center; }
+.story-od-result .result-label { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #4299E1; text-align: center; margin-bottom: 20px; }
+.story-od-result .result-headline { font-family: 'Montserrat', sans-serif; font-size: 44px; font-weight: 900; color: #FFFFFF; text-align: center; line-height: 1.2; margin-bottom: 40px; }
+.story-od-result .result-headline span { color: #C9A96E; }
+.story-od-result .metric { text-align: center; margin-bottom: 30px; }
+.story-od-result .metric-num { font-family: 'Montserrat', sans-serif; font-size: 96px; font-weight: 900; color: #FFFFFF; line-height: 1; }
+.story-od-result .metric-label { font-family: 'Open Sans', sans-serif; font-size: 18px; color: rgba(255,255,255,0.6); margin-top: 8px; }
+.story-od-result .client-tag { text-align: center; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; color: #C9A96E; letter-spacing: 2px; text-transform: uppercase; margin-top: 20px; }
+
+/* Story 10: Q&A Ask Me Anything - Sage */
+.story-ss-ama { background: #4A6741; padding: 50px 40px; display: flex; flex-direction: column; text-align: center; }
+.story-ss-ama .ama-icon { font-size: 60px; margin-bottom: 20px; }
+.story-ss-ama .ama-title { font-family: 'Montserrat', sans-serif; font-size: 48px; font-weight: 900; color: #FFFFFF; margin-bottom: 16px; line-height: 1.1; }
+.story-ss-ama .ama-sub { font-family: 'Open Sans', sans-serif; font-size: 20px; color: rgba(255,255,255,0.65); margin-bottom: 50px; line-height: 1.5; }
+.story-ss-ama .ask-btn { background: #C9A96E; color: #4A6741; font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700; padding: 20px; border-radius: 8px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+.story-ss-ama .ama-note { font-family: 'Open Sans', sans-serif; font-size: 14px; color: rgba(255,255,255,0.4); }
+</style>
+</head>
+<body>
+
+<!-- IG-STORY-MG-01: Coaching Offer -->
+<div class="template story-mg-offer">
+  <span class="top-badge">Limited Spots Available</span>
+  <h1 class="main-headline">6-Week <span>Coaching</span><br>Intensive</h1>
+  <p class="sub-text">For coaches who are ready to fill their practice and build a business that actually supports their life.</p>
+  <ul class="benefits">
+    <li>Weekly 1-on-1 strategy sessions</li>
+    <li>Custom content & social media system</li>
+    <li>Sales script & objection handling</li>
+    <li>Unlimited voice/text support</li>
+  </ul>
+  <div class="cta-btn">Apply for a Spot →</div>
+  <div class="watermark">IG-STORY-MG-01</div>
+</div>
+
+<!-- IG-STORY-SS-02: Quote Slider -->
+<div class="template story-ss-quote">
+  <p class="big-quote">"The best investment you can make is in <strong>yourself</strong> and your own education."</p>
+  <div class="divider"></div>
+  <p class="attr">Warren Buffett</p>
+  <div class="dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+</div>
+
+<!-- IG-STORY-OD-03: Testimonial -->
+<div class="template story-od-test">
+  <div class="header">
+    <div class="avatar">SK</div>
+    <div class="name-block">
+      <h3>Sarah K.</h3>
+      <p>Business Coach · @sarahk.coach</p>
+    </div>
+  </div>
+  <div class="stars">
+    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+  </div>
+  <p class="quote-body">"I doubled my revenue in 4 months. The ROI on this coaching has been insane — I'm making back my investment every single week."</p>
+  <div class="swipe-hint">
+    <div class="arrow"></div>
+    <span>Next testimonial</span>
+  </div>
+</div>
+
+<!-- IG-STORY-MG-04: Promo Price -->
+<div class="template story-mg-promo">
+  <div class="discount-tag">30% OFF TODAY ONLY</div>
+  <h1 class="program-name"><span>Elite</span><br>Coaching</h1>
+  <div class="price-tag">$1,997<span>/mo</span></div>
+  <p class="was">Regular price: $2,997/mo</p>
+  <ul class="perks">
+    <li>✓ 4 weekly strategy calls</li>
+    <li>✓ Unlimited Slack support</li>
+    <li>✓ All templates & frameworks</li>
+  </ul>
+  <div class="cta">Claim Your Spot</div>
+  <p class="timer">⏰ Offer expires at midnight</p>
+</div>
+
+<!-- IG-STORY-SS-05: Poll -->
+<div class="template story-ss-poll">
+  <h2 class="poll-question">Which is your biggest business challenge right now?</h2>
+  <div class="poll-options">
+    <div class="poll-opt">
+      <span class="poll-opt-text">Getting new clients</span>
+      <span class="poll-opt-pct">62%</span>
+    </div>
+    <div class="poll-opt">
+      <span class="poll-opt-text">Content creation</span>
+      <span class="poll-opt-pct">28%</span>
+    </div>
+    <div class="poll-opt">
+      <span class="poll-opt-text">Pricing my services</span>
+      <span class="poll-opt-pct">10%</span>
+    </div>
+  </div>
+  <p class="poll-label">Tap to vote</p>
+</div>
+
+<!-- IG-STORY-OD-06: Meet the Coach -->
+<div class="template story-od-meet">
+  <p class="top-label">Meet Your Coach</p>
+  <div class="portrait">👩‍💼</div>
+  <h2 class="name">Sarah Kim</h2>
+  <p class="title">Certified Business Coach & Strategist</p>
+  <p class="bio">I help coaches and consultants build 6-figure businesses without burning out. 200+ clients coached. 8 years in the industry.</p>
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-num">200+</span>
+      <span class="stat-label">Clients</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">$12M</span>
+      <span class="stat-label">Revenue Generated</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">8yr</span>
+      <span class="stat-label">Experience</span>
+    </div>
+  </div>
+</div>
+
+<!-- IG-STORY-MG-07: Tip Carousel Step 1 -->
+<div class="template story-mg-tip">
+  <div class="step-indicator">
+    <span class="step-dot done"></span>
+    <span class="step-dot active"></span>
+    <span class="step-dot"></span>
+    <span class="step-dot"></span>
+  </div>
+  <p class="tip-num">Step 1 of 4</p>
+  <h2 class="tip-headline">Define Who You're Actually For</h2>
+  <p class="tip-body">Stop trying to serve everyone. Pick ONE specific person, with ONE specific pain point. The narrower your niche, the faster you'll attract clients.</p>
+  <div class="progress-bar"><div class="progress-fill"></div></div>
+</div>
+
+<!-- IG-STORY-SS-08: Waitlist Launch -->
+<div class="template story-ss-launch">
+  <span class="coming-badge">Coming Soon</span>
+  <h1 class="launch-title">The Client<br>Attraction<br>Academy</h1>
+  <p class="launch-sub">A 12-week program for coaches ready to fill their practice with high-ticket clients. Waitlist opens March 25th.</p>
+  <div class="email-field">Enter your email</div>
+  <div class="email-cta">Join the Waitlist</div>
+  <p class="privacy">No spam. Unsubscribe anytime.</p>
+</div>
+
+<!-- IG-STORY-OD-09: Result Metric -->
+<div class="template story-od-result">
+  <p class="result-label">Client Results After 90 Days</p>
+  <h1 class="result-headline">Revenue increased by <span>$47K</span> in just 3 months</h1>
+  <div class="metric">
+    <div class="metric-num">$47K</div>
+    <div class="metric-label">Additional Revenue</div>
+  </div>
+  <p class="client-tag">— Marcus T., Strategy Consultant</p>
+</div>
+
+<!-- IG-STORY-SS-10: Q&A/AMA -->
+<div class="template story-ss-ama">
+  <div class="ama-icon">💬</div>
+  <h1 class="ama-title">Ask Me<br>Anything</h1>
+  <p class="ama-sub">Drop your question below about coaching, business growth, pricing, or social media. I'll answer the best ones in my stories!</p>
+  <div class="ask-btn">Submit Your Question</div>
+  <p class="ama-note">Questions anonymous · No question is too big or small</p>
+</div>
+
+</body>
+</html>

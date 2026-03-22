@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach Bundle - LinkedIn Banner Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Montserrat', sans-serif; background: #111; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 40px; }
+.template { width: 1584px; height: 396px; position: relative; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border-radius: 4px; }
+
+/* LI-BANNER-MG-01: Dark Professional */
+.li-dark { background: #0D0D0D; padding: 50px 80px; display: flex; align-items: center; }
+.li-dark .content { flex: 1; }
+.li-dark .label { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: #D4AF37; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
+.li-dark .headline { font-family: 'Montserrat', sans-serif; font-size: 52px; font-weight: 900; color: #FFFFFF; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
+.li-dark .headline span { color: #D4AF37; }
+.li-dark .sub { font-family: 'Open Sans', sans-serif; font-size: 20px; color: rgba(255,255,255,0.55); line-height: 1.4; }
+.li-dark .avatar { width: 220px; height: 220px; background: linear-gradient(135deg, #D4AF37, #8B6914); border-radius: 50%; flex-shrink: 0; margin-left: 60px; display: flex; align-items: center; justify-content: center; font-size: 80px; border: 4px solid rgba(212,175,55,0.3); }
+.li-dark .watermark { position: absolute; bottom: 16px; right: 24px; font-size: 10px; color: rgba(255,255,255,0.12); letter-spacing: 2px; }
+
+/* LI-BANNER-SS-02: Sage Nature */
+.li-sage { background: #4A6741; padding: 50px 80px; display: flex; align-items: center; }
+.li-sage .text-block { flex: 1; }
+.li-sage .eyebrow { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: #C9A96E; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
+.li-sage .title { font-family: 'Montserrat', sans-serif; font-size: 48px; font-weight: 900; color: #FFFFFF; line-height: 1.1; margin-bottom: 14px; }
+.li-sage .tagline { font-family: 'Open Sans', sans-serif; font-size: 20px; color: rgba(255,255,255,0.65); margin-bottom: 24px; }
+.li-sage .stats { display: flex; gap: 40px; }
+.li-sage .stat { display: flex; flex-direction: column; }
+.li-sage .stat-num { font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 900; color: #FFFFFF; }
+.li-sage .stat-label { font-family: 'Open Sans', sans-serif; font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
+.li-sage .accent-bar { width: 6px; height: 220px; background: #C9A96E; border-radius: 3px; margin-left: 60px; flex-shrink: 0; }
+
+/* LI-BANNER-OD-03: Ocean Professional */
+.li-ocean { background: linear-gradient(135deg, #1A365D 0%, #2B4C7E 60%, #1A365D 100%); padding: 50px 80px; display: flex; align-items: center; position: relative; overflow: hidden; }
+.li-ocean::before { content: ''; position: absolute; top: -100px; right: -100px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(66,153,225,0.1) 0%, transparent 70%); }
+.li-ocean::after { content: ''; position: absolute; bottom: -150px; left: -50px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(66,153,225,0.08) 0%, transparent 70%); }
+.li-ocean .badge { background: #4299E1; color: #FFF; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 6px 16px; border-radius: 50px; display: inline-block; margin-bottom: 16px; }
+.li-ocean .headline { font-family: 'Montserrat', sans-serif; font-size: 50px; font-weight: 900; color: #FFFFFF; line-height: 1.1; margin-bottom: 14px; letter-spacing: -1px; }
+.li-ocean .sub { font-family: 'Open Sans', sans-serif; font-size: 20px; color: rgba(255,255,255,0.65); margin-bottom: 24px; }
+.li-ocean .cta { display: inline-block; background: #4299E1; color: #FFF; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; padding: 12px 28px; border-radius: 6px; letter-spacing: 1px; text-transform: uppercase; }
+.li-ocean .profile-area { margin-left: auto; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.li-ocean .profile-pic { width: 180px; height: 180px; background: linear-gradient(135deg, #4299E1, #1A365D); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 72px; border: 4px solid rgba(255,255,255,0.15); }
+.li-ocean .profile-name { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; color: #FFFFFF; }
+.li-ocean .profile-title { font-family: 'Open Sans', sans-serif; font-size: 14px; color: rgba(255,255,255,0.5); }
+
+/* LI-BANNER-MG-04: Quote Banner */
+.li-quote { background: #0D0D0D; padding: 40px 80px; display: flex; align-items: center; }
+.li-quote .quote-mark { font-family: 'Playfair Display', serif; font-size: 200px; color: #D4AF37; opacity: 0.2; line-height: 1; flex-shrink: 0; margin-right: 40px; }
+.li-quote .quote-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 34px; color: #FFFFFF; line-height: 1.5; flex-grow: 1; }
+.li-quote .quote-text strong { color: #D4AF37; font-style: normal; }
+.li-quote .divider { width: 60px; height: 2px; background: #D4AF37; margin: 20px 0 14px; }
+.li-quote .attr { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: #D4AF37; letter-spacing: 3px; text-transform: uppercase; }
+
+/* LI-BANNER-SS-05: About/Bio Banner */
+.li-about { background: #4A6741; padding: 40px 80px; display: flex; align-items: center; gap: 50px; }
+.li-about .portrait { width: 200px; height: 200px; background: linear-gradient(135deg, #C9A96E, #7A6240); border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 72px; }
+.li-about .info { flex: 1; }
+.li-about .name { font-family: 'Montserrat', sans-serif; font-size: 44px; font-weight: 900; color: #FFFFFF; margin-bottom: 8px; }
+.li-about .title { font-family: 'Open Sans', sans-serif; font-size: 18px; color: #C9A96E; font-weight: 600; margin-bottom: 16px; }
+.li-about .bio { font-family: 'Open Sans', sans-serif; font-size: 17px; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 900px; }
+.li-about .social-icons { display: flex; gap: 16px; align-items: center; }
+.li-about .social-icon { width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+
+/* LI-BANNER-OD-06: Services Banner */
+.li-services { background: linear-gradient(90deg, #1A365D 0%, #234567 100%); padding: 40px 80px; display: flex; align-items: center; }
+.li-services .left { flex: 1; }
+.li-services .label { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #4299E1; margin-bottom: 16px; }
+.li-services .headline { font-family: 'Montserrat', sans-serif; font-size: 48px; font-weight: 900; color: #FFFFFF; line-height: 1.1; margin-bottom: 20px; }
+.li-services .headline span { color: #C9A96E; }
+.li-services .services-list { display: flex; gap: 40px; }
+.li-services .service { display: flex; align-items: center; gap: 10px; }
+.li-services .service-dot { width: 10px; height: 10px; background: #4299E1; border-radius: 50%; flex-shrink: 0; }
+.li-services .service-text { font-family: 'Open Sans', sans-serif; font-size: 16px; color: rgba(255,255,255,0.75); }
+.li-services .right { margin-left: 60px; display: flex; flex-direction: column; gap: 12px; }
+.li-services .pkg { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; min-width: 300px; }
+.li-services .pkg-name { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700; color: #FFFFFF; }
+.li-services .pkg-price { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700; color: #4299E1; }
+</style>
+</head>
+<body>
+
+<!-- LI-BANNER-MG-01: Dark Professional -->
+<div class="template li-dark">
+  <div class="content">
+    <p class="label">Business Coach & Consultant</p>
+    <h1 class="headline">Helping Coaches <span>Build</span><br>6-Figure Practices</h1>
+    <p class="sub">Strategy · Content · Sales Systems that actually work</p>
+  </div>
+  <div class="avatar">👨‍💼</div>
+  <div class="watermark">LI-BANNER-MG-01</div>
+</div>
+
+<!-- LI-BANNER-SS-02: Sage Nature -->
+<div class="template li-sage">
+  <div class="text-block">
+    <p class="eyebrow">Transforming Lives & Businesses</p>
+    <h1 class="title">Executive Life<br>Coaching</h1>
+    <p class="tagline">Clarity · Confidence · Career Growth</p>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num">150+</span>
+        <span class="stat-label">Clients Coached</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">94%</span>
+        <span class="stat-label">Goal Achievement</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">8yr</span>
+        <span class="stat-label">Experience</span>
+      </div>
+    </div>
+  </div>
+  <div class="accent-bar"></div>
+</div>
+
+<!-- LI-BANNER-OD-03: Ocean Professional -->
+<div class="template li-ocean">
+  <div>
+    <span class="badge">Open for New Clients</span>
+    <h1 class="headline">Ready to Scale<br>Your Consulting<br>Business?</h1>
+    <p class="sub">I help consultants land premium clients & commands premium fees</p>
+    <span class="cta">Book a Strategy Call →</span>
+  </div>
+  <div class="profile-area">
+    <div class="profile-pic">👩‍🏫</div>
+    <span class="profile-name">Dr. Maya Patel</span>
+    <span class="profile-title">Business Strategy Consultant</span>
+  </div>
+</div>
+
+<!-- LI-BANNER-MG-04: Quote Banner -->
+<div class="template li-quote">
+  <div class="quote-mark">"</div>
+  <div>
+    <p class="quote-text">Your <strong>network is your net worth</strong> — but only if you're visible to the right people. Show up strategically, and the opportunities will find you.</p>
+    <div class="divider"></div>
+    <p class="attr">The Consultant's Playbook</p>
+  </div>
+</div>
+
+<!-- LI-BANNER-SS-05: About/Bio Banner -->
+<div class="template li-about">
+  <div class="portrait">🧑‍💼</div>
+  <div class="info">
+    <h1 class="name">Alexandra Reid</h1>
+    <p class="title">Leadership Coach | Speaker | Author</p>
+    <p class="bio">I help ambitious professionals transition from employee to entrepreneur. Forbes 30 Under 30. TEDx speaker. Featured in Entrepreneur, HuffPost & Business Insider. 3x founder.</p>
+  </div>
+  <div class="social-icons">
+    <div class="social-icon">🌐</div>
+    <div class="social-icon">🐦</div>
+    <div class="social-icon">📸</div>
+    <div class="social-icon">▶</div>
+  </div>
+</div>
+
+<!-- LI-BANNER-OD-06: Services Banner -->
+<div class="template li-services">
+  <div class="left">
+    <p class="label">What I Do</p>
+    <h1 class="headline">Coaching &<br><span>Consulting</span><br>Services</h1>
+    <div class="services-list">
+      <div class="service"><span class="service-dot"></span><span class="service-text">1-on-1 Coaching</span></div>
+      <div class="service"><span class="service-dot"></span><span class="service-text">Team Workshops</span></div>
+      <div class="service"><span class="service-dot"></span><span class="service-text">Group Programs</span></div>
+      <div class="service"><span class="service-dot"></span><span class="service-text">Keynote Speaking</span></div>
+    </div>
+  </div>
+  <div class="right">
+    <div class="pkg">
+      <span class="pkg-name">Starter Session</span>
+      <span class="pkg-price">$297</span>
+    </div>
+    <div class="pkg">
+      <span class="pkg-name">Monthly Coaching</span>
+      <span class="pkg-price">$2,497</span>
+    </div>
+    <div class="pkg">
+      <span class="pkg-name">VIP Intensive</span>
+      <span class="pkg-price">$9,997</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

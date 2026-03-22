@@ -1,0 +1,9 @@
+# Keep this folder as template source
+*.psd
+*.ai
+*.sketch
+.DS_Store
+*.lock
+node_modules/
+*.zip
+*.rar
