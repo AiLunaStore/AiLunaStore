@@ -1,1 +1,88 @@
-node_modules/
+# Sensitive files - ALWAYS BLOCK
+.env
+*.env
+.env.*
+credentials/
+secrets/
+tokens/
+keys/
+*.pem
+*.key
+*secret*
+*credential*
+
+# System files
+.DS_Store
+.Trash/
+.vscode/
+.idea/
+
+# OpenClaw system files
+.openclaw/
+.clawhub/
+.cwpm.json
+
+# Agent and deployment scaffolding (not Etsy products)
+agent-collaboration-framework-cost-optimized/
+autonomy/
+deployment/
+desktop-app-enhanced/
+integrated-agent-system/
+mission-control-live/
+
+# Memory and agent configs
+memory/
+agents/
+workspace-coding/
+workspace-planner/
+workspace-automation/
+workspace-research/
+
+# Config files with API keys/tokens
+openclaw.json*
+exec-approvals.json
+
+# Logs and temporary files
+*.log
+logs/
+*.tmp
+tmp/
+
+# Obsidian notes (personal)
+.obsidian/
+
+# HTML/template files not in AiLunaStore
+*.html
+*.htm
+index.html
+
+# Images not in AiLunaStore
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+!AiLunaStore/**/*
+
+# Markdown docs (only keep specific ones)
+HEARTBEAT.md
+SECOND-BRAIN-SETUP.md
+INTEGRATION_*.md
+CLAUDE.md
+
+# Root-level markdown (personal notes - block these)
+HEARTBEAT.md
+IDENTITY.md
+SOUL.md
+TOOLS.md
+USER.md
+AGENTS.md
+MEMORY.md
+.canva-*/
+
+# Keep these specific files
+!AiLunaStore/**
+!images/**
+!etsy-*.md
+!er_trauma_cover_etsy.jpg
+!canva-bundle/**
