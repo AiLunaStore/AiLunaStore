@@ -66,7 +66,7 @@ margin-bottom: 3px;
 .sheet-title { font-size: 16pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 .sheet-subtitle { font-size: 8pt; letter-spacing: 0.5px; opacity: 0.9; }
 /* Sections */
-.section { border: 1.5px solid var(--line-secondary); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; }
+.section { border: 1.5px solid var(--line-secondary); border-radius: 4px; overflow: visible; display: flex; flex-direction: column; }
 .section-header {
 display: flex; align-items: center; justify-content: space-between;
 padding: 4px 8px; font-weight: 700; font-size: 8pt;
@@ -74,7 +74,7 @@ text-transform: uppercase; letter-spacing: 0.5px;
 background: var(--plum);
 color: white;
 }
-.section-content { padding: 5px; flex: 1; background: var(--paper); }
+.section-content { padding: 5px; flex: 1; background: var(--paper); overflow: visible; }
 /* Checkbox */
 .checkbox {
 display: inline-flex; align-items: center; gap: 2px;
