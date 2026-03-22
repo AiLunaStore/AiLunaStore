@@ -121,6 +121,7 @@ border-left: 1px solid var(--line-secondary);
 .contraction-table {
 width: 100%;
 border-collapse: collapse;
+table-layout: fixed;
 }
 .contraction-table th, .contraction-table td {
 border: 1px solid var(--line-secondary);
@@ -137,13 +138,14 @@ font-size: 6.5pt;
 .contraction-table th:first-child {
 background: var(--paper-alt);
 color: var(--ink-primary);
+width: 50px;
 }
 .contraction-table td:first-child {
 background: var(--paper-alt);
 font-weight: 700;
 font-size: 7pt;
 text-align: left;
-width: 60px;
+width: 50px;
 }
 .contraction-table td {
 height: 20px;
