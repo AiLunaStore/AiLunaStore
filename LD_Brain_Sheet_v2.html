@@ -121,6 +121,14 @@ min-width: 36px;
 flex-shrink: 0;
 }
 .station-marker { font-size: 6pt; font-weight: 600; color: var(--plum); text-align: center; height: 8px; line-height: 8px; }
+
+.cervical-section {
+border: 1.5px solid var(--line-secondary);
+border-radius: 4px;
+padding: 6px;
+background: var(--paper);
+margin-bottom: 4px;
+}
 /* Contraction Grid - proper table layout */
 .contraction-table {
 width: 100%;
@@ -279,11 +287,8 @@ body { font-size: 7.5pt; }
 </div>
 </div>
 
-<!-- CERVICAL DILATION + MEMBRANES + LABOR PHASES -->
-<div class="row-2col">
-<div class="section" style="flex: 1.2;">
-<div class="section-header"><span>Cervical Dilation & Fetal Station</span></div>
-<div class="section-content">
+<!-- CERVICAL DILATION & MEMBRANES - Standalone -->
+<div class="cervical-section">
 <div class="cervical-tracker">
 <div class="cervical-cm">CM</div>
 <div class="cervical-bar">
@@ -304,18 +309,23 @@ body { font-size: 7.5pt; }
 <div class="station-marker">-5</div>
 </div>
 </div>
-<div style="margin-top: 8px; display: flex; justify-content: space-between; gap: 16px;">
+<div style="margin-top: 6px; display: flex; justify-content: space-between; gap: 20px;">
 <div>
-<div style="font-weight: 600; font-size: 6.5pt; margin-bottom: 3px;">Membranes</div>
-<div style="display: flex; gap: 10px;">
+<div style="font-weight: 600; font-size: 7pt; margin-bottom: 4px;">Membranes</div>
+<div style="display: flex; gap: 12px;">
 <span class="checkbox"><span class="checkbox-box"></span> Intact</span>
 <span class="checkbox"><span class="checkbox-box"></span> SROM</span>
 <span class="checkbox"><span class="checkbox-box"></span> AROM</span>
 </div>
 </div>
+<div style="display: flex; gap: 20px;">
 <div>
-<div style="font-size: 6.5pt;">Time: ________</div>
-<div style="font-size: 6.5pt; margin-top: 3px;">Color: ________</div>
+<div style="font-weight: 600; font-size: 7pt;">Time</div>
+<div style="font-size: 7pt; margin-top: 2px;">_______________</div>
+</div>
+<div>
+<div style="font-weight: 600; font-size: 7pt;">Color</div>
+<div style="font-size: 7pt; margin-top: 2px;">_______________</div>
 </div>
 </div>
 </div>
