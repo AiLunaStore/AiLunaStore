@@ -87,29 +87,35 @@ border-radius: 2px; display: inline-block;
 /* Cervical Dilation Tracker */
 .cervical-tracker {
 display: flex;
-height: 45px;
+height: 40px;
 border: 1px solid var(--line-secondary);
 border-radius: 4px;
 overflow: hidden;
 }
 .cervical-cm {
 display: flex; flex-direction: column; align-items: center; justify-content: center;
-width: 40px; background: var(--plum); color: white; font-weight: 700; font-size: 10pt;
+width: 35px; background: var(--plum); color: white; font-weight: 700; font-size: 9pt;
 }
 .cervical-bar {
-display: flex; flex-direction: column; flex: 1; position: relative;
+display: flex; flex: 1; position: relative;
+background: white;
 }
 .cervical-bar::before {
 content: '';
 position: absolute; left: 0; right: 0; top: 50%;
 height: 3px; background: linear-gradient(90deg, #e8d0e8, #c9a8d4, #a675a6);
 }
-.cm-marker {
-display: flex; align-items: center; justify-content: center;
-position: absolute; width: 100%; font-size: 6pt; font-weight: 600; color: var(--plum);
+.cervical-numbers {
+display: flex; flex: 1; justify-content: space-between;
+padding: 0 4px;
+position: relative;
+z-index: 1;
 }
-.cm-marker.top { top: 3px; }
-.cm-marker.bottom { bottom: 3px; }
+.cervical-num {
+font-size: 6pt; font-weight: 700; color: var(--plum);
+display: flex; flex-direction: column; justify-content: space-between;
+}
+.cervical-num span:last-child { transform: rotate(180deg); }
 .station-markers {
 display: flex; flex-direction: column; justify-content: space-around;
 padding: 3px 4px;
@@ -283,17 +289,14 @@ body { font-size: 7.5pt; }
 <div class="cervical-tracker">
 <div class="cervical-cm">CM</div>
 <div class="cervical-bar">
-<span class="cm-marker top">10</span>
-<span class="cm-marker top">9</span>
-<span class="cm-marker top">8</span>
-<span class="cm-marker top">7</span>
-<span class="cm-marker top">6</span>
-<span class="cm-marker top">5</span>
-<span class="cm-marker top">4</span>
-<span class="cm-marker top">3</span>
-<span class="cm-marker top">2</span>
-<span class="cm-marker top">1</span>
-<span class="cm-marker bottom">0</span>
+<div class="cervical-numbers">
+<span class="cervical-num"><span>10</span><span>0</span></span>
+<span class="cervical-num"><span>9</span><span>1</span></span>
+<span class="cervical-num"><span>8</span><span>2</span></span>
+<span class="cervical-num"><span>7</span><span>3</span></span>
+<span class="cervical-num"><span>6</span><span>4</span></span>
+<span class="cervical-num"><span>5</span><span>5</span></span>
+</div>
 </div>
 <div class="station-markers">
 <div class="station-marker">+4</div>
