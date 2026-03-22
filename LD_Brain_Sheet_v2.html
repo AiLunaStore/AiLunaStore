@@ -87,7 +87,7 @@ border-radius: 2px; display: inline-block;
 /* Cervical Dilation Tracker */
 .cervical-tracker {
 display: flex;
-height: 72px;
+height: 100px;
 border: 1px solid var(--line-secondary);
 border-radius: 4px;
 overflow: hidden;
@@ -118,20 +118,11 @@ padding: 2px 4px;
 background: var(--paper-alt);
 border-left: 1px solid var(--line-secondary);
 min-width: 36px;
-height: 90px;
+height: 100px;
 flex-shrink: 0;
 justify-content: space-between;
 }
 .station-marker { font-size: 5.5pt; font-weight: 600; color: var(--plum); text-align: center; }
-
-.station-tracker {
-display: flex; flex-direction: column; justify-content: space-between;
-padding: 8px;
-background: var(--paper-alt);
-border: 1px solid var(--line-secondary);
-border-radius: 4px;
-min-height: 100px;
-}
 /* Contraction Grid - proper table layout */
 .contraction-table {
 width: 100%;
@@ -290,9 +281,10 @@ body { font-size: 7.5pt; }
 </div>
 </div>
 
-<!-- CERVICAL DILATION + MEMBRANES -->
+<!-- CERVICAL DILATION + MEMBRANES + LABOR PHASES -->
+<div class="row-2col">
 <div class="section">
-<div class="section-header"><span>Cervical Dilation</span></div>
+<div class="section-header"><span>Cervical Dilation & Fetal Station</span></div>
 <div class="section-content">
 <div class="cervical-tracker">
 <div class="cervical-cm">CM</div>
@@ -300,29 +292,7 @@ body { font-size: 7.5pt; }
 <div class="cervical-nums"><span>0</span><span>5</span><span>10</span></div>
 <div class="cervical-bar-line"></div>
 </div>
-</div>
-<div style="margin-top: 8px; display: flex; justify-content: space-between; gap: 20px;">
-<div>
-<div style="font-weight: 600; font-size: 6.5pt; margin-bottom: 3px;">Membranes</div>
-<div style="display: flex; gap: 12px;">
-<span class="checkbox"><span class="checkbox-box"></span> Intact</span>
-<span class="checkbox"><span class="checkbox-box"></span> SROM</span>
-<span class="checkbox"><span class="checkbox-box"></span> AROM</span>
-</div>
-</div>
-<div style="display: flex; gap: 16px;">
-<div style="font-size: 6.5pt;">Time: ________</div>
-<div style="font-size: 6.5pt;">Color: ________</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- FETAL STATION -->
-<div class="section">
-<div class="section-header"><span>Fetal Station</span></div>
-<div class="section-content">
-<div class="station-tracker">
+<div class="station-markers">
 <div class="station-marker">+5</div>
 <div class="station-marker">+4</div>
 <div class="station-marker">+3</div>
@@ -336,9 +306,22 @@ body { font-size: 7.5pt; }
 <div class="station-marker">-5</div>
 </div>
 </div>
+<div style="margin-top: 6px; display: flex; justify-content: space-between; align-items: flex-start;">
+<div style="flex: 1;">
+<div style="font-weight: 600; font-size: 6.5pt; margin-bottom: 3px;">Membranes</div>
+<div style="display: flex; gap: 12px;">
+<span class="checkbox"><span class="checkbox-box"></span> Intact</span>
+<span class="checkbox"><span class="checkbox-box"></span> SROM</span>
+<span class="checkbox"><span class="checkbox-box"></span> AROM</span>
 </div>
-
-<!-- LABOR PHASES -->
+</div>
+<div style="flex: 1; display: flex; gap: 12px; justify-content: flex-end;">
+<span style="font-size: 6.5pt;">Time: ________</span>
+<span style="font-size: 6.5pt;">Color: ________</span>
+</div>
+</div>
+</div>
+</div>
 <div class="section">
 <div class="section-header"><span>Labor Phases</span></div>
 <div class="section-content">
@@ -348,6 +331,7 @@ body { font-size: 7.5pt; }
 <div class="phase-row"><span class="phase-name">2nd Stage</span><span class="phase-time"></span></div>
 <div style="margin-top: 6px;">
 <div style="font-weight: 600; font-size: 6.5pt;">Bishop Score: _______</div>
+</div>
 </div>
 </div>
 </div>
