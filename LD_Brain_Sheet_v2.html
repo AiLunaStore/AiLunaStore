@@ -87,37 +87,40 @@ border-radius: 2px; display: inline-block;
 /* Cervical Dilation Tracker */
 .cervical-tracker {
 display: flex;
-height: 56px;
+height: 72px;
 border: 1px solid var(--line-secondary);
 border-radius: 4px;
 overflow: hidden;
 }
 .cervical-cm {
 display: flex; align-items: center; justify-content: center;
-width: 32px; background: var(--plum); color: white; font-weight: 700; font-size: 8pt;
+width: 36px; background: var(--plum); color: white; font-weight: 700; font-size: 9pt;
+flex-shrink: 0;
 }
 .cervical-bar {
 display: flex; flex-direction: column; justify-content: center; flex: 1;
-padding: 4px 8px;
+padding: 6px 10px;
 background: white;
+min-width: 0;
 }
 .cervical-nums {
 display: flex; justify-content: space-between;
-font-size: 7pt; font-weight: 700; color: var(--plum);
+font-size: 8pt; font-weight: 700; color: var(--plum);
 }
 .cervical-bar-line {
-height: 10px;
+height: 12px;
 border-top: 2px solid var(--plum);
-margin-top: 4px;
+margin-top: 6px;
 }
 .station-markers {
-display: flex; flex-direction: column; justify-content: space-between;
-padding: 3px 4px;
+display: flex; flex-direction: column;
+padding: 4px 5px;
 background: var(--paper-alt);
 border-left: 1px solid var(--line-secondary);
-min-width: 32px;
+min-width: 36px;
+flex-shrink: 0;
 }
-.station-marker { font-size: 6pt; font-weight: 600; color: var(--plum); text-align: center; }
+.station-marker { font-size: 6pt; font-weight: 600; color: var(--plum); text-align: center; height: 8px; line-height: 8px; }
 /* Contraction Grid - proper table layout */
 .contraction-table {
 width: 100%;
