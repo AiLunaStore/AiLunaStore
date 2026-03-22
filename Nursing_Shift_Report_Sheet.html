@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nursing Shift Report Sheet</title>
+<style>
+:root {
+--burgundy: #800020;
+--burgundy-light: #a02040;
+--burgundy-dark: #500010;
+--paper: #ffffff;
+--paper-alt: #faf4f6;
+--ink-primary: #1a1a2e;
+--ink-secondary: #4a4a5a;
+--line-primary: #2c3e50;
+--line-secondary: #c4a0a8;
+--line-light: #ecd8dc;
+--checkbox-border: #a06070;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@page { size: 8.5in 11in portrait; margin: 0.15in; }
+body {
+font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+font-size: 7.5pt;
+line-height: 1.2;
+color: var(--ink-primary);
+background: white;
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+}
+.sheet {
+width: 8in;
+min-height: 10.5in;
+margin: 0 auto;
+padding: 0;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+/* Header */
+.header {
+display: grid;
+grid-template-columns: 1.5fr 1fr 0.8fr;
+gap: 6px;
+padding: 6px 8px;
+background: linear-gradient(135deg, var(--burgundy) 0%, var(--burgundy-dark) 100%);
+border: 2px solid var(--burgundy-dark);
+border-radius: 5px;
+color: white;
+}
+.header-section h3 {
+font-size: 7pt;
+text-transform: uppercase;
+letter-spacing: 0.8px;
+color: #e8c8d0;
+border-bottom: 1px solid rgba(255,255,255,0.3);
+padding-bottom: 2px;
+margin-bottom: 3px;
+}
+.field-row { display: flex; align-items: baseline; gap: 3px; }
+.field-label { font-weight: 600; font-size: 6.5pt; color: #e8c8d0; min-width: 42px; }
+.field-value { flex: 1; border-bottom: 1px solid rgba(255,255,255,0.5); min-height: 16px; font-size: 8pt; background: rgba(255,255,255,0.9); color: #1a1a2e; border-radius: 2px; padding: 2px 4px; }
+.field-value.large { min-height: 18px; font-size: 9pt; font-weight: 600; }
+.header-right { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.sheet-title { font-size: 16pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.sheet-subtitle { font-size: 8pt; letter-spacing: 0.5px; opacity: 0.9; }
+/* Sections */
+.section { border: 1.5px solid var(--line-secondary); border-radius: 4px; overflow: visible; display: flex; flex-direction: column; }
+.section-header {
+display: flex; align-items: center; justify-content: space-between;
+padding: 3px 6px; font-weight: 700; font-size: 7pt;
+text-transform: uppercase; letter-spacing: 0.5px;
+background: var(--burgundy);
+color: white;
+}
+.section-content { padding: 4px; flex: 1; background: var(--paper); overflow: visible; }
+/* Checkbox */
+.checkbox {
+display: inline-flex; align-items: center; gap: 2px;
+font-size: 7pt; cursor: pointer;
+}
+.checkbox-box {
+width: 10px; height: 10px; border: 1px solid var(--checkbox-border);
+border-radius: 2px; display: inline-block;
+}
+/* Vital Signs Grid */
+.vitals-table {
+width: 100%;
+border-collapse: collapse;
+}
+.vitals-table th, .vitals-table td {
+border: 1px solid var(--line-secondary);
+padding: 3px 4px;
+text-align: center;
+font-size: 6.5pt;
+height: 20px;
+}
+.vitals-table th {
+background: var(--burgundy);
+color: white;
+font-weight: 700;
+}
+.vitals-table th:first-child {
+background: var(--paper-alt);
+color: var(--ink-primary);
+width: 50px;
+}
+.vitals-table td:first-child {
+background: var(--paper-alt);
+font-weight: 700;
+font-size: 7pt;
+text-align: left;
+padding-left: 4px;
+width: 50px;
+}
+.vitals-table td {
+background: white;
+}
+/* I/O Table */
+.io-table {
+width: 100%;
+border-collapse: collapse;
+}
+.io-table th, .io-table td {
+border: 1px solid var(--line-secondary);
+padding: 4px;
+text-align: center;
+font-size: 7pt;
+height: 22px;
+}
+.io-table th {
+background: var(--burgundy);
+color: white;
+font-weight: 700;
+}
+.io-table td:first-child {
+background: var(--paper-alt);
+font-weight: 700;
+}
+.io-table td {
+background: white;
+}
+/* Info rows */
+.info-row {
+display: flex; align-items: center; gap: 4px; padding: 3px 0;
+border-bottom: 1px dotted var(--line-light);
+}
+.info-label { font-weight: 700; font-size: 7pt; color: var(--burgundy); min-width: 55px; }
+.info-value { border-bottom: 1px solid var(--line-primary); min-height: 14px; flex: 1; font-size: 7pt; }
+/* Activity / Diet / IV */
+.activity-grid {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+gap: 4px;
+}
+.activity-item {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 4px;
+}
+.activity-label { font-weight: 700; font-size: 7pt; color: var(--burgundy); margin-bottom: 3px; }
+.activity-item .checkbox-box { width: 9px; height: 9px; }
+.activity-item .checkbox { font-size: 6.5pt; }
+/* Procedures */
+.proc-row {
+display: flex; align-items: flex-start; gap: 4px; padding: 3px 0;
+border-bottom: 1px dotted var(--line-light);
+}
+.proc-label { font-weight: 700; font-size: 6.5pt; color: var(--burgundy); min-width: 35px; }
+.proc-value { flex: 1; font-size: 7pt; border-bottom: 1px solid var(--line-primary); min-height: 14px; }
+/* Medications */
+.med-row {
+display: flex; align-items: center; gap: 4px; padding: 3px 0;
+border-bottom: 1px dotted var(--line-light);
+}
+.med-label { font-weight: 700; font-size: 7pt; color: var(--burgundy); min-width: 70px; }
+.med-value { border-bottom: 1px solid var(--line-primary); min-height: 14px; flex: 1; font-size: 7pt; }
+/* Family */
+.family-row {
+display: flex; align-items: center; gap: 4px; padding: 3px 0;
+border-bottom: 1px dotted var(--line-light);
+}
+.family-label { font-weight: 700; font-size: 7pt; color: var(--burgundy); min-width: 50px; }
+.family-value { flex: 1; font-size: 7pt; border-bottom: 1px solid var(--line-primary); min-height: 14px; }
+/* Handoff Summary */
+.handoff-box {
+width: 100%;
+min-height: 100px;
+border: 2px solid var(--burgundy);
+border-radius: 4px;
+padding: 8px;
+background: white;
+font-size: 8pt;
+line-height: 1.5;
+}
+/* Footer */
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; border-top: 1px dashed var(--line-secondary); margin-top: 4px; font-size: 6.5pt; color: var(--ink-secondary); }
+.signature-box { border-bottom: 1px solid var(--ink-primary); width: 110px; height: 14px; }
+/* Grid layouts */
+.row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.row-2col-left { display: flex; flex-direction: column; gap: 4px; }
+.row-2col-right { display: flex; flex-direction: column; gap: 4px; }
+.row-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+.page-break { page-break-before: always; }
+@media print {
+body { font-size: 7.5pt; }
+.sheet { width: 100%; height: 100%; margin: 0; padding: 0; }
+.section { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<!-- HEADER -->
+<div class="header">
+<div class="header-section">
+<h3>Patient Information</h3>
+<div class="field-row"><span class="field-label">Patient:</span><span class="field-value large"></span></div>
+<div class="field-row"><span class="field-label">DOB/Age:</span><span class="field-value"></span><span class="field-label">MRN:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Room:</span><span class="field-value"></span><span class="field-label">Bed:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Allergies:</span><span class="field-value"></span></div>
+</div>
+<div class="header-section">
+<h3>Clinical Status</h3>
+<div class="field-row"><span class="field-label">Code Status:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Diagnosis:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Day of Stay:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Attending:</span><span class="field-value"></span></div>
+</div>
+<div class="header-right">
+<div class="sheet-title">Shift Report</div>
+<div class="sheet-subtitle">Nursing Brain Sheet - Any Unit</div>
+</div>
+</div>
+
+<!-- VITAL SIGNS -->
+<div class="section">
+<div class="section-header"><span>Vital Signs</span><span style="font-size: 6pt; font-weight: 400;">× 8 columns</span></div>
+<div class="section-content">
+<table class="vitals-table">
+<thead>
+<tr>
+<th>Time</th>
+<th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Temp</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>BP</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>Pulse</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>Resp</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>SpO2</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>Pain</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- I/O + ACTIVITY/DIET/IV -->
+<div class="row-2col">
+<div class="section">
+<div class="section-header"><span>I / O (Intake / Output)</span></div>
+<div class="section-content">
+<table class="io-table">
+<thead>
+<tr>
+<th>Intake</th>
+<th>mL</th>
+<th>Output</th>
+<th>mL</th>
+<th>Balance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PO</td>
+<td></td>
+<td>Urine</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>IV</td>
+<td></td>
+<td>Foley</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GT / NJ</td>
+<td></td>
+<td>NG / JP</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Blood</td>
+<td></td>
+<td>Stool</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Total In</td>
+<td></td>
+<td>Total Out</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top: 4px; font-size: 6.5pt;">Foley: <span class="checkbox"><span class="checkbox-box"></span> Yes</span> <span class="checkbox"><span class="checkbox-box"></span> No</span> &nbsp; Drain: _________</div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Activity / Diet / IV Access</span></div>
+<div class="section-content">
+<div class="activity-grid" style="margin-bottom: 6px;">
+<div class="activity-item">
+<div class="activity-label">Activity</div>
+<div style="display: flex; flex-direction: column; gap: 2px;">
+<span class="checkbox"><span class="checkbox-box"></span> Ambulate</span>
+<span class="checkbox"><span class="checkbox-box"></span> BRP</span>
+<span class="checkbox"><span class="checkbox-box"></span> Chair</span>
+<span class="checkbox"><span class="checkbox-box"></span> Bedrest</span>
+</div>
+</div>
+<div class="activity-item">
+<div class="activity-label">Diet</div>
+<div style="display: flex; flex-direction: column; gap: 2px;">
+<span class="checkbox"><span class="checkbox-box"></span> Regular</span>
+<span class="checkbox"><span class="checkbox-box"></span> Soft</span>
+<span class="checkbox"><span class="checkbox-box"></span> Liquid</span>
+<span class="checkbox"><span class="checkbox-box"></span> NPO</span>
+</div>
+</div>
+<div class="activity-item">
+<div class="activity-label">IV Access</div>
+<div style="display: flex; flex-direction: column; gap: 2px;">
+<span class="checkbox"><span class="checkbox-box"></span> PIV</span>
+<span class="checkbox"><span class="checkbox-box"></span> Central</span>
+<span class="checkbox"><span class="checkbox-box"></span> Midline</span>
+<span class="checkbox"><span class="checkbox-box"></span> Port</span>
+</div>
+</div>
+</div>
+<div class="info-row" style="margin-top: 4px;"><span class="info-label">IV Site:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">IV Rate:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Wt/HT:</span><span class="info-value"></span></div>
+</div>
+</div>
+</div>
+
+<!-- RECENT PROCEDURES + PENDING + CURRENT MEDICATIONS -->
+<div class="row-2col">
+<div class="section">
+<div class="section-header"><span>Recent Procedures / Tests</span></div>
+<div class="section-content">
+<div class="proc-row"><span class="proc-label">Date:</span><span class="proc-value"></span></div>
+<div class="proc-row"><span class="proc-label">Proc:</span><span class="proc-value"></span></div>
+<div class="proc-row"><span class="proc-label">Result:</span><span class="proc-value"></span></div>
+<div class="proc-row"><span class="proc-label">Complications:</span><span class="proc-value"></span></div>
+<div style="margin-top: 6px; font-weight: 700; font-size: 7pt; color: var(--burgundy);">Pending Results:</div>
+<div class="proc-row"><span class="proc-label">1.</span><span class="proc-value"></span></div>
+<div class="proc-row"><span class="proc-label">2.</span><span class="proc-value"></span></div>
+<div class="proc-row"><span class="proc-label">3.</span><span class="proc-value"></span></div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Current Medications</span></div>
+<div class="section-content">
+<div class="med-row"><span class="med-label">Antibiotic:</span><span class="med-value"></span></div>
+<div class="med-row"><span class="med-label">Anticoag:</span><span class="med-value"></span></div>
+<div class="med-row"><span class="med-label">Cardiac:</span><span class="med-value"></span></div>
+<div class="med-row"><span class="med-label">Analgesic:</span><span class="med-value"></span></div>
+<div class="med-row"><span class="med-label">Psych Meds:</span><span class="med-value"></span></div>
+<div class="med-row"><span class="med-label">Insulin/DM:</span><span class="med-value"></span></div>
+<div class="med-row"><span class="med-label">Other:</span><span class="med-value"></span></div>
+<div style="margin-top: 6px;">
+<div style="font-weight: 700; font-size: 7pt; color: var(--burgundy);">PRN Last 24h:</div>
+<div class="med-row"><span class="med-label"></span><span class="med-value"></span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- FAMILY CONTACT + SHIFT SUMMARY -->
+<div class="row-2col">
+<div class="section">
+<div class="section-header"><span>Family Contact / Info</span></div>
+<div class="section-content">
+<div class="family-row"><span class="family-label">Contact:</span><span class="family-value"></span></div>
+<div class="family-row"><span class="family-label">Relation:</span><span class="family-value"></span></div>
+<div class="family-row"><span class="family-label">Phone:</span><span class="family-value"></span></div>
+<div class="family-row"><span class="family-label">DPOA:</span><span class="family-value"></span></div>
+<div style="margin-top: 6px; font-weight: 700; font-size: 7pt; color: var(--burgundy);">Social / Barriers:</div>
+<div style="border-bottom: 1px solid var(--line-primary); min-height: 14px;"></div>
+<div style="border-bottom: 1px solid var(--line-primary); min-height: 14px; margin-top: 4px;"></div>
+<div style="margin-top: 6px; display: flex; gap: 8px;">
+<span class="checkbox"><span class="checkbox-box"></span> Interpreter needed</span>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Isolation / Precautions</span></div>
+<div class="section-content">
+<div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;">
+<span class="checkbox"><span class="checkbox-box"></span> Contact</span>
+<span class="checkbox"><span class="checkbox-box"></span> Droplet</span>
+<span class="checkbox"><span class="checkbox-box"></span> Airborne</span>
+<span class="checkbox"><span class="checkbox-box"></span> Protective</span>
+</div>
+<div class="info-row"><span class="info-label">Blood Sugars:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Restraints:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">1:1 / Sitter:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Telemetry:</span><span class="info-value"></span></div>
+<div style="margin-top: 4px;">
+<div style="font-weight: 700; font-size: 7pt; color: var(--burgundy);">Equipment:</div>
+<div style="border-bottom: 1px solid var(--line-primary); min-height: 14px;"></div>
+<div style="border-bottom: 1px solid var(--line-primary); min-height: 14px; margin-top: 4px;"></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SHIFT SUMMARY - LARGE Writable Box -->
+<div class="section">
+<div class="section-header"><span>Shift Summary / Handoff Report</span></div>
+<div class="section-content">
+<textarea class="handoff-box"></textarea>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<div>Nurse Signature: <span class="signature-box"></span></div>
+<div>Nursing Shift Report Sheet - Any Unit</div>
+</div>
+</div>
+</body>
+</html>

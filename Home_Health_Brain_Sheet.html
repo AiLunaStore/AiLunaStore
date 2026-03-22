@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Home Health Brain Sheet</title>
+<style>
+:root {
+--plum: #228B22;
+--plum-light: #3AAF3A;
+--plum-dark: #156315;
+--paper: #ffffff;
+--paper-alt: #f0faf0;
+--ink-primary: #1a1a2e;
+--ink-secondary: #4a4a5a;
+--line-primary: #2c3e50;
+--line-secondary: #b8d4b8;
+--line-light: #e0e8e0;
+--checkbox-border: #5AA05A;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@page { size: 8.5in 11in portrait; margin: 0.15in; }
+body {
+font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+font-size: 7.5pt;
+line-height: 1.2;
+color: var(--ink-primary);
+background: white;
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+}
+.sheet {
+width: 8in;
+min-height: 10.5in;
+margin: 0 auto;
+padding: 0;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+/* Header */
+.header {
+display: grid;
+grid-template-columns: 1.5fr 1fr 0.8fr;
+gap: 6px;
+padding: 6px 8px;
+background: linear-gradient(135deg, var(--plum) 0%, var(--plum-dark) 100%);
+border: 2px solid var(--plum-dark);
+border-radius: 5px;
+color: white;
+}
+.header-section h3 {
+font-size: 7pt;
+text-transform: uppercase;
+letter-spacing: 0.8px;
+color: #c0e8c0;
+border-bottom: 1px solid rgba(255,255,255,0.3);
+padding-bottom: 2px;
+margin-bottom: 3px;
+}
+.field-row { display: flex; align-items: baseline; gap: 3px; }
+.field-label { font-weight: 600; font-size: 6.5pt; color: #b8d4b8; min-width: 42px; }
+.field-value { flex: 1; border-bottom: 1px solid rgba(255,255,255,0.5); min-height: 16px; font-size: 8pt; background: rgba(255,255,255,0.9); color: #1a1a2e; border-radius: 2px; padding: 2px 4px; }
+.field-value.large { min-height: 18px; font-size: 9pt; font-weight: 600; }
+.header-right { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.sheet-title { font-size: 16pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.sheet-subtitle { font-size: 8pt; letter-spacing: 0.5px; opacity: 0.9; }
+/* Sections */
+.section { border: 1.5px solid var(--line-secondary); border-radius: 4px; overflow: visible; display: flex; flex-direction: column; }
+.section-header {
+display: flex; align-items: center; justify-content: space-between;
+padding: 3px 6px; font-weight: 700; font-size: 7pt;
+text-transform: uppercase; letter-spacing: 0.5px;
+background: var(--plum);
+color: white;
+}
+.section-content { padding: 4px; flex: 1; background: var(--paper); overflow: visible; }
+/* Checkbox */
+.checkbox {
+display: inline-flex; align-items: center; gap: 2px;
+font-size: 7pt; cursor: pointer;
+}
+.checkbox-box {
+width: 10px; height: 10px; border: 1px solid var(--checkbox-border);
+border-radius: 2px; display: inline-block;
+}
+/* OASIS */
+.oasis-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 4px;
+}
+.oasis-item {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 4px;
+}
+.oasis-title { font-weight: 700; font-size: 7pt; color: var(--plum); margin-bottom: 3px; }
+.oasis-row { display: flex; align-items: center; gap: 4px; padding: 2px 0; }
+.oasis-label { font-size: 6.5pt; min-width: 60px; }
+.oasis-value { border-bottom: 1px solid var(--line-primary); min-height: 14px; flex: 1; font-size: 7pt; }
+/* Vital Signs */
+.vitals-grid {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+gap: 4px;
+}
+.vitals-item {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 4px;
+text-align: center;
+}
+.vitals-label { font-weight: 700; font-size: 7pt; color: var(--plum); margin-bottom: 3px; }
+.vitals-value { font-size: 8pt; border-bottom: 1px solid var(--line-primary); min-height: 16px; }
+.vitals-time { font-size: 5.5pt; color: var(--ink-secondary); margin-top: 2px; }
+/* Wound Care Table */
+.wound-table {
+width: 100%;
+border-collapse: collapse;
+}
+.wound-table th, .wound-table td {
+border: 1px solid var(--line-secondary);
+padding: 3px 4px;
+text-align: left;
+font-size: 6.5pt;
+height: 20px;
+}
+.wound-table th {
+background: var(--plum);
+color: white;
+font-weight: 700;
+}
+.wound-table td:first-child {
+background: var(--paper-alt);
+font-weight: 600;
+width: 50px;
+}
+.wound-table td:nth-child(4) {
+width: 35px;
+text-align: center;
+}
+.wound-table td:nth-child(5) {
+width: 45px;
+text-align: center;
+}
+.wound-table td:last-child {
+width: 50px;
+text-align: center;
+}
+/* Home Situation */
+.home-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 4px;
+}
+.home-item {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 4px;
+}
+.home-title { font-weight: 700; font-size: 7pt; color: var(--plum); margin-bottom: 3px; }
+.home-row { display: flex; align-items: center; gap: 4px; padding: 2px 0; }
+.home-label { font-size: 6.5pt; min-width: 50px; }
+.home-value { border-bottom: 1px solid var(--line-primary); min-height: 14px; flex: 1; font-size: 7pt; }
+/* Equipment */
+.equip-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 4px;
+}
+.equip-item {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 4px;
+}
+.equip-title { font-weight: 700; font-size: 7pt; color: var(--plum); margin-bottom: 3px; }
+/* Medications */
+.meds-table {
+width: 100%;
+border-collapse: collapse;
+}
+.meds-table th, .meds-table td {
+border: 1px solid var(--line-secondary);
+padding: 3px 4px;
+text-align: left;
+font-size: 6.5pt;
+height: 18px;
+}
+.meds-table th {
+background: var(--plum);
+color: white;
+font-weight: 700;
+}
+.meds-table td:first-child {
+background: var(--paper-alt);
+font-weight: 600;
+width: 70px;
+}
+.meds-table td:nth-child(3) {
+width: 50px;
+text-align: center;
+}
+.meds-table td:last-child {
+width: 40px;
+text-align: center;
+}
+/* Plan of Care */
+.plan-row {
+display: flex; align-items: center; gap: 4px; padding: 3px 0;
+border-bottom: 1px dotted var(--line-light);
+}
+.plan-label { font-weight: 700; font-size: 7pt; color: var(--plum); min-width: 55px; }
+.plan-value { border-bottom: 1px solid var(--line-primary); min-height: 16px; flex: 1; font-size: 7pt; }
+/* Handoff Notes */
+.handoff-box {
+width: 100%;
+min-height: 100px;
+border: 2px solid var(--plum);
+border-radius: 4px;
+padding: 8px;
+background: white;
+font-size: 8pt;
+line-height: 1.5;
+}
+/* Footer */
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; border-top: 1px dashed var(--line-secondary); margin-top: 4px; font-size: 6.5pt; color: var(--ink-secondary); }
+.signature-box { border-bottom: 1px solid var(--ink-primary); width: 110px; height: 14px; }
+/* Grid layouts */
+.row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.row-2col-eq { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.row-2col-left { display: flex; flex-direction: column; gap: 4px; }
+.row-2col-right { display: flex; flex-direction: column; gap: 4px; }
+.row-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+/* Page break */
+.page-break { page-break-before: always; }
+@media print {
+body { font-size: 7.5pt; }
+.sheet { width: 100%; height: 100%; margin: 0; padding: 0; }
+.section { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<!-- HEADER -->
+<div class="header">
+<div class="header-section">
+<h3>Patient Information</h3>
+<div class="field-row"><span class="field-label">Patient:</span><span class="field-value large"></span></div>
+<div class="field-row"><span class="field-label">DOB/Age:</span><span class="field-value"></span><span class="field-label">MRN:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Diagnosis:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Allergies:</span><span class="field-value"></span></div>
+</div>
+<div class="header-section">
+<h3>Visit Info</h3>
+<div class="field-row"><span class="field-label">Date:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Time:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">HH RN:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Physician:</span><span class="field-value"></span></div>
+</div>
+<div class="header-right">
+<div class="sheet-title">Home Health</div>
+<div class="sheet-subtitle">Brain Sheet</div>
+</div>
+</div>
+
+<!-- HOME SITUATION + OASIS -->
+<div class="row-2col">
+<div class="section">
+<div class="section-header"><span>Home Situation</span></div>
+<div class="section-content">
+<div class="home-grid">
+<div class="home-item">
+<div class="home-title">Living Arrangement</div>
+<div class="home-row"><span class="home-label">Lives with:</span><span class="home-value"></span></div>
+<div class="home-row"><span class="home-label">Type:</span><span class="home-value"></span></div>
+<div class="home-row"><span class="home-label">Phone:</span><span class="home-value"></span></div>
+</div>
+<div class="home-item">
+<div class="home-title">Environment</div>
+<div style="display: flex; gap: 6px; margin-bottom: 3px;">
+<span class="checkbox"><span class="checkbox-box"></span> City</span>
+<span class="checkbox"><span class="checkbox-box"></span> Rural</span>
+</div>
+<div class="home-row"><span class="home-label">Pets:</span><span class="home-value"></span></div>
+<div class="home-row"><span class="home-label">Hazards:</span><span class="home-value"></span></div>
+</div>
+</div>
+<div style="margin-top: 4px;">
+<div class="home-row"><span class="home-label">Emergency contact:</span><span class="home-value"></span></div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>OASIS Assessment</span></div>
+<div class="section-content">
+<div class="oasis-grid">
+<div class="oasis-item">
+<div class="oasis-title">M1800 Gait</div>
+<div class="oasis-row"><span class="oasis-label">0 - Normal</span></div>
+<div class="oasis-row"><span class="oasis-label">1 - Ambu-sup</span></div>
+<div class="oasis-row"><span class="oasis-label">2 - Wheelchair</span></div>
+<div class="oasis-row"><span class="oasis-label">Score:</span><span class="oasis-value"></span></div>
+</div>
+<div class="oasis-item">
+<div class="oasis-title">M1830 Bathing</div>
+<div class="oasis-row"><span class="oasis-label">0 - Indep</span></div>
+<div class="oasis-row"><span class="oasis-label">1 - Suprvsn</span></div>
+<div class="oasis-row"><span class="oasis-label">2 - Part Assist</span></div>
+<div class="oasis-row"><span class="oasis-label">Score:</span><span class="oasis-value"></span></div>
+</div>
+<div class="oasis-item">
+<div class="oasis-title">M1870 Toileting</div>
+<div class="oasis-row"><span class="oasis-label">0 - Indep</span></div>
+<div class="oasis-row"><span class="oasis-label">1 - Suprvsn</span></div>
+<div class="oasis-row"><span class="oasis-label">2 - Part Assist</span></div>
+<div class="oasis-row"><span class="oasis-label">Score:</span><span class="oasis-value"></span></div>
+</div>
+<div class="oasis-item">
+<div class="oasis-title">ADL Summary</div>
+<div class="oasis-row"><span class="oasis-label">Transfer:</span><span class="oasis-value"></span></div>
+<div class="oasis-row"><span class="oasis-label">Feeding:</span><span class="oasis-value"></span></div>
+<div class="oasis-row"><span class="oasis-label">Dressing:</span><span class="oasis-value"></span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- VITAL SIGNS -->
+<div class="section">
+<div class="section-header"><span>Vital Signs</span></div>
+<div class="section-content">
+<div class="vitals-grid">
+<div class="vitals-item">
+<div class="vitals-label">BP</div>
+<div class="vitals-value"></div>
+<div class="vitals-time">Time:</div>
+</div>
+<div class="vitals-item">
+<div class="vitals-label">HR</div>
+<div class="vitals-value"></div>
+<div class="vitals-time">Time:</div>
+</div>
+<div class="vitals-item">
+<div class="vitals-label">RR</div>
+<div class="vitals-value"></div>
+<div class="vitals-time">Time:</div>
+</div>
+<div class="vitals-item">
+<div class="vitals-label">Temp</div>
+<div class="vitals-value"></div>
+<div class="vitals-time">Time:</div>
+</div>
+<div class="vitals-item">
+<div class="vitals-label">SpO2</div>
+<div class="vitals-value"></div>
+<div class="vitals-time">RA / O2:</div>
+</div>
+</div>
+<div style="margin-top: 4px; display: flex; gap: 8px; align-items: center;">
+<span style="font-weight: 700; font-size: 7pt; color: var(--plum);">Pain (0-10):</span>
+<span class="checkbox"><span class="checkbox-box"></span> 0</span>
+<span class="checkbox"><span class="checkbox-box"></span> 1-3</span>
+<span class="checkbox"><span class="checkbox-box"></span> 4-6</span>
+<span class="checkbox"><span class="checkbox-box"></span> 7-10</span>
+<span style="flex: 1; border-bottom: 1px solid var(--line-primary); min-height: 14px;"></span>
+</div>
+</div>
+</div>
+
+<!-- WOUND CARE + EQUIPMENT -->
+<div class="row-2col">
+<div class="section">
+<div class="section-header"><span>Wound Care</span></div>
+<div class="section-content">
+<table class="wound-table">
+<thead>
+<tr>
+<th>Site</th>
+<th>Location</th>
+<th>Size (L×W×D)</th>
+<th>Stage</th>
+<th>Dressing</th>
+<th>Next Change</th>
+</tr>
+</thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div style="margin-top: 4px; display: flex; gap: 6px; flex-wrap: wrap;">
+<span style="font-weight: 700; font-size: 6.5pt;">Stage:</span>
+<span class="checkbox"><span class="checkbox-box"></span> 1</span>
+<span class="checkbox"><span class="checkbox-box"></span> 2</span>
+<span class="checkbox"><span class="checkbox-box"></span> 3</span>
+<span class="checkbox"><span class="checkbox-box"></span> 4</span>
+<span class="checkbox"><span class="checkbox-box"></span> DTI</span>
+<span style="font-weight: 700; font-size: 6.5pt;">Characteristics:</span>
+<span class="checkbox"><span class="checkbox-box"></span> Red</span>
+<span class="checkbox"><span class="checkbox-box"></span> Yellow</span>
+<span class="checkbox"><span class="checkbox-box"></span> Black</span>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Equipment & Supplies</span></div>
+<div class="section-content">
+<div class="equip-grid">
+<div class="equip-item">
+<div class="equip-title">Oxygen</div>
+<div class="home-row"><span class="home-label">Type:</span><span class="home-value"></span></div>
+<div class="home-row"><span class="home-label">Rate:</span><span class="home-value"></span></div>
+<div class="home-row"><span class="home-label">Tank/Concentrator:</span><span class="home-value"></span></div>
+</div>
+<div class="equip-item">
+<div class="equip-title">Catheter</div>
+<div style="display: flex; gap: 6px; margin-bottom: 2px;">
+<span class="checkbox"><span class="checkbox-box"></span> Indwelling</span>
+<span class="checkbox"><span class="checkbox-box"></span> Condom</span>
+</div>
+<div class="home-row"><span class="home-label">Size:</span><span class="home-value"></span></div>
+<div class="home-row"><span class="home-label">Last change:</span><span class="home-value"></span></div>
+</div>
+<div class="equip-item">
+<div class="equip-title">IV / Infusion</div>
+<div style="display: flex; gap: 6px; margin-bottom: 2px;">
+<span class="checkbox"><span class="checkbox-box"></span> PICC</span>
+<span class="checkbox"><span class="checkbox-box"></span> Midline</span>
+<span class="checkbox"><span class="checkbox-box"></span> Port</span>
+</div>
+<div class="home-row"><span class="home-label">Type:</span><span class="home-value"></span></div>
+</div>
+<div class="equip-item">
+<div class="equip-title">Supplies Needed</div>
+<div class="home-row"><span class="home-label"></span><span class="home-value"></span></div>
+<div class="home-row"><span class="home-label"></span><span class="home-value"></span></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- MEDICATIONS RECONCILIATION -->
+<div class="section">
+<div class="section-header"><span>Medications Reconciliation</span></div>
+<div class="section-content">
+<table class="meds-table">
+<thead>
+<tr>
+<th>Medication</th>
+<th>Dose/Route/Freq</th>
+<th>Time</th>
+<th>Given</th>
+</tr>
+</thead>
+<tbody>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+<div style="margin-top: 3px; display: flex; gap: 8px; font-size: 6pt;">
+<span style="font-weight: 700;">Changes:</span>
+<span class="checkbox"><span class="checkbox-box"></span> New</span>
+<span class="checkbox"><span class="checkbox-box"></span> D/C'd</span>
+<span class="checkbox"><span class="checkbox-box"></span> Dose Changed</span>
+<span style="flex: 1; border-bottom: 1px solid var(--line-primary);"></span>
+</div>
+</div>
+</div>
+
+<!-- PLAN OF CARE NOTES -->
+<div class="section">
+<div class="section-header"><span>Plan of Care Notes</span></div>
+<div class="section-content">
+<div class="plan-row"><span class="plan-label">Goals:</span><span class="plan-value"></span></div>
+<div class="plan-row"><span class="plan-label">Interventions:</span><span class="plan-value"></span></div>
+<div class="plan-row"><span class="plan-label">Patient Ed:</span><span class="plan-value"></span></div>
+<div class="plan-row"><span class="plan-label">Family/CG Ed:</span><span class="plan-value"></span></div>
+<div class="plan-row"><span class="plan-label">Barriers:</span><span class="plan-value"></span></div>
+<div class="plan-row"><span class="plan-label">Next Visit:</span><span class="plan-value"></span></div>
+<div style="margin-top: 4px; display: flex; gap: 6px; flex-wrap: wrap;">
+<span class="checkbox"><span class="checkbox-box"></span> Telehealth</span>
+<span class="checkbox"><span class="checkbox-box"></span> SOC</span>
+<span class="checkbox"><span class="checkbox-box"></span> ROC</span>
+<span class="checkbox"><span class="checkbox-box"></span> F/U</span>
+<span class="checkbox"><span class="checkbox-box"></span> DCd</span>
+</div>
+</div>
+</div>
+
+<!-- SHIFT HANDOFF NOTES -->
+<div class="section">
+<div class="section-header"><span>Shift / Visit Handoff Notes</span></div>
+<div class="section-content">
+<textarea class="handoff-box"></textarea>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<div>Nurse Signature: <span class="signature-box"></span></div>
+<div>Home Health Brain Sheet</div>
+</div>
+</div>
+</body>
+</html>
