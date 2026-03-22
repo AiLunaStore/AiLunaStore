@@ -19,10 +19,10 @@
 --checkbox-border: #5a6a7a;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-@page { size: 8.5in 11in portrait; margin: 0.15in; }
+@page { size: 8.5in 11in portrait; margin: 0.05in; }
 body {
 font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-font-size: 7.5pt;
+font-size: 7pt;
 line-height: 1.2;
 color: var(--ink-primary);
 background: white;
@@ -36,14 +36,14 @@ margin: 0 auto;
 padding: 0;
 display: flex;
 flex-direction: column;
-gap: 4px;
+gap: 3px;
 }
 /* Header */
 .header {
 display: grid;
 grid-template-columns: 1.5fr 1fr 0.8fr;
 gap: 6px;
-padding: 6px 8px;
+padding: 4px 6px;
 background: linear-gradient(135deg, var(--dialysis-gray) 0%, var(--dialysis-gray-dark) 100%);
 border: 2px solid var(--dialysis-gray-dark);
 border-radius: 5px;
@@ -60,7 +60,7 @@ margin-bottom: 3px;
 }
 .field-row { display: flex; align-items: baseline; gap: 3px; }
 .field-label { font-weight: 600; font-size: 6.5pt; color: #a0aab8; min-width: 42px; }
-.field-value { flex: 1; border-bottom: 1px solid rgba(255,255,255,0.5); min-height: 16px; font-size: 8pt; background: rgba(255,255,255,0.9); color: #1a1a2e; border-radius: 2px; padding: 2px 4px; }
+.field-value { flex: 1; border-bottom: 1px solid rgba(255,255,255,0.5); min-height: 14px; font-size: 8pt; background: rgba(255,255,255,0.9); color: #1a1a2e; border-radius: 2px; padding: 2px 4px; }
 .field-value.large { min-height: 18px; font-size: 9pt; font-weight: 600; }
 .header-right { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 .sheet-title { font-size: 16pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
@@ -69,12 +69,12 @@ margin-bottom: 3px;
 .section { border: 1.5px solid var(--line-secondary); border-radius: 4px; overflow: visible; display: flex; flex-direction: column; }
 .section-header {
 display: flex; align-items: center; justify-content: space-between;
-padding: 3px 6px; font-weight: 700; font-size: 7pt;
+padding: 2px 4px; font-weight: 700; font-size: 6.5pt;
 text-transform: uppercase; letter-spacing: 0.5px;
 background: var(--dialysis-gray);
 color: white;
 }
-.section-content { padding: 4px; flex: 1; background: var(--paper); overflow: visible; }
+.section-content { padding: 2px; flex: 1; background: var(--paper); overflow: visible; }
 /* Checkbox */
 .checkbox {
 display: inline-flex; align-items: center; gap: 2px;
@@ -91,10 +91,10 @@ border-collapse: collapse;
 }
 .vitals-table th, .vitals-table td {
 border: 1px solid var(--line-secondary);
-padding: 4px 6px;
+padding: 2px 4px;
 text-align: center;
 font-size: 7pt;
-height: 24px;
+height: 18px;
 }
 .vitals-table th {
 background: var(--dialysis-gray);
@@ -120,11 +120,11 @@ background: white;
 }
 /* Info rows */
 .info-row {
-display: flex; align-items: center; gap: 4px; padding: 3px 0;
+display: flex; align-items: center; gap: 3px; padding: 3px 0;
 border-bottom: 1px dotted var(--line-light);
 }
 .info-label { font-weight: 700; font-size: 7pt; color: var(--dialysis-gray-dark); min-width: 70px; }
-.info-value { background: rgba(255,255,255,0.9); border-bottom: 1px solid var(--line-primary); min-height: 16px; flex: 1; font-size: 8pt; }
+.info-value { background: rgba(255,255,255,0.9); border-bottom: 1px solid var(--line-primary); min-height: 14px; flex: 1; font-size: 8pt; }
 /* Labs Table */
 .labs-table {
 width: 100%;
@@ -132,7 +132,7 @@ border-collapse: collapse;
 }
 .labs-table th, .labs-table td {
 border: 1px solid var(--line-secondary);
-padding: 4px;
+padding: 3px;
 text-align: center;
 font-size: 7pt;
 height: 22px;
@@ -158,14 +158,14 @@ font-size: 8pt;
 line-height: 1.5;
 }
 /* Footer */
-.footer { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; border-top: 1px dashed var(--line-secondary); margin-top: 4px; font-size: 6.5pt; color: var(--ink-secondary); }
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; border-top: 1px dashed var(--line-secondary); margin-top: 2px; font-size: 6.5pt; color: var(--ink-secondary); }
 .signature-box { border-bottom: 1px solid var(--ink-primary); width: 110px; height: 14px; }
 /* Grid layouts */
-.row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-.row-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+.row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.row-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
 /* Page break */
 @media print {
-body { font-size: 7.5pt; }
+body { font-size: 7pt; }
 .sheet { width: 100%; height: 100%; margin: 0; padding: 0; }
 .section { break-inside: avoid; }
 }
@@ -268,7 +268,7 @@ body { font-size: 7.5pt; }
 <div class="info-row"><span class="info-label">Location:</span><span class="info-value"></span></div>
 <div class="info-row"><span class="info-label">Condition:</span><span class="info-value"></span></div>
 <div class="info-row"><span class="info-label">Maturity:</span><span class="info-value"></span></div>
-<div style="margin-top: 4px;">
+<div style="margin-top: 2px;">
 <div style="font-weight: 700; font-size: 6.5pt; margin-bottom: 3px;">Site Assessment</div>
 <div style="display: flex; gap: 6px; flex-wrap: wrap;">
 <span class="checkbox"><span class="checkbox-box"></span> Thrill +</span>
@@ -289,25 +289,25 @@ body { font-size: 7.5pt; }
 <div class="section">
 <div class="section-header"><span>Complications</span></div>
 <div class="section-content">
-<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px;">
+<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2px;">
 <span class="checkbox"><span class="checkbox-box"></span> Hypotension</span>
 <span class="checkbox"><span class="checkbox-box"></span> Hypertension</span>
 <span class="checkbox"><span class="checkbox-box"></span> Cramping</span>
 </div>
-<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px;">
+<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2px;">
 <span class="checkbox"><span class="checkbox-box"></span> Nausea</span>
 <span class="checkbox"><span class="checkbox-box"></span> Vomiting</span>
 <span class="checkbox"><span class="checkbox-box"></span> Headache</span>
 </div>
-<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px;">
+<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2px;">
 <span class="checkbox"><span class="checkbox-box"></span> Chest Pain</span>
 <span class="checkbox"><span class="checkbox-box"></span> Dysrhythmia</span>
 <span class="checkbox"><span class="checkbox-box"></span> Bleeding</span>
 </div>
-<div style="margin-top: 4px;">
+<div style="margin-top: 2px;">
 <div style="font-weight: 700; font-size: 6.5pt; margin-bottom: 2px;">Notes:</div>
-<div style="border-bottom: 1px solid var(--line-primary); min-height: 14px;"></div>
-<div style="border-bottom: 1px solid var(--line-primary); min-height: 14px; margin-top: 2px;"></div>
+<div style="border-bottom: 1px solid var(--line-primary); min-height: 12px;"></div>
+<div style="border-bottom: 1px solid var(--line-primary); min-height: 12px; margin-top: 2px;"></div>
 </div>
 </div>
 </div>
@@ -347,7 +347,7 @@ body { font-size: 7.5pt; }
 <div class="info-row"><span class="info-label">HR:</span><span class="info-value"></span></div>
 <div class="info-row"><span class="info-label">UF Removed:</span><span class="info-value"></span></div>
 <div class="info-row"><span class="info-label">Access Hold:</span><span class="info-value"></span></div>
-<div style="margin-top: 4px; display: flex; gap: 8px;">
+<div style="margin-top: 2px; display: flex; gap: 8px;">
 <span class="checkbox"><span class="checkbox-box"></span> Heparin DC</span>
 <span class="checkbox"><span class="checkbox-box"></span> Protamine</span>
 </div>
