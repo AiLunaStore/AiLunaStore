@@ -1,0 +1,4 @@
+# Disable Jekyll processing
+safe: true
+include: [".nojekyll"]
+exclude: []
