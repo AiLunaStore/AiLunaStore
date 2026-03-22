@@ -106,16 +106,9 @@ display: flex; justify-content: space-between;
 font-size: 6pt; font-weight: 700; color: var(--plum);
 }
 .cervical-bar-line {
-height: 8px;
+height: 10px;
 border-top: 2px solid var(--plum);
-margin-top: 3px;
-position: relative;
-}
-.cervical-bar-line::before {
-content: '';
-position: absolute; left: 0; right: 0; top: -3px;
-height: 8px; border: 1px solid var(--plum);
-border-radius: 3px;
+margin-top: 4px;
 }
 .station-markers {
 display: flex; flex-direction: column; justify-content: space-around;
@@ -292,7 +285,7 @@ body { font-size: 7.5pt; }
 <div class="cervical-cm">CM</div>
 <div class="cervical-bar">
 <div class="cervical-nums"><span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span></div>
-<div class="cervical-line"></div>
+<div class="cervical-bar-line"></div>
 </div>
 <div class="station-markers">
 <div class="station-marker">+4</div>
