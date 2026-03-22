@@ -19,7 +19,7 @@
 --checkbox-border: #9a7aa0;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-@page { size: 8.5in 11in portrait; margin: 0.2in; }
+@page { size: 8.5in 11in portrait; margin: 0.15in; }
 body {
 font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 font-size: 7.5pt;
@@ -69,12 +69,12 @@ margin-bottom: 3px;
 .section { border: 1.5px solid var(--line-secondary); border-radius: 4px; overflow: visible; display: flex; flex-direction: column; }
 .section-header {
 display: flex; align-items: center; justify-content: space-between;
-padding: 4px 8px; font-weight: 700; font-size: 8pt;
+padding: 3px 6px; font-weight: 700; font-size: 7pt;
 text-transform: uppercase; letter-spacing: 0.5px;
 background: var(--plum);
 color: white;
 }
-.section-content { padding: 5px; flex: 1; background: var(--paper); overflow: visible; }
+.section-content { padding: 4px; flex: 1; background: var(--paper); overflow: visible; }
 /* Checkbox */
 .checkbox {
 display: inline-flex; align-items: center; gap: 2px;
@@ -87,42 +87,42 @@ border-radius: 2px; display: inline-block;
 /* Cervical Dilation Tracker */
 .cervical-tracker {
 display: flex;
-height: 100px;
+height: 90px;
 border: 1px solid var(--line-secondary);
 border-radius: 4px;
 overflow: hidden;
 }
 .cervical-cm {
 display: flex; align-items: center; justify-content: center;
-width: 36px; background: var(--plum); color: white; font-weight: 700; font-size: 9pt;
+width: 32px; background: var(--plum); color: white; font-weight: 700; font-size: 8pt;
 flex-shrink: 0;
 }
 .cervical-bar {
 display: flex; flex-direction: column; justify-content: center; flex: 1;
-padding: 6px 10px;
+padding: 4px 8px;
 background: white;
 min-width: 0;
 }
 .cervical-nums {
 display: flex; justify-content: space-between;
-font-size: 8pt; font-weight: 700; color: var(--plum);
+font-size: 7pt; font-weight: 700; color: var(--plum);
 }
 .cervical-bar-line {
-height: 12px;
+height: 10px;
 border-top: 2px solid var(--plum);
-margin-top: 6px;
+margin-top: 4px;
 }
 .station-markers {
 display: flex; flex-direction: column;
 padding: 2px 4px;
 background: var(--paper-alt);
 border-left: 1px solid var(--line-secondary);
-min-width: 36px;
-height: 100px;
+min-width: 32px;
+height: 90px;
 flex-shrink: 0;
 justify-content: space-between;
 }
-.station-marker { font-size: 5.5pt; font-weight: 600; color: var(--plum); text-align: center; }
+.station-marker { font-size: 5pt; font-weight: 600; color: var(--plum); text-align: center; }
 /* Contraction Grid - proper table layout */
 .contraction-table {
 width: 100%;
