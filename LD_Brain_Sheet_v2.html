@@ -100,20 +100,28 @@ width: 35px; background: var(--plum); color: white; font-weight: 700; font-size:
 display: flex; flex: 1; position: relative;
 background: white;
 }
-.cervical-bar::before {
-content: '';
-position: absolute; left: 0; right: 0; top: 50%;
-height: 3px; background: linear-gradient(90deg, #e8d0e8, #c9a8d4, #a675a6);
-}
-.cervical-numbers {
-display: flex; flex: 1; justify-content: space-between;
-padding: 0 4px;
+.cervical-scale {
+display: flex; align-items: flex-end;
+height: 100%; padding: 4px 8px;
 position: relative;
 z-index: 1;
 }
-.cervical-num {
-font-size: 6pt; font-weight: 700; color: var(--plum);
-display: flex; flex-direction: column; justify-content: space-between;
+.cervical-cm-mark {
+display: flex; flex-direction: column; align-items: center;
+flex: 1;
+}
+.cervical-cm-mark span {
+font-size: 5.5pt; font-weight: 700; color: var(--plum);
+}
+.cervical-cm-mark .tick {
+width: 1px; background: var(--plum);
+margin-top: 2px;
+}
+.cervical-scale::before {
+content: '';
+position: absolute; left: 8px; right: 8px; top: 50%;
+height: 2px; background: var(--plum-light);
+z-index: 0;
 }
 .station-markers {
 display: flex; flex-direction: column; justify-content: space-around;
@@ -288,13 +296,13 @@ body { font-size: 7.5pt; }
 <div class="cervical-tracker">
 <div class="cervical-cm">CM</div>
 <div class="cervical-bar">
-<div class="cervical-numbers">
-<span class="cervical-num"><span>10</span><span>0</span></span>
-<span class="cervical-num"><span>9</span><span>1</span></span>
-<span class="cervical-num"><span>8</span><span>2</span></span>
-<span class="cervical-num"><span>7</span><span>3</span></span>
-<span class="cervical-num"><span>6</span><span>4</span></span>
-<span class="cervical-num"><span>5</span><span>5</span></span>
+<div class="cervical-scale">
+<div class="cervical-cm-mark"><span>10</span><span class="tick" style="height:12px;"></span></div>
+<div class="cervical-cm-mark"><span>8</span><span class="tick" style="height:8px;"></span></div>
+<div class="cervical-cm-mark"><span>6</span><span class="tick" style="height:8px;"></span></div>
+<div class="cervical-cm-mark"><span>4</span><span class="tick" style="height:8px;"></span></div>
+<div class="cervical-cm-mark"><span>2</span><span class="tick" style="height:8px;"></span></div>
+<div class="cervical-cm-mark"><span>0</span><span class="tick" style="height:12px;"></span></div>
 </div>
 </div>
 <div class="station-markers">
