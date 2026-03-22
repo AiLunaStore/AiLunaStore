@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dialysis Brain Sheet - Dialysis Unit</title>
+<style>
+:root {
+--dialysis-gray: #708090;
+--dialysis-gray-light: #8a9aaa;
+--dialysis-gray-dark: #4a5a6a;
+--paper: #ffffff;
+--paper-alt: #f5f5f5;
+--ink-primary: #1a1a2e;
+--ink-secondary: #4a4a5a;
+--line-primary: #2c3e50;
+--line-secondary: #b0b8c0;
+--line-light: #e0e4e8;
+--checkbox-border: #5a6a7a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@page { size: 8.5in 11in portrait; margin: 0.05in; }
+body {
+font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+font-size: 7pt;
+line-height: 1.2;
+color: var(--ink-primary);
+background: white;
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+}
+.sheet {
+width: 8in;
+min-height: 10.5in;
+margin: 0 auto;
+padding: 0;
+display: flex;
+flex-direction: column;
+gap: 3px;
+}
+/* Header */
+.header {
+display: grid;
+grid-template-columns: 1.5fr 1fr 0.8fr;
+gap: 6px;
+padding: 4px 6px;
+background: linear-gradient(135deg, var(--dialysis-gray) 0%, var(--dialysis-gray-dark) 100%);
+border: 2px solid var(--dialysis-gray-dark);
+border-radius: 5px;
+color: white;
+}
+.header-section h3 {
+font-size: 7pt;
+text-transform: uppercase;
+letter-spacing: 0.8px;
+color: #c8d0d8;
+border-bottom: 1px solid rgba(255,255,255,0.3);
+padding-bottom: 2px;
+margin-bottom: 3px;
+}
+.field-row { display: flex; align-items: baseline; gap: 3px; }
+.field-label { font-weight: 600; font-size: 6.5pt; color: #a0aab8; min-width: 42px; }
+.field-value { flex: 1; border-bottom: 1px solid rgba(255,255,255,0.5); min-height: 14px; font-size: 8pt; background: rgba(255,255,255,0.9); color: #1a1a2e; border-radius: 2px; padding: 2px 4px; }
+.field-value.large { min-height: 18px; font-size: 9pt; font-weight: 600; }
+.header-right { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.sheet-title { font-size: 16pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.sheet-subtitle { font-size: 8pt; letter-spacing: 0.5px; opacity: 0.9; }
+/* Sections */
+.section { border: 1.5px solid var(--line-secondary); border-radius: 4px; overflow: visible; display: flex; flex-direction: column; }
+.section-header {
+display: flex; align-items: center; justify-content: space-between;
+padding: 2px 4px; font-weight: 700; font-size: 6.5pt;
+text-transform: uppercase; letter-spacing: 0.5px;
+background: var(--dialysis-gray);
+color: white;
+}
+.section-content { padding: 2px; flex: 1; background: var(--paper); overflow: visible; }
+/* Checkbox */
+.checkbox {
+display: inline-flex; align-items: center; gap: 2px;
+font-size: 7pt; cursor: pointer;
+}
+.checkbox-box {
+width: 10px; height: 10px; border: 1px solid var(--checkbox-border);
+border-radius: 2px; display: inline-block;
+}
+/* Vital Signs Grid */
+.vitals-table {
+width: 100%;
+border-collapse: collapse;
+}
+.vitals-table th, .vitals-table td {
+border: 1px solid var(--line-secondary);
+padding: 2px 4px;
+text-align: center;
+font-size: 7pt;
+height: 18px;
+}
+.vitals-table th {
+background: var(--dialysis-gray);
+color: white;
+font-weight: 700;
+font-size: 6.5pt;
+}
+.vitals-table th:first-child {
+background: var(--paper-alt);
+color: var(--ink-primary);
+width: 55px;
+}
+.vitals-table td:first-child {
+background: var(--paper-alt);
+font-weight: 700;
+font-size: 7pt;
+text-align: left;
+padding-left: 6px;
+width: 55px;
+}
+.vitals-table td {
+background: white;
+}
+/* Info rows */
+.info-row {
+display: flex; align-items: center; gap: 3px; padding: 3px 0;
+border-bottom: 1px dotted var(--line-light);
+}
+.info-label { font-weight: 700; font-size: 7pt; color: var(--dialysis-gray-dark); min-width: 70px; }
+.info-value { background: rgba(255,255,255,0.9); border-bottom: 1px solid var(--line-primary); min-height: 14px; flex: 1; font-size: 8pt; }
+/* Labs Table */
+.labs-table {
+width: 100%;
+border-collapse: collapse;
+}
+.labs-table th, .labs-table td {
+border: 1px solid var(--line-secondary);
+padding: 3px;
+text-align: center;
+font-size: 7pt;
+height: 22px;
+}
+.labs-table th {
+background: var(--dialysis-gray);
+color: white;
+font-weight: 700;
+}
+.labs-table td:first-child {
+background: var(--paper-alt);
+font-weight: 600;
+}
+/* Handoff Notes - BLANK BOX */
+.handoff-box {
+width: 100%;
+min-height: 100px;
+border: 2px solid var(--dialysis-gray);
+border-radius: 4px;
+padding: 8px;
+background: white;
+font-size: 8pt;
+line-height: 1.5;
+}
+/* Footer */
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; border-top: 1px dashed var(--line-secondary); margin-top: 2px; font-size: 6.5pt; color: var(--ink-secondary); }
+.signature-box { border-bottom: 1px solid var(--ink-primary); width: 110px; height: 14px; }
+/* Grid layouts */
+.row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.row-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+/* Page break */
+@media print {
+body { font-size: 7pt; }
+.sheet { width: 100%; height: 100%; margin: 0; padding: 0; }
+.section { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<!-- HEADER -->
+<div class="header">
+<div class="header-section">
+<h3>Patient Information</h3>
+<div class="field-row"><span class="field-label">Name:</span><span class="field-value large"></span></div>
+<div class="field-row"><span class="field-label">DOB:</span><span class="field-value"></span><span class="field-label">MRN:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Access:</span><span class="field-value"></span><span class="field-label">Dx:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">RN:</span><span class="field-value"></span><span class="field-label">Shift:</span><span class="field-value"></span></div>
+</div>
+<div class="header-section">
+<h3>Treatment Info</h3>
+<div class="field-row"><span class="field-label">Date:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Machine #:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Type:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Provider:</span><span class="field-value"></span></div>
+</div>
+<div class="header-right">
+<div class="sheet-title">Dialysis Brain Sheet</div>
+<div class="sheet-subtitle">Hemodialysis Unit</div>
+</div>
+</div>
+
+<!-- PRE-TREATMENT + TREATMENT -->
+<div class="row-2col">
+<div class="section">
+<div class="section-header"><span>Pre-Treatment Vitals</span></div>
+<div class="section-content">
+<div class="info-row"><span class="info-label">Weight:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">BP:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">HR:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Temp:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Dry Weight:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Target Weight:</span><span class="info-value"></span></div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Treatment Parameters</span></div>
+<div class="section-content">
+<div class="info-row"><span class="info-label">Start Time:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Duration:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">UF Goal:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">UF Actual:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Blood Flow:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Dialysate Flow:</span><span class="info-value"></span></div>
+</div>
+</div>
+</div>
+
+<!-- VITAL SIGNS GRID -->
+<div class="section">
+<div class="section-header"><span>Vital Signs Grid</span><span style="font-size: 6pt; font-weight: 400;">BP | HR | Temp | SpO2</span></div>
+<div class="section-content">
+<table class="vitals-table">
+<thead>
+<tr>
+<th>Time</th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th><th style="background: white;"></th><th style="background: white;"></th><th style="background: white;"></th><th style="background: white;"></th><th style="background: white;"></th><th style="background: white;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BP</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>HR</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>Temp</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>SpO2</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>Weight</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ACCESS SITE + COMPLICATIONS -->
+<div class="row-2col">
+<div class="section">
+<div class="section-header"><span>Access Site</span></div>
+<div class="section-content">
+<div class="info-row"><span class="info-label">Type:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Location:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Condition:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Maturity:</span><span class="info-value"></span></div>
+<div style="margin-top: 2px;">
+<div style="font-weight: 700; font-size: 6.5pt; margin-bottom: 3px;">Site Assessment</div>
+<div style="display: flex; gap: 6px; flex-wrap: wrap;">
+<span class="checkbox"><span class="checkbox-box"></span> Thrill +</span>
+<span class="checkbox"><span class="checkbox-box"></span> Bruit +</span>
+<span class="checkbox"><span class="checkbox-box"></span> Erythema</span>
+<span class="checkbox"><span class="checkbox-box"></span> Edema</span>
+</div>
+</div>
+<div style="margin-top: 3px;">
+<div style="display: flex; gap: 6px; flex-wrap: wrap;">
+<span class="checkbox"><span class="checkbox-box"></span> AV Fistula</span>
+<span class="checkbox"><span class="checkbox-box"></span> AV Graft</span>
+<span class="checkbox"><span class="checkbox-box"></span> Catheter</span>
+</div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Complications</span></div>
+<div class="section-content">
+<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2px;">
+<span class="checkbox"><span class="checkbox-box"></span> Hypotension</span>
+<span class="checkbox"><span class="checkbox-box"></span> Hypertension</span>
+<span class="checkbox"><span class="checkbox-box"></span> Cramping</span>
+</div>
+<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2px;">
+<span class="checkbox"><span class="checkbox-box"></span> Nausea</span>
+<span class="checkbox"><span class="checkbox-box"></span> Vomiting</span>
+<span class="checkbox"><span class="checkbox-box"></span> Headache</span>
+</div>
+<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2px;">
+<span class="checkbox"><span class="checkbox-box"></span> Chest Pain</span>
+<span class="checkbox"><span class="checkbox-box"></span> Dysrhythmia</span>
+<span class="checkbox"><span class="checkbox-box"></span> Bleeding</span>
+</div>
+<div style="margin-top: 2px;">
+<div style="font-weight: 700; font-size: 6.5pt; margin-bottom: 2px;">Notes:</div>
+<div style="border-bottom: 1px solid var(--line-primary); min-height: 12px;"></div>
+<div style="border-bottom: 1px solid var(--line-primary); min-height: 12px; margin-top: 2px;"></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- MEDICATIONS + POST-TREATMENT -->
+<div class="row-2col">
+<div class="section">
+<div class="section-header"><span>Medications Given</span></div>
+<div class="section-content">
+<table class="labs-table">
+<thead>
+<tr>
+<th>Drug</th>
+<th>Dose</th>
+<th>Route</th>
+<th>Time</th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Epogen</td><td></td><td></td><td></td></tr>
+<tr><td>Iron (IV)</td><td></td><td></td><td></td></tr>
+<tr><td>Vitamin D</td><td></td><td></td><td></td></tr>
+<tr><td>Calcium</td><td></td><td></td><td></td></tr>
+<tr><td>Benadryl</td><td></td><td></td><td></td></tr>
+<tr><td>Zofran</td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Post Treatment</span></div>
+<div class="section-content">
+<div class="info-row"><span class="info-label">End Time:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Post Wt:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">BP:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">HR:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">UF Removed:</span><span class="info-value"></span></div>
+<div class="info-row"><span class="info-label">Access Hold:</span><span class="info-value"></span></div>
+<div style="margin-top: 2px; display: flex; gap: 8px;">
+<span class="checkbox"><span class="checkbox-box"></span> Heparin DC</span>
+<span class="checkbox"><span class="checkbox-box"></span> Protamine</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- LABS -->
+<div class="section">
+<div class="section-header"><span>Labs</span></div>
+<div class="section-content">
+<table class="labs-table">
+<thead>
+<tr>
+<th style="background: white;"></th>
+<th>Pre</th>
+<th>Post</th>
+<th style="background: white;"></th>
+<th>Pre</th>
+<th>Post</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="font-weight: 700;">BUN</td>
+<td></td><td></td>
+<td style="font-weight: 700;">K+</td>
+<td></td><td></td>
+</tr>
+<tr>
+<td style="font-weight: 700;">Creatinine</td>
+<td></td><td></td>
+<td style="font-weight: 700;">Na+</td>
+<td></td><td></td>
+</tr>
+<tr>
+<td style="font-weight: 700;">PO4</td>
+<td></td><td></td>
+<td style="font-weight: 700;">Ca+</td>
+<td></td><td></td>
+</tr>
+<tr>
+<td style="font-weight: 700;">Glucose</td>
+<td></td><td></td>
+<td style="font-weight: 700;">Hgb/Hct</td>
+<td></td><td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- SHIFT HANDOFF NOTES -->
+<div class="section">
+<div class="section-header"><span>Shift Handoff Notes</span></div>
+<div class="section-content">
+<textarea class="handoff-box"></textarea>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<div>Nurse Signature: <span class="signature-box"></span></div>
+<div>Dialysis Brain Sheet</div>
+</div>
+</div>
+</body>
+</html>

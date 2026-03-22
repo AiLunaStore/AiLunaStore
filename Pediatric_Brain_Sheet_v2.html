@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pediatric Brain Sheet v2 - Nursing Assessment</title>
+<style>
+:root {
+--green: #2d6a4f;
+--green-light: #40916c;
+--green-dark: #1b4332;
+--paper: #ffffff;
+--paper-alt: #f0fdf4;
+--ink-primary: #1a1a2e;
+--ink-secondary: #4a4a5a;
+--line-primary: #2c3e50;
+--line-secondary: #b5c9b7;
+--line-light: #d8e4dc;
+--checkbox-border: #6a9e7f;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@page { size: 8.5in 11in portrait; margin: 0.2in; }
+body {
+font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+font-size: 7.5pt;
+line-height: 1.2;
+color: var(--ink-primary);
+background: white;
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+}
+.sheet {
+width: 8in;
+min-height: 10.5in;
+margin: 0 auto;
+padding: 0;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+/* Header */
+.header {
+display: grid;
+grid-template-columns: 1.5fr 1fr 0.8fr;
+gap: 6px;
+padding: 6px 8px;
+background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+border: 2px solid var(--green-dark);
+border-radius: 5px;
+color: white;
+}
+.header-section h3 {
+font-size: 7pt;
+text-transform: uppercase;
+letter-spacing: 0.8px;
+color: #a8d5ba;
+border-bottom: 1px solid rgba(255,255,255,0.3);
+padding-bottom: 2px;
+margin-bottom: 3px;
+}
+.field-row { display: flex; align-items: baseline; gap: 3px; }
+.field-label { font-weight: 600; font-size: 6.5pt; color: #a8d5ba; min-width: 42px; }
+.field-value { flex: 1; border-bottom: 1px solid rgba(255,255,255,0.5); min-height: 16px; font-size: 8pt; background: rgba(255,255,255,0.9); color: #1a1a2e; border-radius: 2px; padding: 2px 4px; }
+.field-value.large { min-height: 18px; font-size: 9pt; font-weight: 600; }
+.header-right { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.sheet-title { font-size: 14pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.sheet-subtitle { font-size: 8pt; letter-spacing: 0.5px; opacity: 0.9; }
+/* Sections */
+.section { border: 1.5px solid var(--line-secondary); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; }
+.section-header {
+display: flex; align-items: center; justify-content: space-between;
+padding: 4px 8px; font-weight: 700; font-size: 8pt;
+text-transform: uppercase; letter-spacing: 0.5px;
+background: var(--green);
+color: white;
+}
+.section-content { padding: 5px; flex: 1; background: var(--paper); }
+/* Checkbox */
+.checkbox {
+display: inline-flex; align-items: center; gap: 2px;
+font-size: 7pt; cursor: pointer;
+}
+.checkbox-box {
+width: 10px; height: 10px; border: 1px solid var(--checkbox-border);
+border-radius: 2px; display: inline-block;
+}
+/* Fill lines */
+.fill-line { border-bottom: 1px solid var(--line-primary); min-height: 20px; flex: 1; }
+.fill-line-sm { border-bottom: 1px solid var(--line-primary); min-height: 16px; flex: 1; }
+/* Grid layouts */
+.grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.grid-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+/* Vitals by age */
+.vitals-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+.vital-col {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 3px;
+text-align: center;
+background: var(--paper-alt);
+}
+.vital-col h4 { font-size: 6.5pt; font-weight: 700; color: var(--green); margin-bottom: 2px; }
+.vital-row { display: flex; justify-content: space-between; font-size: 6pt; padding: 1px 2px; }
+.vital-row .label { color: var(--ink-secondary); }
+.vital-row .value { font-weight: 600; }
+/* Weight dosing */
+.weight-box {
+border: 2px solid var(--green);
+border-radius: 4px;
+padding: 6px;
+background: var(--paper-alt);
+margin-bottom: 4px;
+}
+.weight-box h4 { font-size: 7pt; font-weight: 700; color: var(--green); margin-bottom: 3px; }
+.weight-calc { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.weight-item { text-align: center; }
+.weight-item .label { font-size: 6pt; color: var(--ink-secondary); }
+.weight-item .value { font-size: 8pt; font-weight: 700; border-bottom: 1px solid var(--line-primary); min-height: 16px; }
+/* Emergency refs */
+.emerg-box {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 4px;
+margin-bottom: 3px;
+background: var(--paper-alt);
+}
+.emerg-box h4 { font-size: 7pt; font-weight: 700; color: #c53030; margin-bottom: 2px; }
+.emerg-item { font-size: 6.5pt; padding: 1px 0; display: flex; gap: 4px; }
+.emerg-item .label { font-weight: 600; min-width: 60px; }
+/* Development */
+.dev-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+.dev-col {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 3px;
+text-align: center;
+background: var(--paper-alt);
+}
+.dev-col h4 { font-size: 6pt; font-weight: 700; color: var(--green); margin-bottom: 2px; }
+.dev-milestone { font-size: 5.5pt; padding: 1px 0; color: var(--ink-secondary); }
+/* Meds reference */
+.meds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.med-item {
+border: 1px solid var(--line-light);
+border-radius: 3px;
+padding: 3px;
+background: var(--paper-alt);
+}
+.med-item h4 { font-size: 6.5pt; font-weight: 700; color: var(--green); margin-bottom: 2px; }
+.med-dose { font-size: 6pt; padding: 1px 0; }
+/* Notes */
+.notes-area { width: 100%; min-height: 80px; border: 1px solid var(--line-secondary); border-radius: 3px; padding: 4px; font-size: 7.5pt; background: white; }
+/* Handoff - big box */
+.handoff-box {
+width: 100%;
+min-height: 100px;
+border: 2px solid var(--green);
+border-radius: 4px;
+padding: 6px;
+background: white;
+font-size: 7.5pt;
+line-height: 1.4;
+}
+/* 2-column layout */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.two-col-left { display: flex; flex-direction: column; gap: 4px; }
+.two-col-right { display: flex; flex-direction: column; gap: 4px; }
+/* Footer */
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; border-top: 1px dashed var(--line-secondary); margin-top: 4px; font-size: 6.5pt; color: var(--ink-secondary); }
+.signature-box { border-bottom: 1px solid var(--ink-primary); width: 110px; height: 14px; }
+/* Page break */
+.page-break { page-break-before: always; }
+@media print {
+body { font-size: 7.5pt; }
+.sheet { width: 100%; height: 100%; margin: 0; padding: 0; }
+.section { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<!-- HEADER -->
+<div class="header">
+<div class="header-section">
+<h3>Patient Information</h3>
+<div class="field-row"><span class="field-label">Name:</span><span class="field-value large"></span></div>
+<div class="field-row"><span class="field-label">DOB:</span><span class="field-value"></span><span class="field-label">Age:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">MRN:</span><span class="field-value"></span><span class="field-label">Weight:</span><span class="field-value">______kg</span></div>
+<div class="field-row"><span class="field-label">Allergies:</span><span class="field-value" style="color: #c53030;"></span></div>
+</div>
+<div class="header-section">
+<h3>Unit Information</h3>
+<div class="field-row"><span class="field-label">Unit:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Bed:</span><span class="field-value"></span><span class="field-label">Room:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Date:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Nurse:</span><span class="field-value"></span></div>
+</div>
+<div class="header-right">
+<div class="sheet-title">Pediatric Brain Sheet</div>
+<div class="sheet-subtitle">Age-Appropriate Nursing</div>
+</div>
+</div>
+
+<!-- WEIGHT + VITALS BY AGE -->
+<div class="grid-2col">
+<div class="section">
+<div class="section-header"><span>Weight & Medication Dosing</span></div>
+<div class="section-content">
+<div class="weight-box">
+<h4>Weight-Based Calculations</h4>
+<div style="display: flex; gap: 8px; align-items: center;">
+<div style="flex: 1;">
+<div style="font-size: 7pt; margin-bottom: 2px;">Weight: ________ kg</div>
+<div style="font-size: 7pt; margin-bottom: 2px;">Height: ________ cm</div>
+<div style="font-size: 7pt;">BSA: ________ m²</div>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px;">
+<div class="weight-item"><div class="label">ml/kg</div><div class="value"></div></div>
+<div class="weight-item"><div class="label">mcg/kg</div><div class="value"></div></div>
+<div class="weight-item"><div class="label">mg/kg</div><div class="value"></div></div>
+<div class="weight-item"><div class="label">units/kg</div><div class="value"></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Pediatric Vital Signs by Age</span></div>
+<div class="section-content">
+<div class="vitals-grid">
+<div class="vital-col">
+<h4>Neonate</h4>
+<div class="vital-row"><span class="label">HR:</span><span class="value">120-160</span></div>
+<div class="vital-row"><span class="label">RR:</span><span class="value">30-60</span></div>
+<div class="vital-row"><span class="label">SBP:</span><span class="value">60-90</span></div>
+<div class="vital-row"><span class="label">Temp:</span><span class="value">36.5-37.5</span></div>
+</div>
+<div class="vital-col">
+<h4>Infant</h4>
+<div class="vital-row"><span class="label">HR:</span><span class="value">80-140</span></div>
+<div class="vital-row"><span class="label">RR:</span><span class="value">20-30</span></div>
+<div class="vital-row"><span class="label">SBP:</span><span class="value">70-100</span></div>
+<div class="vital-row"><span class="label">Temp:</span><span class="value">36.5-37.5</span></div>
+</div>
+<div class="vital-col">
+<h4>Toddler</h4>
+<div class="vital-row"><span class="label">HR:</span><span class="value">80-130</span></div>
+<div class="vital-row"><span class="label">RR:</span><span class="value">20-30</span></div>
+<div class="vital-row"><span class="label">SBP:</span><span class="value">80-110</span></div>
+<div class="vital-row"><span class="label">Temp:</span><span class="value">36.5-37.5</span></div>
+</div>
+<div class="vital-col">
+<h4>School Age</h4>
+<div class="vital-row"><span class="label">HR:</span><span class="value">70-110</span></div>
+<div class="vital-row"><span class="label">RR:</span><span class="value">16-22</span></div>
+<div class="vital-row"><span class="label">SBP:</span><span class="value">90-120</span></div>
+<div class="vital-row"><span class="label">Temp:</span><span class="value">36.5-37.5</span></div>
+</div>
+<div class="vital-col">
+<h4>Adolescent</h4>
+<div class="vital-row"><span class="label">HR:</span><span class="value">60-100</span></div>
+<div class="vital-row"><span class="label">RR:</span><span class="value">12-20</span></div>
+<div class="vital-row"><span class="label">SBP:</span><span class="value">100-120</span></div>
+<div class="vital-row"><span class="label">Temp:</span><span class="value">36.5-37.5</span></div>
+</div>
+</div>
+<div style="margin-top: 4px; font-size: 6pt; color: var(--ink-secondary);">
+<span>BP Formula (child): (age × 2) + 90 = systolic | MAP: (2×diastolic + systolic) ÷ 3</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- EMERGENCY REFS -->
+<div class="section">
+<div class="section-header"><span>Pediatric Emergency Quick Reference</span></div>
+<div class="section-content">
+<div class="grid-2col">
+<div class="two-col-left">
+<div class="emerg-box">
+<h4>Febrile Neonate (&lt;30 days)</h4>
+<div class="emerg-item"><span class="label">Temp:</span> ≥38.0°C / 100.4°F</div>
+<div class="emerg-item"><span class="label">Workup:</span> CBC, LP, UA, BCx, Cx</div>
+<div class="emerg-item"><span class="label">Abx:</span> Ampicillin + Cefotaxime</div>
+</div>
+<div class="emerg-box">
+<h4>Respiratory Distress</h4>
+<div class="emerg-item"><span class="label">Signs:</span> RR↑, retracciones, nasal flaring</div>
+<div class="emerg-item"><span class="label">Croup:</span> Dexamethasone, nebulized epi</div>
+<div class="emerg-item"><span class="label">Asthma:</span> Albuterol, steroids</div>
+</div>
+</div>
+<div class="two-col-right">
+<div class="emerg-box">
+<h4>Seizures</h4>
+<div class="emerg-item"><span class="label">Duration:</span> ______</div>
+<div class="emerg-item"><span class="label">Type:</span> ______</div>
+<div class="emerg-item"><span class="label">BZP:</span> Versed / Ativan</div>
+<div class="emerg-item"><span class="label">Glucose:</span> ______</div>
+</div>
+<div class="emerg-box">
+<h4>DKA / Dehydration</h4>
+<div class="emerg-item"><span class="label">Glucose:</span> ______ | pH: ______</div>
+<div class="emerg-item"><span class="label">Dehydration:</span> _____%</div>
+<div class="emerg-item"><span class="label">Fluid:</span> ______ bolus</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- DEVELOPMENTAL MILESTONES + HANDOFF -->
+<div class="grid-2col">
+<div class="section">
+<div class="section-header"><span>Developmental Milestones</span></div>
+<div class="section-content">
+<div class="dev-grid">
+<div class="dev-col">
+<h4>Infant</h4>
+<div class="dev-milestone">Social smile (2mo)</div>
+<div class="dev-milestone">Head control (4mo)</div>
+<div class="dev-milestone">Sits (6mo)</div>
+<div class="dev-milestone">Crawls (9mo)</div>
+<div class="dev-milestone">Walks (12mo)</div>
+</div>
+<div class="dev-col">
+<h4>Toddler</h4>
+<div class="dev-milestone">Runs (18mo)</div>
+<div class="dev-milestone">20 words (18mo)</div>
+<div class="dev-milestone">2-word phrases (24mo)</div>
+<div class="dev-milestone">Tower of 4 cubes</div>
+<div class="dev-milestone">Parallel play</div>
+</div>
+<div class="dev-col">
+<h4>Preschool</h4>
+<div class="dev-milestone">Tower of 8 cubes</div>
+<div class="dev-milestone">Draws person</div>
+<div class="dev-milestone">Knows age/gender</div>
+<div class="dev-milestone">Counts 10</div>
+<div class="dev-milestone">Cooperative play</div>
+</div>
+<div class="dev-col">
+<h4>School Age</h4>
+<div class="dev-milestone">Reads/writes</div>
+<div class="dev-milestone">Ball catch</div>
+<div class="dev-milestone">Rule games</div>
+<div class="dev-milestone">3-step commands</div>
+<div class="dev-milestone">Concrete logic</div>
+</div>
+<div class="dev-col">
+<h4>Adolescent</h4>
+<div class="dev-milestone">Abstract thought</div>
+<div class="dev-milestone">Future planning</div>
+<div class="dev-milestone">Identity formation</div>
+<div class="dev-milestone">Puberty changes</div>
+<div class="dev-milestone">Peer relationships</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Shift Handoff Notes</span></div>
+<div class="section-content">
+<textarea class="handoff-box" placeholder="S - Situation:&#10;A - Assessment:&#10;B - Background:&#10;R - Recommendation:"></textarea>
+</div>
+</div>
+</div>
+
+<!-- COMMON MEDICATIONS + PEDS GCS + NOTES -->
+<div class="section">
+<div class="section-header"><span>Pediatric Glasgow Coma Scale (Pediatric GCS)</span></div>
+<div class="section-content">
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+<div>
+<div style="font-weight: 700; font-size: 7pt; margin-bottom: 2px; color: var(--green);">Eye Opening (E)</div>
+<div class="emerg-item"><span class="label">4:</span> Spontaneous</div>
+<div class="emerg-item"><span class="label">3:</span> To speech</div>
+<div class="emerg-item"><span class="label">2:</span> To pain</div>
+<div class="emerg-item"><span class="label">1:</span> None</div>
+</div>
+<div>
+<div style="font-weight: 700; font-size: 7pt; margin-bottom: 2px; color: var(--green);">Verbal (V)</div>
+<div class="emerg-item"><span class="label">5:</span> Coos, babbles</div>
+<div class="emerg-item"><span class="label">4:</span> Irritable cry</div>
+<div class="emerg-item"><span class="label">3:</span> Inappropriate words</div>
+<div class="emerg-item"><span class="label">2:</span> Incomprehensible</div>
+<div class="emerg-item"><span class="label">1:</span> None</div>
+</div>
+<div>
+<div style="font-weight: 700; font-size: 7pt; margin-bottom: 2px; color: var(--green);">Motor (M)</div>
+<div class="emerg-item"><span class="label">6:</span> Normal spontaneous</div>
+<div class="emerg-item"><span class="label">5:</span> Localizes pain</div>
+<div class="emerg-item"><span class="label">4:</span> Withdraws from pain</div>
+<div class="emerg-item"><span class="label">3:</span> Abnormal flexion</div>
+<div class="emerg-item"><span class="label">2:</span> Extension</div>
+<div class="emerg-item"><span class="label">1:</span> None</div>
+</div>
+</div>
+<div style="margin-top: 4px; text-align: center; font-size: 8pt;">
+<strong>Total GCS: ___ (Min 3, Max 15)</strong> | <strong>Infant Modifier:</strong> Use criteria above (verbal differs for &lt;2 years)
+</div>
+</div>
+</div>
+
+<!-- COMMON MEDS REFERENCE + NURSING NOTES -->
+<div class="grid-2col">
+<div class="section">
+<div class="section-header"><span>Common Medication Reference</span></div>
+<div class="section-content">
+<div class="meds-grid">
+<div class="med-item">
+<h4>Acetaminophen</h4>
+<div class="med-dose">10-15 mg/kg/dose q4-6h</div>
+<div class="med-dose">Max: 75 mg/kg/day</div>
+</div>
+<div class="med-item">
+<h4>Ibuprofen</h4>
+<div class="med-dose">5-10 mg/kg/dose q6-8h</div>
+<div class="med-dose">Use if >6 months</div>
+</div>
+<div class="med-item">
+<h4>Amoxicillin</h4>
+<div class="med-dose">20-40 mg/kg/day ÷ doses</div>
+</div>
+<div class="med-item">
+<h4>Azithromycin</h4>
+<div class="med-dose">10 mg/kg day 1, then 5 mg/kg</div>
+</div>
+<div class="med-item">
+<h4>Ondansetron</h4>
+<div class="med-dose">0.1 mg/kg (antiemetic)</div>
+</div>
+<div class="med-item">
+<h4>Albuterol</h4>
+<div class="med-dose">2.5 mg nebulized q20min</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Nursing Notes</span></div>
+<div class="section-content">
+<textarea class="notes-area" placeholder="Shift notes, concerns, family communication..."></textarea>
+</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<div>Nurse Signature: <span class="signature-box"></span></div>
+<div>Rev. 2 - Pediatric Brain Sheet</div>
+</div>
+</div>
+</body>
+</html>

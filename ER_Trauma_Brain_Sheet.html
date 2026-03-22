@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ER Trauma Brain Sheet</title>
+<style>
+:root {
+--header-red: #8B0000;
+--header-red-light: #A52A2A;
+--header-red-dark: #5C0000;
+--plum: #6B2D5B;
+--paper: #ffffff;
+--paper-alt: #faf7fa;
+--ink-primary: #1a1a2e;
+--ink-secondary: #4a4a5a;
+--line-primary: #2c3e50;
+--line-secondary: #c9b8cb;
+--line-light: #e8e0e8;
+--checkbox-border: #9a7aa0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@page { size: 8.5in 11in portrait; margin: 0.05in; }
+body {
+font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+font-size: 7.5pt;
+line-height: 1.2;
+color: var(--ink-primary);
+background: white;
+-webkit-print-color-adjust: exact;
+print-color-adjust: exact;
+}
+.sheet {
+width: 8in;
+min-height: 10.5in;
+margin: 0 auto;
+padding: 0;
+display: flex;
+flex-direction: column;
+gap: 3px;
+}
+/* Header */
+.header {
+display: grid;
+grid-template-columns: 1.5fr 1fr 0.8fr;
+gap: 6px;
+padding: 4px 6px;
+background: linear-gradient(135deg, var(--header-red) 0%, var(--header-red-dark) 100%);
+border: 2px solid var(--header-red-dark);
+border-radius: 5px;
+color: white;
+}
+.header-section h3 {
+font-size: 7pt;
+text-transform: uppercase;
+letter-spacing: 0.8px;
+color: #ffcccc;
+border-bottom: 1px solid rgba(255,255,255,0.3);
+padding-bottom: 2px;
+margin-bottom: 3px;
+}
+.field-row { display: flex; align-items: baseline; gap: 3px; }
+.field-label { font-weight: 600; font-size: 6.5pt; color: #ffcccc; min-width: 42px; }
+.field-value { flex: 1; border-bottom: 1px solid rgba(255,255,255,0.5); min-height: 14px; font-size: 8pt; background: rgba(255,255,255,0.9); color: #1a1a2e; border-radius: 2px; padding: 2px 4px; }
+.field-value.large { min-height: 16px; font-size: 9pt; font-weight: 600; }
+.header-right { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.sheet-title { font-size: 16pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.sheet-subtitle { font-size: 8pt; letter-spacing: 0.5px; opacity: 0.9; }
+/* Sections */
+.section { border: 1.5px solid var(--line-secondary); border-radius: 4px; overflow: visible; display: flex; flex-direction: column; }
+.section-header {
+display: flex; align-items: center; justify-content: space-between;
+padding: 3px 6px; font-weight: 700; font-size: 7pt;
+text-transform: uppercase; letter-spacing: 0.5px;
+background: var(--header-red);
+color: white;
+}
+.section-content { padding: 3px; flex: 1; background: var(--paper); overflow: visible; }
+/* Checkbox */
+.checkbox {
+display: inline-flex; align-items: center; gap: 2px;
+font-size: 7pt; cursor: pointer;
+}
+.checkbox-box {
+width: 10px; height: 10px; border: 1px solid var(--checkbox-border);
+border-radius: 2px; display: inline-block;
+}
+/* Triage */
+.triage-grid {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+gap: 3px;
+padding: 4px 0;
+}
+.triage-level {
+display: flex; flex-direction: column; align-items: center;
+border: 2px solid var(--header-red);
+border-radius: 4px;
+padding: 4px;
+background: white;
+}
+.triage-level.active {
+background: var(--header-red);
+color: white;
+}
+.triage-num { font-size: 12pt; font-weight: 700; }
+.triage-desc { font-size: 5.5pt; text-align: center; margin-top: 2px; }
+/* Vital Signs Table */
+.vitals-table {
+width: 100%;
+border-collapse: collapse;
+}
+.vitals-table th, .vitals-table td {
+border: 1px solid var(--line-secondary);
+padding: 3px 4px;
+text-align: center;
+font-size: 6.5pt;
+height: 20px;
+}
+.vitals-table th {
+background: var(--header-red);
+color: white;
+font-weight: 700;
+}
+.vitals-table th:first-child {
+background: var(--paper-alt);
+color: var(--ink-primary);
+width: 55px;
+}
+.vitals-table td:first-child {
+background: var(--paper-alt);
+font-weight: 700;
+font-size: 7pt;
+text-align: left;
+padding-left: 4px;
+width: 55px;
+}
+.vitals-table td {
+background: white;
+}
+/* Primary Survey */
+.primary-survey {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+gap: 3px;
+}
+.survey-item {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 4px;
+background: white;
+}
+.survey-letter {
+font-size: 14pt;
+font-weight: 700;
+color: var(--header-red);
+text-align: center;
+}
+.survey-word {
+font-size: 6.5pt;
+font-weight: 700;
+text-align: center;
+margin-bottom: 3px;
+color: var(--ink-primary);
+}
+.survey-checkboxes {
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+.survey-checkboxes .checkbox {
+font-size: 6pt;
+}
+/* Interventions */
+.intervention-row {
+display: flex; align-items: center; gap: 3px; padding: 3px 0;
+border-bottom: 1px dotted var(--line-light);
+}
+.intervention-label { font-weight: 700; font-size: 7pt; color: var(--header-red); min-width: 55px; }
+.intervention-value { background: rgba(255,255,255,0.9); border-bottom: 1px solid var(--line-primary); min-height: 14px; flex: 1; font-size: 8pt; }
+/* GCS / Neuro */
+.neuro-grid {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+gap: 3px;
+}
+.neuro-item {
+border: 1px solid var(--line-secondary);
+border-radius: 3px;
+padding: 4px;
+}
+.neuro-title {
+font-weight: 700; font-size: 7pt; color: var(--header-red);
+border-bottom: 1px solid var(--line-light); padding-bottom: 2px; margin-bottom: 3px;
+}
+.neuro-row {
+display: flex; align-items: center; gap: 3px; padding: 1px 0;
+}
+.neuro-label { font-size: 6.5pt; min-width: 30px; }
+.neuro-value { background: rgba(255,255,255,0.9); border-bottom: 1px solid var(--line-primary); min-height: 14px; flex: 1; font-size: 7pt; }
+/* Secondary Survey */
+.secondary-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 3px;
+}
+.secondary-col {
+display: flex;
+flex-direction: column;
+gap: 3px;
+}
+.secondary-row {
+display: flex; align-items: center; gap: 3px; padding: 2px 0;
+border-bottom: 1px dotted var(--line-light);
+}
+.secondary-label { font-size: 6.5pt; font-weight: 600; min-width: 60px; color: var(--ink-secondary); }
+.secondary-value { background: rgba(255,255,255,0.9); border-bottom: 1px solid var(--line-primary); min-height: 14px; flex: 1; font-size: 7pt; }
+/* Handoff Notes */
+.handoff-box {
+width: 100%;
+min-height: 100px;
+border: 2px solid var(--header-red);
+border-radius: 4px;
+padding: 8px;
+background: white;
+font-size: 8pt;
+line-height: 1.5;
+}
+/* Footer */
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 3px 4px; border-top: 1px dashed var(--line-secondary); margin-top: 2px; font-size: 6.5pt; color: var(--ink-secondary); }
+.signature-box { border-bottom: 1px solid var(--ink-primary); width: 110px; height: 14px; }
+/* Grid layouts */
+.row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.row-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px; }
+/* Chief Complaint */
+.chief-box {
+border: 2px solid var(--header-red);
+border-radius: 4px;
+padding: 6px;
+min-height: 40px;
+background: white;
+}
+@media print {
+body { font-size: 7.5pt; }
+.sheet { width: 100%; height: 100%; margin: 0; padding: 0; }
+.section { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<!-- HEADER -->
+<div class="header">
+<div class="header-section">
+<h3>Patient Information</h3>
+<div class="field-row"><span class="field-label">Patient:</span><span class="field-value large"></span></div>
+<div class="field-row"><span class="field-label">DOB:</span><span class="field-value"></span><span class="field-label">MRN:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Allergies:</span><span class="field-value"></span></div>
+<div class="field-row"><span class="field-label">Arrival:</span><span class="field-value"></span></div>
+</div>
+<div class="header-section">
+<h3>Triage</h3>
+<div class="triage-grid">
+<div class="triage-level"><span class="triage-num">1</span><span class="triage-desc">Resuscitation</span></div>
+<div class="triage-level"><span class="triage-num">2</span><span class="triage-desc">Emergent</span></div>
+<div class="triage-level"><span class="triage-num">3</span><span class="triage-desc">Urgent</span></div>
+<div class="triage-level"><span class="triage-num">4</span><span class="triage-desc">Less Urgent</span></div>
+<div class="triage-level"><span class="triage-num">5</span><span class="triage-desc">Non-Urgent</span></div>
+</div>
+</div>
+<div class="header-right">
+<div class="sheet-title">ER Trauma</div>
+<div class="sheet-subtitle">Brain Sheet</div>
+</div>
+</div>
+
+<!-- CHIEF COMPLAINT -->
+<div class="section">
+<div class="section-header"><span>Chief Complaint</span></div>
+<div class="section-content">
+<div class="chief-box"></div>
+</div>
+</div>
+
+<!-- VITALS + TRAUMA ASSESSMENT -->
+<div class="row-2col">
+<div class="section">
+<div class="section-header"><span>Vital Signs</span></div>
+<div class="section-content">
+<table class="vitals-table">
+<thead>
+<tr>
+<th>Time</th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+<th style="background: white;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BP</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>HR</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>RR</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>Temp</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>SpO2</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>Pain</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Trauma Assessment</span></div>
+<div class="section-content">
+<div class="neuro-grid">
+<div class="neuro-item">
+<div class="neuro-title">GCS</div>
+<div class="neuro-row"><span class="neuro-label">Eye:</span><span class="neuro-value"></span></div>
+<div class="neuro-row"><span class="neuro-label">Verbal:</span><span class="neuro-value"></span></div>
+<div class="neuro-row"><span class="neuro-label">Motor:</span><span class="neuro-value"></span></div>
+<div class="neuro-row" style="margin-top:3px;"><span class="neuro-label" style="font-weight:700;color:var(--header-red);">Total:</span><span class="neuro-value" style="font-weight:700;"></span></div>
+</div>
+<div class="neuro-item">
+<div class="neuro-title">AVPU</div>
+<div style="display:flex;gap:6px;margin-top:3px;">
+<span class="checkbox"><span class="checkbox-box"></span> A</span>
+<span class="checkbox"><span class="checkbox-box"></span> V</span>
+<span class="checkbox"><span class="checkbox-box"></span> P</span>
+<span class="checkbox"><span class="checkbox-box"></span> U</span>
+</div>
+<div class="neuro-row" style="margin-top:4px;"><span class="neuro-label">LOC:</span><span class="neuro-value"></span></div>
+</div>
+<div class="neuro-item">
+<div class="neuro-title">Pupils</div>
+<div class="neuro-row"><span class="neuro-label">L:</span><span class="neuro-value"></span></div>
+<div class="neuro-row"><span class="neuro-label">R:</span><span class="neuro-value"></span></div>
+<div class="neuro-row"><span class="neuro-label">React:</span><span class="neuro-value"></span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- PRIMARY SURVEY -->
+<div class="section">
+<div class="section-header"><span>Primary Survey (ABCDE)</span></div>
+<div class="section-content">
+<div class="primary-survey">
+<div class="survey-item">
+<div class="survey-letter">A</div>
+<div class="survey-word">Airway</div>
+<div class="survey-checkboxes">
+<span class="checkbox"><span class="checkbox-box"></span> Patent</span>
+<span class="checkbox"><span class="checkbox-box"></span> Suction</span>
+<span class="checkbox"><span class="checkbox-box"></span> Intubated</span>
+<span class="checkbox"><span class="checkbox-box"></span> C-spine</span>
+</div>
+</div>
+<div class="survey-item">
+<div class="survey-letter">B</div>
+<div class="survey-word">Breathing</div>
+<div class="survey-checkboxes">
+<span class="checkbox"><span class="checkbox-box"></span> Spontaneous</span>
+<span class="checkbox"><span class="checkbox-box"></span> O2 given</span>
+<span class="checkbox"><span class="checkbox-box"></span> Lung sounds</span>
+<span class="checkbox"><span class="checkbox-box"></span> Chest wound</span>
+</div>
+</div>
+<div class="survey-item">
+<div class="survey-letter">C</div>
+<div class="survey-word">Circulation</div>
+<div class="survey-checkboxes">
+<span class="checkbox"><span class="checkbox-box"></span> Pulse</span>
+<span class="checkbox"><span class="checkbox-box"></span> Cap refill</span>
+<span class="checkbox"><span class="checkbox-box"></span> Skin color</span>
+<span class="checkbox"><span class="checkbox-box"></span> Hemorrhage</span>
+</div>
+</div>
+<div class="survey-item">
+<div class="survey-letter">D</div>
+<div class="survey-word">Disability</div>
+<div class="survey-checkboxes">
+<span class="checkbox"><span class="checkbox-box"></span> GCS done</span>
+<span class="checkbox"><span class="checkbox-box"></span> Pupils</span>
+<span class="checkbox"><span class="checkbox-box"></span> Paralysis</span>
+<span class="checkbox"><span class="checkbox-box"></span> Sensory</span>
+</div>
+</div>
+<div class="survey-item">
+<div class="survey-letter">E</div>
+<div class="survey-word">Exposure</div>
+<div class="survey-checkboxes">
+<span class="checkbox"><span class="checkbox-box"></span> Undressed</span>
+<span class="checkbox"><span class="checkbox-box"></span> Log roll</span>
+<span class="checkbox"><span class="checkbox-box"></span> Back exam</span>
+<span class="checkbox"><span class="checkbox-box"></span> Temp</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- INTERVENTIONS + SECONDARY SURVEY -->
+<div class="row-2col">
+<div class="section">
+<div class="section-header"><span>Interventions</span></div>
+<div class="section-content">
+<div class="intervention-row"><span class="intervention-label">IV Site:</span><span class="intervention-value"></span></div>
+<div class="intervention-row"><span class="intervention-label">IV Fluids:</span><span class="intervention-value"></span></div>
+<div class="intervention-row"><span class="intervention-label">Meds Given:</span><span class="intervention-value"></span></div>
+<div class="intervention-row"><span class="intervention-label">Foley:</span><span class="intervention-value"></span></div>
+<div class="intervention-row"><span class="intervention-label">Labs:</span><span class="intervention-value"></span></div>
+<div class="intervention-row"><span class="intervention-label">X-rays:</span><span class="intervention-value"></span></div>
+<div style="margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;">
+<span class="checkbox"><span class="checkbox-box"></span> Blood bank</span>
+<span class="checkbox"><span class="checkbox-box"></span> TC Trauma</span>
+<span class="checkbox"><span class="checkbox-box"></span> OR pending</span>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="section-header"><span>Secondary Survey</span></div>
+<div class="section-content">
+<div class="secondary-grid">
+<div class="secondary-col">
+<div class="secondary-row"><span class="secondary-label">Head/Face:</span><span class="secondary-value"></span></div>
+<div class="secondary-row"><span class="secondary-label">Neck:</span><span class="secondary-value"></span></div>
+<div class="secondary-row"><span class="secondary-label">Chest:</span><span class="secondary-value"></span></div>
+<div class="secondary-row"><span class="secondary-label">Abdomen:</span><span class="secondary-value"></span></div>
+</div>
+<div class="secondary-col">
+<div class="secondary-row"><span class="secondary-label">Pelvis:</span><span class="secondary-value"></span></div>
+<div class="secondary-row"><span class="secondary-label">Extremities:</span><span class="secondary-value"></span></div>
+<div class="secondary-row"><span class="secondary-label">Back:</span><span class="secondary-value"></span></div>
+<div class="secondary-row"><span class="secondary-label">Skin:</span><span class="secondary-value"></span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SHIFT HANDOFF NOTES -->
+<div class="section">
+<div class="section-header"><span>Shift Handoff Notes</span></div>
+<div class="section-content">
+<textarea class="handoff-box"></textarea>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<div>Nurse Signature: <span class="signature-box"></span></div>
+<div>ER Trauma Brain Sheet</div>
+</div>
+</div>
+</body>
+</html>
