@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>L&D Brain Sheet v3 - Labor & Delivery</title>
+<title>L&D Brain Sheet v4 - Labor & Delivery</title>
 <style>
 :root {
 --plum: #6B2D5B;
@@ -84,12 +84,6 @@ font-size: 7pt; cursor: pointer;
 width: 10px; height: 10px; border: 1px solid var(--checkbox-border);
 border-radius: 2px; display: inline-block;
 }
-/* Fill lines */
-.fill-line { border-bottom: 1px solid var(--line-primary); min-height: 20px; flex: 1; }
-.fill-line-sm { border-bottom: 1px solid var(--line-primary); min-height: 16px; flex: 1; }
-/* Grid layouts */
-.grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.grid-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
 /* Cervical Dilation Tracker */
 .cervical-tracker {
 display: flex;
@@ -123,43 +117,36 @@ background: var(--paper-alt);
 border-left: 1px solid var(--line-secondary);
 }
 .station-marker { font-size: 6pt; font-weight: 600; color: var(--plum); text-align: center; }
-/* Contraction Grid - SIMPLIFIED */
-.contraction-section {
-display: flex;
-flex-direction: column;
-gap: 2px;
+/* Contraction Grid - proper table layout */
+.contraction-table {
+width: 100%;
+border-collapse: collapse;
 }
-.contraction-row {
-display: flex;
-align-items: center;
-gap: 2px;
+.contraction-table th, .contraction-table td {
+border: 1px solid var(--line-secondary);
+padding: 3px;
+text-align: center;
+font-size: 7pt;
 }
-.contraction-label {
-width: 55px;
+.contraction-table th {
+background: var(--plum);
+color: white;
+font-weight: 700;
+font-size: 6.5pt;
+}
+.contraction-table th:first-child {
+background: var(--paper-alt);
+color: var(--ink-primary);
+}
+.contraction-table td:first-child {
+background: var(--paper-alt);
 font-weight: 700;
 font-size: 7pt;
-color: var(--plum);
-text-align: right;
-padding-right: 4px;
+text-align: left;
+width: 60px;
 }
-.contraction-times {
-display: flex;
-flex: 1;
-gap: 1px;
-}
-.contraction-time {
-width: 28px;
-text-align: center;
-font-size: 6pt;
-color: var(--ink-secondary);
-background: var(--paper-alt);
-border-radius: 2px;
-padding: 1px 0;
-}
-.contraction-cell {
-flex: 1;
-height: 22px;
-border: 1px solid var(--line-light);
+.contraction-table td {
+height: 20px;
 background: white;
 }
 /* Drip Tracking */
@@ -171,12 +158,28 @@ border-bottom: 1px dotted var(--line-light);
 .drip-value { border-bottom: 1px solid var(--line-primary); min-height: 16px; flex: 1; font-size: 8pt; }
 /* EBL Tracking */
 .ebl-table {
-display: grid; grid-template-columns: 50px repeat(3, 1fr) 60px;
-gap: 2px; font-size: 7pt;
+width: 100%;
+border-collapse: collapse;
 }
-.ebl-header { background: var(--plum); color: white; font-weight: 700; text-align: center; padding: 4px 2px; }
-.ebl-cell { border: 1px solid var(--line-light); text-align: center; padding: 4px 2px; min-height: 20px; background: white; }
-.ebl-total { font-weight: 700; background: #f3e8f0; }
+.ebl-table th, .ebl-table td {
+border: 1px solid var(--line-secondary);
+padding: 4px;
+text-align: center;
+font-size: 7pt;
+}
+.ebl-table th {
+background: var(--plum);
+color: white;
+font-weight: 700;
+}
+.ebl-table td:first-child {
+background: var(--paper-alt);
+font-weight: 600;
+}
+.ebl-table td:last-child {
+background: #f3e8f0;
+font-weight: 700;
+}
 /* Labor Phase */
 .phase-row {
 display: flex; align-items: center; gap: 4px; padding: 4px 0;
@@ -203,7 +206,7 @@ border-bottom: 1px dotted var(--line-light);
 }
 .fundus-check { display: flex; align-items: center; gap: 2px; }
 .fundus-label { font-size: 7pt; flex: 1; }
-/* Handoff Notes - BLANK BOX, no filler text */
+/* Handoff Notes - BLANK BOX */
 .handoff-box {
 width: 100%;
 min-height: 100px;
@@ -232,10 +235,11 @@ display: flex; align-items: center; gap: 4px; padding: 2px 0;
 /* Footer */
 .footer { display: flex; justify-content: space-between; align-items: center; padding: 4px 6px; border-top: 1px dashed var(--line-secondary); margin-top: 4px; font-size: 6.5pt; color: var(--ink-secondary); }
 .signature-box { border-bottom: 1px solid var(--ink-primary); width: 110px; height: 14px; }
-/* 2-column layout */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-.two-col-left { display: flex; flex-direction: column; gap: 4px; }
-.two-col-right { display: flex; flex-direction: column; gap: 4px; }
+/* Grid layouts */
+.row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.row-2col-eq { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.row-2col-left { display: flex; flex-direction: column; gap: 4px; }
+.row-2col-right { display: flex; flex-direction: column; gap: 4px; }
 /* Page break */
 .page-break { page-break-before: always; }
 @media print {
@@ -269,9 +273,9 @@ body { font-size: 7.5pt; }
 </div>
 </div>
 
-<!-- CERVICAL DILATION + MEMBRANES + VITALS -->
-<div class="grid-2col">
-<div class="section" style="flex: 1.5;">
+<!-- CERVICAL DILATION + MEMBRANES + LABOR PHASES -->
+<div class="row-2col">
+<div class="section">
 <div class="section-header"><span>Cervical Dilation & Fetal Station</span></div>
 <div class="section-content">
 <div class="cervical-tracker">
@@ -300,12 +304,14 @@ body { font-size: 7.5pt; }
 <div class="station-marker">-3</div>
 </div>
 </div>
-<div style="margin-top: 4px;">
-<div style="font-weight: 600; font-size: 6.5pt; margin-bottom: 2px;">Membranes</div>
-<div style="display: flex; gap: 6px; flex-wrap: wrap;">
+<div style="margin-top: 6px;">
+<div style="font-weight: 600; font-size: 6.5pt; margin-bottom: 3px;">Membranes</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap;">
 <span class="checkbox"><span class="checkbox-box"></span> Intact</span>
 <span class="checkbox"><span class="checkbox-box"></span> SROM</span>
 <span class="checkbox"><span class="checkbox-box"></span> AROM</span>
+</div>
+<div style="display: flex; gap: 8px; margin-top: 3px;">
 <span style="font-size: 6.5pt;">Time: ________</span>
 <span style="font-size: 6.5pt;">Color: ________</span>
 </div>
@@ -319,99 +325,71 @@ body { font-size: 7.5pt; }
 <div class="phase-row"><span class="phase-name">Active</span><span class="phase-time"></span></div>
 <div class="phase-row"><span class="phase-name">Transition</span><span class="phase-time"></span></div>
 <div class="phase-row"><span class="phase-name">2nd Stage</span><span class="phase-time"></span></div>
-<div style="margin-top: 4px;">
+<div style="margin-top: 6px;">
 <div style="font-weight: 600; font-size: 6.5pt;">Bishop Score: _______</div>
 </div>
 </div>
 </div>
 </div>
 
-<!-- CONTRACTIONS + Oxytocin -->
-<div class="grid-2col">
+<!-- CONTRACTIONS + OXYTOCIN -->
+<div class="row-2col">
 <div class="section">
 <div class="section-header"><span>Contraction Pattern</span><span style="font-size: 6pt; font-weight: 400;">Freq × Dur × Intensity</span></div>
 <div class="section-content">
-<div class="contraction-section">
-<div class="contraction-row">
-<div class="contraction-label">Time</div>
-<div class="contraction-times">
-<div class="contraction-time">0700</div>
-<div class="contraction-time">0900</div>
-<div class="contraction-time">1100</div>
-<div class="contraction-time">1300</div>
-<div class="contraction-time">1500</div>
-<div class="contraction-time">1700</div>
-<div class="contraction-time">1900</div>
-<div class="contraction-time">2100</div>
-<div class="contraction-time">2300</div>
-</div>
-</div>
-<div class="contraction-row">
-<div class="contraction-label">Freq</div>
-<div class="contraction-times">
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-</div>
-</div>
-<div class="contraction-row">
-<div class="contraction-label">Duration</div>
-<div class="contraction-times">
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-</div>
-</div>
-<div class="contraction-row">
-<div class="contraction-label">Intensity</div>
-<div class="contraction-times">
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-<div class="contraction-cell"></div>
-</div>
-</div>
-</div>
+<table class="contraction-table">
+<thead>
+<tr>
+<th>Time</th>
+<th>0700</th>
+<th>0900</th>
+<th>1100</th>
+<th>1300</th>
+<th>1500</th>
+<th>1700</th>
+<th>1900</th>
+<th>2100</th>
+<th>2300</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Freq</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>Duration</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+<td>Intensity</td>
+<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section">
 <div class="section-header"><span>Oxytocin / Magnesium</span></div>
 <div class="section-content">
 <div class="drip-row"><span class="drip-label">Pitocin:</span><span class="drip-value"></span></div>
-<div class="drip-row"><span class="drip-label">Start:</span><span class="drip-value"></span><span class="drip-label">Current:</span><span class="drip-value"></span></div>
+<div class="drip-row"><span class="drip-label">Start:</span><span class="drip-value"></span></div>
+<div class="drip-row"><span class="drip-label">Current:</span><span class="drip-value"></span></div>
 <div class="drip-row"><span class="drip-label">Mag Sulf:</span><span class="drip-value"></span></div>
-<div class="drip-row"><span class="drip-label">Bolus:</span><span class="drip-value"></span><span class="drip-label">Rate:</span><span class="drip-value"></span></div>
-<div style="margin-top: 4px; font-size: 6.5pt;">
-<div style="display: flex; gap: 6px;">
+<div class="drip-row"><span class="drip-label">Bolus:</span><span class="drip-value"></span></div>
+<div class="drip-row"><span class="drip-label">Rate:</span><span class="drip-value"></span></div>
+<div style="margin-top: 6px; display: flex; gap: 8px;">
 <span class="checkbox"><span class="checkbox-box"></span> Epidural</span>
 <span class="checkbox"><span class="checkbox-box"></span> Spinal</span>
 <span class="checkbox"><span class="checkbox-box"></span> None</span>
 </div>
-<div style="margin-top: 3px;">Pain (0-10): _____</div>
-</div>
+<div style="margin-top: 4px;">Pain (0-10): _____</div>
 </div>
 </div>
 </div>
 
 <!-- FHR + EBL -->
-<div class="grid-2col">
+<div class="row-2col">
 <div class="section">
 <div class="section-header"><span>Fetal Heart Rate Categories</span></div>
 <div class="section-content">
@@ -432,21 +410,32 @@ body { font-size: 7.5pt; }
 <div class="section">
 <div class="section-header"><span>Blood Loss (EBL)</span></div>
 <div class="section-content">
-<div class="ebl-table">
-<div class="ebl-header">Time</div>
-<div class="ebl-header">1hr</div>
-<div class="ebl-header">2hr</div>
-<div class="ebl-header">Total</div>
-<div class="ebl-cell"></div><div class="ebl-cell"></div><div class="ebl-cell"></div><div class="ebl-total"></div>
-</div>
-<div style="margin-top: 6px;">
+<table class="ebl-table">
+<thead>
+<tr>
+<th>Time</th>
+<th>1hr</th>
+<th>2hr</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top: 8px;">
 <div style="font-size: 7pt;"><strong>Delivery EBL:</strong> ________ mL</div>
 </div>
 </div>
 </div>
 </div>
 
-<!-- SHIFT HANDOFF NOTES - BLANK, NO TEXT -->
+<!-- SHIFT HANDOFF NOTES -->
 <div class="section">
 <div class="section-header"><span>Shift Handoff Notes</span></div>
 <div class="section-content">
@@ -454,45 +443,53 @@ body { font-size: 7.5pt; }
 </div>
 </div>
 
-<!-- 2-COLUMN: POSTPARTUM + NEWBORN -->
-<div class="grid-2col">
+<!-- POSTPARTUM + NEWBORN -->
+<div class="row-2col">
 <div class="section">
 <div class="section-header"><span>Postpartum Assessment</span></div>
 <div class="section-content">
-<div style="margin-bottom: 4px;">
+<div style="margin-bottom: 6px;">
 <div style="font-weight: 700; font-size: 7pt; margin-bottom: 3px;">Fundus</div>
-<div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
 <span class="checkbox"><span class="checkbox-box"></span> Firm</span>
 <span class="checkbox"><span class="checkbox-box"></span> Soft</span>
 <span style="font-size: 6.5pt;">Height: ________</span>
 </div>
 </div>
-<div style="margin-bottom: 4px;">
+<div style="margin-bottom: 6px;">
 <div style="font-weight: 700; font-size: 7pt; margin-bottom: 3px;">Lochia</div>
 <div style="display: flex; gap: 6px; flex-wrap: wrap;">
 <span class="checkbox"><span class="checkbox-box"></span> Rubra</span>
 <span class="checkbox"><span class="checkbox-box"></span> Serosa</span>
 <span class="checkbox"><span class="checkbox-box"></span> Alba</span>
+</div>
+<div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px;">
 <span class="checkbox"><span class="checkbox-box"></span> Scant</span>
 <span class="checkbox"><span class="checkbox-box"></span> Mod</span>
 <span class="checkbox"><span class="checkbox-box"></span> Heavy</span>
 </div>
 </div>
-<div style="margin-bottom: 4px;">
-<div style="font-weight: 700; font-size: 7pt; margin-bottom: 3px;">Perineal Assessment</div>
-<div class="fundus-row"><span class="fundus-label">REEDA:</span><span class="fundus-check"><span class="checkbox-box"></span></span><span class="fundus-check"><span class="checkbox-box"></span></span><span class="fundus-check"><span class="checkbox-box"></span></span><span class="fundus-check"><span class="checkbox-box"></span></span><span class="fundus-check"><span class="checkbox-box"></span></span></div>
+<div style="margin-bottom: 6px;">
+<div style="font-weight: 700; font-size: 7pt; margin-bottom: 3px;">Perineal / REEDA</div>
+<div style="display: flex; gap: 4px;">
+<span class="checkbox"><span class="checkbox-box"></span> R</span>
+<span class="checkbox"><span class="checkbox-box"></span> E</span>
+<span class="checkbox"><span class="checkbox-box"></span> D</span>
+<span class="checkbox"><span class="checkbox-box"></span> E</span>
+<span class="checkbox"><span class="checkbox-box"></span> A</span>
+</div>
 <div style="display: flex; gap: 4px; margin-top: 3px;">
 <span class="checkbox"><span class="checkbox-box"></span> 1st</span>
 <span class="checkbox"><span class="checkbox-box"></span> 2nd</span>
 <span class="checkbox"><span class="checkbox-box"></span> 3rd</span>
 <span class="checkbox"><span class="checkbox-box"></span> 4th</span>
-<span style="font-size: 6.5pt;">Suture: Y/N</span>
+<span style="font-size: 6.5pt;">Suture: Y / N</span>
 </div>
 </div>
-<div style="margin-top: 4px;">
+<div>
 <div style="font-weight: 700; font-size: 7pt; margin-bottom: 3px;">Pain</div>
 <div>Scale (0-10): _____ Location: _______________</div>
-<div style="display: flex; gap: 4px; margin-top: 3px;">
+<div style="margin-top: 3px;">
 <span class="checkbox"><span class="checkbox-box"></span> PRN meds given</span>
 </div>
 </div>
@@ -511,14 +508,14 @@ body { font-size: 7.5pt; }
 </div>
 <div class="newborn-section">
 <div class="newborn-section-title">APGAR</div>
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; font-size: 6.5pt; text-align: center;">
-<div></div><div style="font-weight: 700;">1 min</div><div style="font-weight: 700;">5 min</div>
-<div style="font-weight: 600;">Appearance</div><div></div><div></div>
-<div style="font-weight: 600;">Pulse</div><div></div><div></div>
-<div style="font-weight: 600;">Grimace</div><div></div><div></div>
-<div style="font-weight: 600;">Activity</div><div></div><div></div>
-<div style="font-weight: 600;">Respir</div><div></div><div></div>
-</div>
+<table style="width: 100%; border-collapse: collapse; font-size: 6pt;">
+<tr><td></td><td style="font-weight: 700; text-align: center;">1 min</td><td style="font-weight: 700; text-align: center;">5 min</td></tr>
+<tr><td style="font-weight: 600;">Appearance</td><td></td><td></td></tr>
+<tr><td style="font-weight: 600;">Pulse</td><td></td><td></td></tr>
+<tr><td style="font-weight: 600;">Grimace</td><td></td><td></td></tr>
+<tr><td style="font-weight: 600;">Activity</td><td></td><td></td></tr>
+<tr><td style="font-weight: 600;">Respir</td><td></td><td></td></tr>
+</table>
 </div>
 <div class="newborn-section">
 <div class="newborn-section-title">Stabilization</div>
@@ -540,7 +537,7 @@ body { font-size: 7.5pt; }
 <!-- FOOTER -->
 <div class="footer">
 <div>Nurse Signature: <span class="signature-box"></span></div>
-<div>Rev. 3 - L&D Brain Sheet</div>
+<div>Rev. 4 - L&D Brain Sheet</div>
 </div>
 </div>
 </body>
