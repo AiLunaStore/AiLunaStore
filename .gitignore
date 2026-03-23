@@ -1,1 +1,23 @@
-node_modules/
+# Jekyll and static site
+.nojekyll
+_config.yml
+
+# Agent system files - NEVER commit
+memory/
+second-brain/
+skills/
+scanner/
+mission-control-live/
+integrated-agent-system/
+agent-collaboration-framework-cost-optimized/
+autonomy/
+deployment/
+desktop-app-enhanced/
+collaboration-coordinator.js
+collaboration-server.js
+fix-mission-control.js
+fix-mission-control-plan.md
+mission-control-fix-summary.md
+leadqualify-ai/
+leadqualify-ai.zip
+verify-fixes.js
